@@ -51,8 +51,8 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     public static final int columnaEstado = columnaRutaImagen + 1;
     public static final int columnaId = columnaEstado + 1;
 
-    public GUICatalogoInternos(Usuario usuario, Establecimiento establecimiento, boolean botonAdicional) {
-        super(usuario, establecimiento, botonAdicional);
+    public GUICatalogoInternos(Usuario usuario, Establecimiento establecimiento) {
+        super(usuario, establecimiento, false);
     }
 
     @Override
@@ -365,8 +365,24 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         tablaGeneral.getColumnModel().getColumn(columnaEstado).setPreferredWidth(anchoTotal / 2);
     }
 
+    private void cargarDatosGeneral() {
+        //
+    }
+
+    private void deshacerFiltroTablaGeneral() {
+        Filtro.deshacerFiltro(trsFiltroGeneral, dtmTablaGeneral, tablaGeneral);
+    }
+
     @Override
-    protected void definaAccionesInformacion() {
+    protected void definaAccionesInformacion() {// Definiendo acciones
+        txt_nui.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                ValidacionCampos.teclasDireccion(e, null, txt_primerApellido, null, null, txt_nui);
+            }
+        });
+        
         btn_foto.addKeyListener(new KeyAdapter() {
 
             @Override
@@ -519,12 +535,12 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
     @Override
     public void eliminarReferencia() {
-        txt_nui.grabFocus();
+        //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void asignarFoco() {
-        //To change body of generated methods, choose Tools | Templates.
+        txt_nui.grabFocus();
     }
 
     @Override
