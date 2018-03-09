@@ -340,4 +340,25 @@ public class ValidacionCampos {
         return valorF;
     }
 
+    /**
+     * metodo que maneja el cambio de posicio entre Componentes con las flechas
+     * de direccion del teclado
+     *
+     * @param principal
+     * @param arriba
+     * @param abajo
+     * @param derecha
+     * @param izquierda
+     */
+    public static void asignarTeclasDireccion(JComponent principal, JComponent arriba, JComponent abajo,
+            JComponent derecha, JComponent izquierda) {
+        principal.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                ValidacionCampos.teclasDireccion(e, arriba, abajo, derecha, izquierda, principal);
+            }
+        });
+    }
+
 }

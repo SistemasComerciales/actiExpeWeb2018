@@ -163,6 +163,60 @@ public class Filtro {
     }
 
     /**
+     * metodo que filtra una tabla por tres item de busqueda sin necesariamente
+     * empezar con lo escrito
+     *
+     * @param filtro
+     * @param trsfiltro
+     * @param opcion1
+     * @param opcion2
+     * @param opcion3
+     * @param opcion4
+     * @param opcion5
+     */
+    public static void filtroCincoColumnasQueContenga(String filtro, TableRowSorter<DefaultTableModel> trsfiltro, int opcion1, int opcion2, int opcion3, int opcion4, int opcion5, DefaultTableModel dtm, JTable tabla) {
+        trsfiltro = new TableRowSorter<DefaultTableModel>(dtm);
+        // Anadimos al Jtable el filtro trsfiltro
+        tabla.setRowSorter(trsfiltro);
+        LinkedList<RowFilter<Object, Object>> lista = new LinkedList<RowFilter<Object, Object>>();
+        lista.add(RowFilter.regexFilter(filtro, opcion1));
+        lista.add(RowFilter.regexFilter(filtro, opcion2));
+        lista.add(RowFilter.regexFilter(filtro, opcion3));
+        lista.add(RowFilter.regexFilter(filtro, opcion4));
+        lista.add(RowFilter.regexFilter(filtro, opcion5));
+        RowFilter<Object, Object> filtroOr = RowFilter.orFilter(lista);  // or de ambos filtros.
+        trsfiltro.setRowFilter(filtroOr);
+    }
+
+    /**
+     * metodo que filtra una tabla por tres item de busqueda sin necesariamente
+     * empezar con lo escrito
+     *
+     * @param filtro
+     * @param trsfiltro
+     * @param opcion1
+     * @param opcion2
+     * @param opcion3
+     * @param opcion4
+     * @param opcion5
+     * @param opcion6
+     */
+    public static void filtroSeisColumnasQueContenga(String filtro, TableRowSorter<DefaultTableModel> trsfiltro, int opcion1, int opcion2, int opcion3, int opcion4, int opcion5, int opcion6, DefaultTableModel dtm, JTable tabla) {
+        trsfiltro = new TableRowSorter<DefaultTableModel>(dtm);
+        // Anadimos al Jtable el filtro trsfiltro
+        tabla.setRowSorter(trsfiltro);
+        LinkedList<RowFilter<Object, Object>> lista = new LinkedList<RowFilter<Object, Object>>();
+        lista.add(RowFilter.regexFilter(filtro, opcion1));
+        lista.add(RowFilter.regexFilter(filtro, opcion2));
+        lista.add(RowFilter.regexFilter(filtro, opcion3));
+        lista.add(RowFilter.regexFilter(filtro, opcion4));
+        lista.add(RowFilter.regexFilter(filtro, opcion5));
+        lista.add(RowFilter.regexFilter(filtro, opcion6));
+        RowFilter<Object, Object> filtroOr = RowFilter.orFilter(lista);  // or de ambos filtros.
+        trsfiltro.setRowFilter(filtroOr);
+    }
+
+    /**
      * metodo que filtra una tabla por una columna sin necesariamente empezar
      * con lo escrito
      *

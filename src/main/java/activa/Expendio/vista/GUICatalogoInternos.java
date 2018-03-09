@@ -375,22 +375,27 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
     @Override
     protected void definaAccionesInformacion() {// Definiendo acciones
-        txt_nui.addKeyListener(new KeyAdapter() {
+        ValidacionCampos.asignarTeclasDireccion(txt_nui, null, txt_primerApellido, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_primerApellido, txt_nui, txt_segundoApellido, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_segundoApellido, txt_primerApellido, txt_primerNombre, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_primerNombre, txt_segundoApellido, txt_segundoNombre, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_segundoNombre, txt_primerNombre, txt_nacionalidad, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_nacionalidad, txt_segundoNombre, txt_situacionJuridica, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_situacionJuridica, txt_nacionalidad, txt_fechaIngreso, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_fechaIngreso, txt_situacionJuridica, txt_fechaSalida, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_fechaSalida, txt_fechaIngreso, combo_estado, null, null);
+        ValidacionCampos.asignarTeclasDireccion(combo_estado, txt_fechaSalida, txt_delito, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_delito, combo_estado, txt_observaciones, null, null);
+        ValidacionCampos.asignarTeclasDireccion(txt_observaciones, txt_delito, btn_foto, null, null);
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                ValidacionCampos.teclasDireccion(e, null, txt_primerApellido, null, null, txt_nui);
-            }
-        });
-        
         btn_foto.addKeyListener(new KeyAdapter() {
 
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     btn_foto.doClick();
-                } else if (e.getKeyCode() == KeyEvent.VK_TAB) {
-                    btn_agregar.grabFocus();
+                } else {
+                    ValidacionCampos.teclasDireccion(e, txt_observaciones, btn_agregar, null, null, btn_foto);
                 }
             }
         });
@@ -441,68 +446,351 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     }
 
     @Override
-    protected void activarModificar() {
-        //To change body of generated methods, choose Tools | Templates.
+    protected void accionBotonAgregar() {// Insertando nuevo cargo
+//        try {
+//            setValoresCargo();
+//
+//            boolean valido = puedeInsertarOModificar(false);
+//            if (valido) {
+//                deshacerFiltroTablaGeneral();
+//
+//                boolean accion = cargo.insertar();
+//                cargo.insertarHistorial(DatosBaseDatos.accionUsuarioInsertar);
+//                cargarDatosGeneral();
+//
+//                String mensaje = null, titulo = null, tipo = null;
+//                if (accion) {
+//                    mensaje = "Se ha insertado satisfactoriamente el cargo.";
+//                    titulo = "Insertado";
+//                    tipo = "I";
+//                } else {
+//                    mensaje = "Ha ocurrido un error y no se ha podido insertar el cargo. Por favor inténtelo de nuevo.";
+//                    titulo = "Error (123)";
+//                    tipo = "A";
+//                }
+//                usuario.getClases().getGUIOption().tipoMensaje(tipo, "", titulo, mensaje);
+//
+//                if (accion) {
+//                    iniciarBusqueda();
+//                    ocultarTxtBuscar();
+//                    desactivarModificar();
+//
+//                    inicializarInformacion();
+//                    seleccionarFila(cargo.getIdTablaValue());
+//                }
+//            }
+//        } catch (TesoreriaException ex) {
+//            usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
+//            ex.printStackTrace();
+//        }
+    }
+
+    @Override
+    protected void accionBotonAgregarModificar() {// Editando cargo seleccionado de la tabla
+//        try {
+//            setValoresCargo();
+//
+//            boolean valido = puedeInsertarOModificar(true);
+//            if (valido) {
+//                deshacerFiltroTablaGeneral();
+//
+//                boolean accion = cargo.modificar();
+//                cargo.insertarHistorial(DatosBaseDatos.accionUsuarioModificar);
+//                cargarDatosGeneral();
+//
+//                String mensaje = null, titulo = null, tipo = null;
+//                if (accion) {
+//                    mensaje = "Se ha modificado satisfactoriamente el cargo.";
+//                    titulo = "Modificado";
+//                    tipo = "I";
+//                } else {
+//                    mensaje = "Ha ocurrido un error y no se ha podido modificar el cargo. Por favor inténtelo de nuevo.";
+//                    titulo = "Error (124)";
+//                    tipo = "A";
+//                }
+//                usuario.getClases().getGUIOption().tipoMensaje(tipo, "", titulo, mensaje);
+//
+//                if (accion) {
+//                    iniciarBusqueda();
+//                    ocultarTxtBuscar();
+//                    desactivarModificar();
+//
+//                    inicializarInformacion();
+//                    seleccionarFila(cargo.getIdTablaValue());
+//                }
+//            }
+//        } catch (TesoreriaException ex) {
+//            usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
+//            ex.printStackTrace();
+//        }
+    }
+
+    @Override
+    protected void activarModificar() {// Boton Modificar
+        int selected = tablaGeneral.getSelectedRow();
+        if (selected != -1) {
+            estaEditando = true;
+            btn_borrar.setEnabled(false);
+            btn_buscar.setEnabled(false);
+            btn_salir.setEnabled(false);
+
+            btn_agregar.setText("Guardar");
+            btn_modificar.setText("Cancelar");
+
+            int model = tablaGeneral.convertRowIndexToModel(selected);
+
+            idInterno = (String) dtmTablaGeneral.getValueAt(model, columnaId);
+
+            txt_td.setText((String) dtmTablaGeneral.getValueAt(model, columnaTd));
+            txt_nui.setText((String) dtmTablaGeneral.getValueAt(model, columnaNui));
+            txt_primerApellido.setText((String) dtmTablaGeneral.getValueAt(model, columnaPrimerApellido));
+
+            txt_segundoApellido.setText((String) dtmTablaGeneral.getValueAt(model, columnaSegundoApellido));
+            txt_primerNombre.setText((String) dtmTablaGeneral.getValueAt(model, columnaPrimerNombre));
+            txt_segundoNombre.setText((String) dtmTablaGeneral.getValueAt(model, columnaSegundoNombre));
+
+            txt_nacionalidad.setText((String) dtmTablaGeneral.getValueAt(model, columnaNacionalidad));
+            txt_situacionJuridica.setText((String) dtmTablaGeneral.getValueAt(model, columnaSituacionJuridica));
+
+            txt_fechaIngreso.setText((String) dtmTablaGeneral.getValueAt(model, columnaFechaIngreso));
+            txt_fechaSalida.setText((String) dtmTablaGeneral.getValueAt(model, columnaFechaSalida));
+            txt_delito.setText((String) dtmTablaGeneral.getValueAt(model, columnaDelito));
+            txt_observaciones.setText((String) dtmTablaGeneral.getValueAt(model, columnaObservaciones));
+
+            CampoCombo.setValueCombo(combo_estado, (String) dtmTablaGeneral.getValueAt(model, columnaEstado));
+
+            String rutaImagen = (String) dtmTablaGeneral.getValueAt(model, columnaRutaImagen);
+            boolean valido = validarLongitudLogo();
+            if (valido) {
+                boolean selecciono = seleccionarImagen(rutaImagen);
+                if (!selecciono) {
+                    txt_foto.setText("");
+                } else {
+                    txt_foto.setText(rutaImagen);
+                }
+            }
+
+            tablaGeneral.setEnabled(false);
+            btn_agregar.setEnabled(true);
+        }
     }
 
     @Override
     protected void desactivarModificar() {
-        //To change body of generated methods, choose Tools | Templates.
-    }
+        estaEditando = false;
 
-    @Override
-    protected void activarBusqueda() {
-        //To change body of generated methods, choose Tools | Templates.
-    }
+        btn_borrar.setEnabled(true);
+        btn_buscar.setEnabled(true);
+        btn_salir.setEnabled(true);
 
-    @Override
-    protected void desactivarBusqueda() {
-        //To change body of generated methods, choose Tools | Templates.
-    }
+        btn_agregar.setText("Agregar");
+        btn_modificar.setText("Modificar");
 
-    @Override
-    protected void accionBotonAgregar() {
-        //To change body of generated methods, choose Tools | Templates.
-    }
+        inicializarInformacion();
 
-    @Override
-    protected void accionBotonAgregarModificar() {
-        //To change body of generated methods, choose Tools | Templates.
+        tablaGeneral.setEnabled(true);
+        asignarPermisos();
     }
 
     @Override
     protected void accionBotonModificar() {
-        //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected void accionBotonBorrar() {
-        //To change body of generated methods, choose Tools | Templates.
+        if (!tablaGeneral.isRowSelected(tablaGeneral.getSelectedRow())) {
+            option.tipoMensaje(GUIJOption.mensajeInformacion, "", "Error", "No ha seleccionado ningún interno para modificar.");
+        } else {
+            desactivarBusqueda();
+            activarModificar();
+        }
     }
 
     @Override
     protected void accionBotonCancelarModificacion() {
-        //To change body of generated methods, choose Tools | Templates.
+        iniciarBusqueda();
+        ocultarTxtBuscar();
+        desactivarModificar();
+
+        inicializarInformacion();
+        deshacerFiltroTablaGeneral();
+        cargarDatosGeneral();
+
+        asignarFoco();
     }
 
     @Override
-    protected void accionBotonCancelarBusqueda() {
-        //To change body of generated methods, choose Tools | Templates.
+    protected void activarBusqueda() {// Boton Buscar
+        estaBuscando = true;
+
+        btn_buscar.setText("Cancelar");
+
+        mostrarTxtBuscar();
+        iniciarBusqueda();
+        txt_buscar.grabFocus();
+        ocultarObjetosInformacion();
+    }
+
+    @Override
+    protected void desactivarBusqueda() {
+        estaBuscando = false;
+
+        btn_buscar.setText("Buscar");
+
+        ocultarTxtBuscar();
+        mostrarObjetosInformacion();
+        asignarPermisos();
+    }
+
+    private void ocultarObjetosInformacion() {
+        panel_informacion.setVisible(false);
+
+        btn_agregar.setEnabled(false);
+        btn_modificar.setEnabled(true);
+        btn_borrar.setEnabled(true);
+    }
+
+    private void mostrarObjetosInformacion() {
+        panel_informacion.setVisible(true);
+
+        btn_agregar.setEnabled(true);
+        btn_modificar.setEnabled(true);
+        btn_borrar.setEnabled(true);
     }
 
     @Override
     protected void accionBotonBusqueda() {
-        //To change body of generated methods, choose Tools | Templates.
+        txt_buscar.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ENTER:
+                    case KeyEvent.VK_DOWN:
+                        if (tablaGeneral.getRowCount() >= 1) {
+                            tablaGeneral.grabFocus();
+                            tablaGeneral.getSelectionModel().setSelectionInterval(0, 0);
+                        }
+                        break;
+                    default:
+                        filtrarBusqueda();
+                        break;
+                }
+            }
+        });
+
+        activarBusqueda();
     }
 
     @Override
-    protected void accionBotonReporte() {
-        //To change body of generated methods, choose Tools | Templates.
+    protected void accionBotonCancelarBusqueda() {
+        deshacerFiltroTablaGeneral();
+        desactivarBusqueda();
+    }
+
+    private void iniciarBusqueda() {
+        inicializarTxtBuscar();
+        filtrarBusqueda();
+    }
+
+    private void filtrarBusqueda() {
+        Filtro.filtroSeisColumnasQueContenga(txt_buscar.getText().trim(), trsFiltroGeneral, columnaTd, columnaNui, columnaPrimerApellido, columnaSegundoApellido, columnaPrimerNombre, columnaSegundoNombre, dtmTablaGeneral, tablaGeneral);
+    }
+
+    @Override
+    protected void accionBotonBorrar() {// Boton Borrar
+        int selected = tablaGeneral.getSelectedRow();
+        if (selected == -1) {
+            option.tipoMensaje(GUIJOption.mensajeInformacion, "", "Error", "Por favor seleccione el interno que desea eliminar.");
+        } else {
+            int fila = tablaGeneral.convertRowIndexToModel(selected);
+
+//            String idCargo = dtmTablaGeneral.getValueAt(fila, columnaId).toString();
+//            cargo.inicializarCampos();
+//            cargo.setIdCargo(idCargo);
+//
+//            String idConcepto = dtmTablaGeneral.getValueAt(fila, columnaIdConcepto).toString();
+//            Concepto concepto = new Concepto(usuario);
+//            concepto.setIdConcepto(idConcepto);
+//            cargo.setConcepto(concepto);
+//
+//            String idAlumno = dtmTablaGeneral.getValueAt(fila, columnaIdAlumno).toString();
+//            Alumnos alumno = new Alumnos(usuario);
+//            alumno.setIdAlumno(idAlumno);
+//            cargo.setAlumno(alumno);
+//
+//            cargo.setAnio(dtmTablaGeneral.getValueAt(fila, columnaAnio).toString());
+//            cargo.setMes0(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes0).toString()));
+//
+//            cargo.setMes1(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes1).toString()));
+//            cargo.setMes2(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes2).toString()));
+//            cargo.setMes3(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes3).toString()));
+//            cargo.setMes4(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes4).toString()));
+//            cargo.setMes5(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes5).toString()));
+//            cargo.setMes6(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes6).toString()));
+//            cargo.setMes7(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes7).toString()));
+//            cargo.setMes8(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes8).toString()));
+//            cargo.setMes9(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes9).toString()));
+//            cargo.setMes10(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes10).toString()));
+//            cargo.setMes11(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes11).toString()));
+//            cargo.setMes12(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes12).toString()));
+//
+//            cargo.setBeca(dtmTablaGeneral.getValueAt(fila, columnaBeca).toString());
+//            cargo.setPorcentajeBeca(Formatos.QuitaformatoPorcentaje(dtmTablaGeneral.getValueAt(fila, columnaPorcentajeBeca).toString()));
+//
+//            String anualidad = dtmTablaGeneral.getValueAt(fila, columnaAnualidad).toString();
+//            boolean anual = false;
+//            if (DatosBaseDatos.varSi.equals(anualidad)) {
+//                anual = true;
+//            } else if (DatosBaseDatos.varNo.equals(anualidad)) {
+//                anual = false;
+//            }
+//            cargo.setAnualidad(anual);
+//
+//            cargo.setEstado(dtmTablaGeneral.getValueAt(fila, columnaEstado).toString());
+//
+//            int respuesta = usuario.getClases().getGUIOption().tipoMensaje("P", "", "", "¿Está seguro que desea eliminar el alumno seleccionado?");
+//            if (respuesta == JOptionPane.YES_OPTION) {
+//                try {
+//                    deshacerFiltroTablaGeneral();
+//
+//                    boolean accion = cargo.borrar();
+//                    cargo.insertarHistorial(DatosBaseDatos.accionUsuarioEliminado);
+//                    cargarDatosGeneral();
+//
+//                    String mensaje = null, titulo = null, tipo = null;
+//                    if (accion) {
+//                        mensaje = "Se ha eliminado satisfactoriamente el alumno.";
+//                        titulo = "Eliminado";
+//                        tipo = "I";
+//                    } else {
+//                        mensaje = "Ha ocurrido un error y no se ha podido eliminar el cargo. Por favor inténtelo de nuevo.";
+//                        titulo = "Error (126)";
+//                        tipo = "A";
+//                    }
+//                    usuario.getClases().getGUIOption().tipoMensaje(tipo, "", titulo, mensaje);
+//
+//                    iniciarBusqueda();
+//                    ocultarTxtBuscar();
+//                    desactivarModificar();
+//                    desactivarBusqueda();
+//
+//                    inicializarInformacion();
+//                } catch (TesoreriaException ex) {
+//                    usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
+//                    ex.printStackTrace();
+//                }
+//            }
+        }
     }
 
     @Override
     protected void accionBotonAdicional() {
-        //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void accionBotonReporte() {// Boton Reporte
+        setCursor(cursorEspera);
+
+//        CatalogosReportsBuilder reporte = new CatalogosReportsBuilder(usuario);
+//        reporte.catalogoCargosFiller(dtmTablaGeneral, frame);
+        setCursor(null);
     }
 
     @Override
@@ -530,7 +818,17 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
     @Override
     public void actualizarFrame() {
+        iniciarBusqueda();
+        ocultarTxtBuscar();
+        desactivarModificar();
+
         inicializarInformacion();
+        cargarDatosGeneral();
+        deshacerFiltroTablaGeneral();
+
+        if (tablaGeneral.getRowCount() >= 1) {
+            tablaGeneral.getSelectionModel().setSelectionInterval(0, 0);
+        }
     }
 
     @Override
@@ -545,7 +843,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
     @Override
     public void asignarPermisos() {
-        //To change body of generated methods, choose Tools | Templates.
+//        Permisos.asignarPermisosAdicionarModificarBorrar(btn_agregar, btn_modificar, btn_borrar, estaEditando, Permisos.catalogosCargos, usuario);
     }
 
 }
