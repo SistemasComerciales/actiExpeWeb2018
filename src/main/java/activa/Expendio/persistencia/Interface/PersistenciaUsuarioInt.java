@@ -5,10 +5,20 @@
  */
 package activa.Expendio.persistencia.Interface;
 
+import activa.Expendio.modelo.Usuario;
+import java.util.ArrayList;
+
 /**
  *
  * @author Usuario
  */
 public interface PersistenciaUsuarioInt {
     
+    public Usuario adicionarUsuario(Usuario usuario);
+    
+    public Usuario modificar(Usuario usuario);
+    
+    public ArrayList<Usuario> getUsuarios();
+    
+    public Usuario getUsuarioLogin(Usuario usuario);
 }

@@ -6,6 +6,7 @@
 package activa.Expendio.controllers;
 
 import activa.Expendio.ExpendioApplication;
+import activa.Expendio.modelo.EstadoInterno;
 import activa.Expendio.persistencia.PersistenciaUsuario;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,11 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SaldosController {
     
     @CrossOrigin(origins = "*")
-    @RequestMapping(path = "saldos/{idInterno}", method = RequestMethod.GET)
-    public ResponseEntity<?> manejadorConsultarGaleria(@PathVariable("idInterno") long idInterno) {
-        PersistenciaUsuario pu = new PersistenciaUsuario();
+    @RequestMapping(path = "saldos/{tdInterno}", method = RequestMethod.GET)
+    public ResponseEntity<?> manejadorConsultarGaleria(@PathVariable("tdInterno") String tdInterno) {
+        EstadoInterno ei = new EstadoInterno(26351,859365, tdInterno, "2651851", true);
         try {
-            return new ResponseEntity<>(pu.getUsuarios(), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(ei, HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             Logger.getLogger(ExpendioApplication.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
