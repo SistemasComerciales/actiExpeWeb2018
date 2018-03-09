@@ -51,6 +51,7 @@ public abstract class GUIInterfazCatalogos extends ClaseGeneral {
         definaAccionesBotones();
         
         inicializar();
+        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, getNombreClase().toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
     }
 
     /**
@@ -58,7 +59,6 @@ public abstract class GUIInterfazCatalogos extends ClaseGeneral {
      */
     protected void prepareElementos() {
         this.setTitle(getNombreClase());
-        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, getNombreClase().toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
         Imagenes.fondoInternalFrame(NombreImagenes.imFondoG, this.getWidth(), this.getHeight(), this);
 
         estaEditando = false;
