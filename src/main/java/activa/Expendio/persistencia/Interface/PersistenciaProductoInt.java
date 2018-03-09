@@ -5,10 +5,28 @@
  */
 package activa.Expendio.persistencia.Interface;
 
+import activa.Expendio.modelo.Producto;
+import java.util.ArrayList;
+
 /**
  *
  * @author Usuario
  */
 public interface PersistenciaProductoInt {
     
+    public ArrayList<Producto> getProductos();
+    
+    public Producto adicionar(Producto producto);
+    
+    public void eliminar(Producto producto);
+    
+    public ArrayList<Producto> getProductosActivos();
+    
+    public Producto modificar(Producto producto);
+    
+    public boolean existeCodigo(Producto producto);
+    
+    public Producto consultarPorCodigo(String codigo);
+    
+    public Producto consultarPorId(long id);
 }

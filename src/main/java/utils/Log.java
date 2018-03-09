@@ -1,5 +1,6 @@
 package utils;
 
+import activa.Expendio.modelo.*;
 import java.io.*;
 import java.util.*;
 
@@ -30,7 +31,7 @@ public class Log implements Serializable {
         }
     }
 
-    public static void adicionar(Exception excepcion, String codigoError, String mensajePantalla) {
+    public static void adicionar(Exception excepcion, String codigoError, Usuario usuario, String mensajePantalla) {
         try {
             FileWriter out = new FileWriter(LOG_FILE, true);
             PrintWriter log = new PrintWriter(out);
@@ -38,7 +39,13 @@ public class Log implements Serializable {
             log.println("---------------------------------- Datos Principales ----------------------------------");
             log.println("Fecha :" + new Date().toString().trim());
             log.println("Codigo del error :" + codigoError.trim());
-
+            if (usuario == null) {
+                log.println("Id Usuario : N/A");
+                log.println("Nombre Usuario : N/A");
+            } else {
+                log.println("Id Usuario :" + usuario.getId());
+                log.println("Nombre Usuario :" + usuario.getNombres());
+            }
             log.println("Mensaje pantalla : " + mensajePantalla.trim());
             log.println("---------------------------------------- Error ----------------------------------------");
             if (excepcion != null) {
@@ -57,7 +64,7 @@ public class Log implements Serializable {
         }
     }
 
-    public static void adicionarCS(Exception excepcion, String codigoError, String sentencia, String mensajePantalla) {
+    public static void adicionarCS(Exception excepcion, String codigoError, Usuario usuario, String sentencia, String mensajePantalla) {
         try {
             FileWriter out = new FileWriter(LOG_FILE, true);
             PrintWriter log = new PrintWriter(out);
@@ -65,7 +72,13 @@ public class Log implements Serializable {
             log.println("---------------------------------- Datos Principales ----------------------------------");
             log.println("Fecha : " + new Date().toString().trim());
             log.println("Codigo del error : " + codigoError.trim());
-
+            if (usuario == null) {
+                log.println("Id Usuario : N/A");
+                log.println("Nombre Usuario : N/A");
+            } else {
+                log.println("Id Usuario :" + usuario.getId());
+                log.println("Nombre Usuario :" + usuario.getNombres());
+            }
             log.println("Sentencia : " + sentencia);
             log.println("Mensaje pantalla : " + mensajePantalla);
             log.println("---------------------------------------- Error ----------------------------------------");

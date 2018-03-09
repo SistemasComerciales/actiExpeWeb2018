@@ -6,13 +6,16 @@
 package activa.Expendio.persistencia;
 
 import activa.Expendio.modelo.Bodega;
+import activa.Expendio.persistencia.Interface.PersistenciaBoddegaInt;
 import java.util.ArrayList;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Usuario
  */
-public class PersistenciaBodega {
+@Service
+public class PersistenciaBodega implements PersistenciaBoddegaInt {
 
     private ArrayList<Bodega> listaBodegas;
 
@@ -23,6 +26,7 @@ public class PersistenciaBodega {
     /**
      * @return the listaBodegas
      */
+    @Override
     public ArrayList<Bodega> getListaBodegas() {
         return listaBodegas;
     }
@@ -30,6 +34,7 @@ public class PersistenciaBodega {
     /**
      * @param listaBodegas the listaBodegas to set
      */
+    @Override
     public void setListaBodegas(ArrayList<Bodega> listaBodegas) {
         this.listaBodegas = listaBodegas;
     }
@@ -39,6 +44,7 @@ public class PersistenciaBodega {
      * @param bodega
      * @return bodega
      */
+    @Override
     public Bodega adicionar(Bodega bodega){
         bodega.setId(listaBodegas.size()+1);
         listaBodegas.add(bodega);
@@ -50,6 +56,7 @@ public class PersistenciaBodega {
      * @param bodega
      * @return bodega
      */
+    @Override
     public Bodega modificar(Bodega bodega){
         Long id = bodega.getId();
         for (int i = 0; i <= listaBodegas.size(); i++) {
@@ -67,6 +74,7 @@ public class PersistenciaBodega {
      * @param bodega
      * @return bodega borrada o null
      */
+    @Override
     public Bodega borrar(Bodega bodega){
         Long id = bodega.getId();
         for (int i = 0; i < listaBodegas.size(); i++) {
@@ -83,6 +91,7 @@ public class PersistenciaBodega {
      * @param bodega
      * @return true: existe , false: no existe
      */
+    @Override
     public boolean validarExiste(Bodega bodega){
         for (int i = 0; i < listaBodegas.size(); i++) {
             if (bodega.getCodigo().equals(listaBodegas.get(i).getCodigo())) {
@@ -98,6 +107,7 @@ public class PersistenciaBodega {
      * metodo que consulta todas las bodegas que no esten eliminadas
      * @return bodegas que no esten eliminadas
      */
+    @Override
     public ArrayList<Bodega> consultarTodos(){
         ArrayList<Bodega> bodegas = new ArrayList<>();
         for (int i = 0; i < listaBodegas.size(); i++) {
@@ -113,6 +123,7 @@ public class PersistenciaBodega {
      * @param id
      * @return null si no hay conincidencia o la bodega encontrada
      */
+    @Override
     public Bodega colsultarPorId(String id){
         for (int i = 0; i < listaBodegas.size() ; i++) {
             if (!listaBodegas.get(i).isEliminado()) {
@@ -129,6 +140,7 @@ public class PersistenciaBodega {
      * @param codigo
      * @return null si no hay conincidencia o la bodega encontrada
      */
+    @Override
     public Bodega colsultarPorCodigo(String codigo){
         for (int i = 0; i < listaBodegas.size() ; i++) {
             if (!listaBodegas.get(i).isEliminado()) {
