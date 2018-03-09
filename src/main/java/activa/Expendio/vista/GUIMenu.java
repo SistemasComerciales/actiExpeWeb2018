@@ -607,9 +607,9 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoGrupos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                usuario.setFrameAnterior(frame);
-//                new GUICatalogoGrupos(usuario, establecimiento);
-//                frame.setVisible(false);
+                usuario.setFrameAnterior(frame);
+                new GUIGrupoProducto(usuario, establecimiento);
+                frame.setVisible(false);
             }
         });
 
