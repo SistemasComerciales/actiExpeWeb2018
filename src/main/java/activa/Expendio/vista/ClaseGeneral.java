@@ -33,13 +33,13 @@ public abstract class ClaseGeneral extends JFrame {
         this.setResizable(false);
 
         this.setVisible(true);
-        this.repaint();
 
         setIcono();
         exitOnClose();
     }
 
-    protected final void inicializar() {
+    public final void inicializar() {
+        this.repaint();
         actualizarFrame();
         asignarFoco();
         asignarPermisos();

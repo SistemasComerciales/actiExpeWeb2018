@@ -5,8 +5,7 @@
  */
 package activa.Expendio.vista;
 
-import activa.Expendio.modelo.Establecimiento;
-import activa.Expendio.modelo.Usuario;
+import activa.Expendio.modelo.*;
 import activa.Expendio.vista.utils.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -50,6 +49,8 @@ public abstract class GUIInterfazCatalogos extends ClaseGeneral {
 
         definaAccionesInformacion();
         definaAccionesBotones();
+        
+        inicializar();
     }
 
     /**
@@ -75,6 +76,7 @@ public abstract class GUIInterfazCatalogos extends ClaseGeneral {
         panel_subOpciones.setLayout(new GridLayout(1, 0));
         panel_subOpciones.setOpaque(false);
         this.add(panel_subOpciones);
+
         btn_agregar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Agregar");
         panel_subOpciones.add(btn_agregar);
         btn_agregar.setToolTipText("F1");
@@ -102,7 +104,7 @@ public abstract class GUIInterfazCatalogos extends ClaseGeneral {
             panel_subOpciones.add(btn_adicional);
         }
 
-        btn_salir = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneralRojo, "Salir");
+        btn_salir = new Boton(NombreImagenes.imBGeneralRojo, NombreImagenes.imBGeneral2, "Salir");
         panel_subOpciones.add(btn_salir);
         btn_salir.setToolTipText("(ESC)");
     }
