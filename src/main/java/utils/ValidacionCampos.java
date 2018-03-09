@@ -317,7 +317,7 @@ public class ValidacionCampos {
         try {
             valorF = Double.valueOf(valor);
         } catch (Exception e) {
-            Log.adicionarCS(e, "", valor, "convertirStringADouble");
+            Log.adicionarCS(e, "", null, valor, "convertirStringADouble");
             valorF = 0;
         }
         return valorF;
@@ -334,7 +334,7 @@ public class ValidacionCampos {
         try {
             valorF = Double.valueOf(valor);
         } catch (Exception e) {
-            Log.adicionarCS(e, "", valor, "convertirStringADouble");
+            Log.adicionarCS(e, "", null, valor, "convertirStringADouble");
             valorF = 0;
         }
         return valorF;

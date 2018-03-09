@@ -7,13 +7,16 @@ package activa.Expendio.persistencia;
 
 
 import activa.Expendio.modelo.Producto;
+import activa.Expendio.persistencia.Interface.PersistenciaProductoInt;
 import java.util.ArrayList;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrador
  */
-public class PersistenciaProducto {
+@Service
+public class PersistenciaProducto implements PersistenciaProductoInt{
     private ArrayList<Producto> productos;
     
     public PersistenciaProducto(){
@@ -23,6 +26,7 @@ public class PersistenciaProducto {
      * Traer todos los productos
      * @return 
      */
+    @Override
     public ArrayList<Producto> getProductos(){
         return productos;
     }
@@ -31,6 +35,7 @@ public class PersistenciaProducto {
      * @param producto
      * @return 
      */
+    @Override
     public Producto adicionar(Producto producto){
         producto.setId((productos.size()+1));
         productos.add(producto);
@@ -41,6 +46,7 @@ public class PersistenciaProducto {
      * Metodo encargado de eliminar el producto
      * @param producto 
      */
+    @Override
     public void eliminar(Producto producto){
         producto.eliminar();
         for(int i=0; i<productos.size(); i++){
@@ -54,6 +60,7 @@ public class PersistenciaProducto {
      * Metodo encargado de traer todos los productos que no estan eliminados
      * @return 
      */
+    @Override
     public ArrayList<Producto> getProductosActivos(){
         ArrayList<Producto> productosRetorno = new ArrayList<>();
         for(int i=0; i<productos.size(); i++){
@@ -69,6 +76,7 @@ public class PersistenciaProducto {
      * @param producto
      * @return 
      */
+    @Override
     public Producto modificar(Producto producto){
         for(int i=0; i<productos.size(); i++){
             if(producto.getId()== productos.get(i).getId()){
@@ -86,6 +94,7 @@ public class PersistenciaProducto {
      * <b>false</b>: Si no existe el codigo<br>
      * <b>true</b>: Si existe el codigo<br>
      */
+    @Override
     public boolean existeCodigo(Producto producto){
         for(int i=0; i<productos.size(); i++){
             if(producto.getCodigo().trim().equalsIgnoreCase(productos.get(i).getCodigo())){
@@ -103,6 +112,7 @@ public class PersistenciaProducto {
      * <b>null</b>: Si no existe el producto con el código<br>
      * <b>Producto</b>: dlc<br>
      */
+    @Override
     public Producto consultarPorCodigo(String codigo){
         for(int i=0; i<productos.size(); i++){
             if(codigo.trim().equalsIgnoreCase(productos.get(i).getCodigo())){
@@ -119,6 +129,7 @@ public class PersistenciaProducto {
      * <b>null</b>: Si no existe el producto con el código<br>
      * <b>Producto</b>: dlc<br>
      */
+    @Override
     public Producto consultarPorId(long id){
         for(int i=0; i<productos.size(); i++){
             if(id == productos.get(i).getId()){
