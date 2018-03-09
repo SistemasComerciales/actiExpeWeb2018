@@ -19,21 +19,61 @@ import utils.*;
  */
 public class GUICatalogoBodegas extends GUIInterfazCatalogos {
 
-        private int anchoBotonesPanel1, altoBotonesPanel1;
+    public GUICatalogoBodegas(Usuario usuario, Establecimiento establecimiento, boolean botonAdicional) {
+        super(usuario, establecimiento, botonAdicional);
         
-   /*public GUICatalogoBodegas(Usuario usuario, Establecimiento establecimiento, boolean botonAdicional) {
-        super(usuario, establecimiento, false);
-        Imagenes.fondoInternalFrame(NombreImagenes.imFondo, this.getWidth(), this.getHeight(), this);
-        anchoBotonesPanel1 = 2 * this.getWidth() / 7;
-        altoBotonesPanel1 = 2 * this.getHeight() / 25;
-    }*/
-
-    public GUICatalogoBodegas(Usuario usuario, Establecimiento establecimiento) {
-        super(usuario, establecimiento, false);
-        Imagenes.fondoInternalFrame(NombreImagenes.imFondoD, this.getWidth(), this.getHeight(), this);
-        anchoBotonesPanel1 = 2 * this.getWidth() / 7;
-        altoBotonesPanel1 = 2 * this.getHeight() / 25;
+        prepareElementos();
+        prepareElementosPanelBotones(botonAdicional);
+        
     }
+    
+    protected void prepareElementos() {
+        this.setTitle(getNombreClase());
+        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, getNombreClase().toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
+        Imagenes.fondoInternalFrame(NombreImagenes.imFondoMenu, this.getWidth(), this.getHeight(), this);
+
+        estaEditando = false;
+        estaBuscando = false;
+    }
+     protected void prepareElementosPanelBotones(boolean botonAdicional) {
+        panel_subOpciones = new JPanel();
+        panel_subOpciones.setSize(CargaImagenes.ANCHO_PANTALLA - 2 * (CargaImagenes.ANCHO_PANTALLA / 10), (CargaImagenes.ALTO_PANTALLA / 6) / 3);
+        panel_subOpciones.setLocation((CargaImagenes.ANCHO_PANTALLA / 10), 5 * (CargaImagenes.ALTO_PANTALLA / 16/*13*/) + 15);
+        panel_subOpciones.setLayout(new GridLayout(1, 0));
+        panel_subOpciones.setOpaque(false);
+        this.add(panel_subOpciones);
+        btn_agregar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Agregar");
+        panel_subOpciones.add(btn_agregar);
+        btn_agregar.setToolTipText("F1");
+
+        btn_modificar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Modificar");
+        panel_subOpciones.add(btn_modificar);
+        btn_modificar.setToolTipText("F2");
+
+        btn_borrar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Borrar");
+        panel_subOpciones.add(btn_borrar);
+        btn_borrar.setToolTipText("F3");
+
+        btn_buscar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Buscar");
+        panel_subOpciones.add(btn_buscar);
+        btn_buscar.setToolTipText("F4");
+
+        btn_exportar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Exportar");
+        panel_subOpciones.add(btn_exportar);
+
+        btn_reporte = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Reporte");
+        panel_subOpciones.add(btn_reporte);
+
+        btn_adicional = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "");
+        if (botonAdicional) {
+            panel_subOpciones.add(btn_adicional);
+        }
+
+        btn_salir = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneralRojo, "Salir");
+        panel_subOpciones.add(btn_salir);
+        btn_salir.setToolTipText("(ESC)");
+    }
+    
 
     @Override
     protected void prepareElementosTablaGeneral() {
@@ -144,5 +184,5 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
     public void asignarPermisos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

@@ -21,8 +21,10 @@ public class ExpendioApplication {
         usuario.setPeriodoContable("2018");
         usuario.setLogin("SUPERVISOR");
         usuario.setNombres("Supervisor");
+        
+        boolean botonAdicional = false;
         //new GUIInicio(usuario, establecimiento);  
-        new GUICatalogoBodegas(usuario, establecimiento);  
+        new GUICatalogoBodegas(usuario, establecimiento, botonAdicional);  
         SpringApplication.run(ExpendioApplication.class, args);
 
     }
