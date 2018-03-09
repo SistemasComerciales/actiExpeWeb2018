@@ -5,13 +5,10 @@
  */
 package activa.Expendio.vista;
 
-import activa.Expendio.modelo.Establecimiento;
-import activa.Expendio.modelo.Usuario;
-import activa.Expendio.persistencia.PersistenciaUsuario;
-import activa.Expendio.vista.utils.Boton;
-import activa.Expendio.vista.utils.CajaDeTexto;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import activa.Expendio.modelo.*;
+import activa.Expendio.persistencia.*;
+import activa.Expendio.vista.utils.*;
+import java.awt.event.*;
 import javax.swing.*;
 import utils.*;
 
@@ -27,7 +24,6 @@ public class GUIInicio extends ClaseGeneral {
 
     private int anchoBotonesPanel1, altoBotonesPanel1;
     private PersistenciaUsuario repositorioUsuarios = new PersistenciaUsuario();
-    
 
     public GUIInicio(Usuario usuario, Establecimiento establecimiento) {
         super(usuario, establecimiento);
@@ -42,6 +38,7 @@ public class GUIInicio extends ClaseGeneral {
         this.setResizable(false);
         this.setVisible(true);
         this.repaint();
+        exitOnClose();
         actualizarFrame();
 
     }
@@ -103,7 +100,7 @@ public class GUIInicio extends ClaseGeneral {
         txt_usuario.setFont(Letra.fuenteTxt);
         txt_usuario.setForeground(Letra.colorTxt);
         txt_usuario.setDisabledTextColor(Letra.colorTxtDisable);
-        //TextPrompt placeholder = new TextPrompt("Usuario", txt_usuario);
+        TextPrompt placeholder = new TextPrompt("Usuario", txt_usuario);
 
         txt_contrasena = new JPasswordField();
         txt_contrasena.setLocation(((this.getWidth() / 4)), 3 * this.getHeight() / 4);
@@ -112,7 +109,7 @@ public class GUIInicio extends ClaseGeneral {
         txt_contrasena.setFont(Letra.fuenteTxt);
         txt_contrasena.setForeground(Letra.colorTxt);
         txt_contrasena.setDisabledTextColor(Letra.colorTxtDisable);
-        //TextPrompt placeholder2 = new TextPrompt("Contraseña", txt_contrasena);
+        TextPrompt placeholder2 = new TextPrompt("Contraseña", txt_contrasena);
 
         btn_iniciarSesion = new Boton(NombreImagenes.imBIniciar1, NombreImagenes.imBIniciar2, "");
         btn_iniciarSesion.setOpaque(false);
@@ -134,13 +131,48 @@ public class GUIInicio extends ClaseGeneral {
                 usuario.setPassword(String.valueOf(txt_contrasena.getPassword()));
                 usuario = repositorioUsuarios.getUsuarioLogin(usuario);
                 if (usuario == null) {
-                    JOptionPane.showOptionDialog(frame, "Usuario/Password inválidos", "Advertencia", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, "aceptar");
+                    option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", "Usuario/Password inválidos", "");
+                    inicializarDatos();
                 } else {
                     new GUIMenu(usuario, establecimiento);
                     frame.setVisible(false);
                 }
-                System.out.println("Aca: " + repositorioUsuarios.getUsuarios().size());
+//                System.out.println("Aca: " + repositorioUsuarios.getUsuarios().size());
+            }
+        });
 
+        txt_usuario.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    txt_contrasena.grabFocus();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+        });
+
+        txt_contrasena.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btn_iniciarSesion.grabFocus();
+                    btn_iniciarSesion.doClick();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
             }
         });
     }

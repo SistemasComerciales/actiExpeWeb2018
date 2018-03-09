@@ -1,5 +1,6 @@
 package activa.Expendio.vista;
 
+import activa.Expendio.ExpendioApplication;
 import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
 import activa.Expendio.vista.utils.*;
@@ -499,7 +500,7 @@ public class GUIMenu extends ClaseGeneral {
                 if (opcion == JOptionPane.YES_OPTION) {
                     eliminarReferencia();
                     dispose();
-//                    MainExpendio.control.cerrarApp();
+                    ExpendioApplication.control.cerrarApp();
                 }
             }
         });
@@ -561,9 +562,9 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoInternos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                usuario.setFrameAnterior(frame);
-//                new GUICatalogoInternos(usuario, establecimiento);
-//                frame.setVisible(false);
+                usuario.setFrameAnterior(frame);
+                new GUICatalogoInternos(usuario, establecimiento);
+                frame.setVisible(false);
             }
         });
 

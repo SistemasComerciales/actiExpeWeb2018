@@ -1,7 +1,7 @@
 package activa.Expendio.vista;
 
-import activa.Expendio.modelo.Establecimiento;
-import activa.Expendio.modelo.Usuario;
+import activa.Expendio.*;
+import activa.Expendio.modelo.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -35,7 +35,7 @@ public abstract class ClaseGeneral extends JFrame {
         this.setVisible(true);
 
         setIcono();
-        exitOnClose();
+        doNothingOnClose();
     }
 
     public final void inicializar() {
@@ -46,8 +46,6 @@ public abstract class ClaseGeneral extends JFrame {
     }
 
     protected final void exitOnClose() {
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         for (int i = 0; i < frame.getWindowListeners().length; i++) {
@@ -57,7 +55,7 @@ public abstract class ClaseGeneral extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent arg0) {
-//                MainExpendio.control.cerrarApp();
+                ExpendioApplication.control.cerrarApp();
             }
         });
     }
@@ -104,9 +102,8 @@ public abstract class ClaseGeneral extends JFrame {
         frame.setCursor(cursorEspera);
 
         ClaseGeneral anterior = (ClaseGeneral) usuario.getFrameAnterior();
-        anterior.actualizarFrame();
         anterior.setVisible(true);
-        anterior.asignarFoco();
+        anterior.inicializar();
         frame.setVisible(false);
 
         frame.setCursor(null);
