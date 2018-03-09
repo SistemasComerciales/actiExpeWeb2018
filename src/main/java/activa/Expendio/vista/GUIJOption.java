@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package activa.expendio.vista;
+package activa.Expendio.vista;
 
-import activa.expendio.vista.utils.Boton;
-import activa.expendio.vista.utils.CajaDeTexto;
-import activa.expendio.vista.utils.CajaTextoArea;
-import activa.expendio.vista.utils.CampoLabel;
+import activa.Expendio.vista.utils.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;

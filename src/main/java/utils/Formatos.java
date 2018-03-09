@@ -1,6 +1,6 @@
 package utils;
 
-import activa.expendio.vista.utils.CajaDeTexto;
+import activa.Expendio.vista.utils.CajaDeTexto;
 import java.math.*;
 import java.text.*;
 import java.util.*;

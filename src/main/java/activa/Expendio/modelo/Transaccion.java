@@ -6,6 +6,7 @@
 package activa.Expendio.modelo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -13,15 +14,13 @@ import java.util.Date;
  * @author Administrador
  */
 public class Transaccion {
+    private long id;
     private DocumentoFuente documento;
     private String numero;
     private Date fecha;
     private Interno interno;
     private String condicion;
-    private Producto producto;
-    private Bodega bodega;
-    private double cantidad;
-    private double valorUnitario;
+    private ArrayList<TransaccionItem> listItem;
     private Usuario usuario;
     private Timestamp creacion;
     private Timestamp modificacion;
@@ -98,62 +97,6 @@ public class Transaccion {
     }
 
     /**
-     * @return the producto
-     */
-    public Producto getProducto() {
-        return producto;
-    }
-
-    /**
-     * @param producto the producto to set
-     */
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    /**
-     * @return the bodega
-     */
-    public Bodega getBodega() {
-        return bodega;
-    }
-
-    /**
-     * @param bodega the bodega to set
-     */
-    public void setBodega(Bodega bodega) {
-        this.bodega = bodega;
-    }
-
-    /**
-     * @return the cantidad
-     */
-    public double getCantidad() {
-        return cantidad;
-    }
-
-    /**
-     * @param cantidad the cantidad to set
-     */
-    public void setCantidad(double cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    /**
-     * @return the valorUnitario
-     */
-    public double getValorUnitario() {
-        return valorUnitario;
-    }
-
-    /**
-     * @param valorUnitario the valorUnitario to set
-     */
-    public void setValorUnitario(double valorUnitario) {
-        this.valorUnitario = valorUnitario;
-    }
-
-    /**
      * @return the usuario
      */
     public Usuario getUsuario() {
@@ -193,6 +136,36 @@ public class Transaccion {
      */
     public void setModificacion(Timestamp modificacion) {
         this.modificacion = modificacion;
+    }
+
+
+
+    /**
+     * @return the listItem
+     */
+    public ArrayList<TransaccionItem> getListItem() {
+        return listItem;
+    }
+
+    /**
+     * @param listItem the listItem to set
+     */
+    public void setListItem(ArrayList<TransaccionItem> listItem) {
+        this.listItem = listItem;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
     }
     
     

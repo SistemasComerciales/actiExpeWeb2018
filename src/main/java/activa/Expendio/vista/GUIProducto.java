@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package activa.expendio.vista;
+package activa.Expendio.vista;
 
+import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
 import utils.Imagenes;
 import utils.NombreImagenes;
@@ -18,8 +19,8 @@ public class GUIProducto extends ClaseGeneral{
     
     
     
-    public GUIProducto(Usuario usuario) {
-        super(usuario);
+    public GUIProducto(Usuario usuario, Establecimiento establecimiento) {
+        super(usuario, establecimiento);
         Imagenes.fondoInternalFrame(NombreImagenes.imFondoG, this.getWidth(), this.getHeight(), this);
         anchoBotonesPanel1 = 2 * this.getWidth() / 7;
         altoBotonesPanel1 = 2 * this.getHeight() / 25;

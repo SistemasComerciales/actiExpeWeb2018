@@ -5,6 +5,8 @@
  */
 package activa.Expendio.modelo;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Administrador
@@ -14,6 +16,8 @@ public class Usuario {
     private String login;
     private String nombres;
     private String password;
+    private String periodoContable;
+    private JFrame frameAnterior;
 
     /**
      * @return the login
@@ -69,6 +73,22 @@ public class Usuario {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getPeriodoContable() {
+        return periodoContable;
+    }
+
+    public void setPeriodoContable(String periodoContable) {
+        this.periodoContable = periodoContable;
+    }
+
+    public JFrame getFrameAnterior() {
+        return frameAnterior;
+    }
+
+    public void setFrameAnterior(JFrame frameAnterior) {
+        this.frameAnterior = frameAnterior;
     }
     
     

@@ -1,4 +1,4 @@
-package activa.expendio.vista.utils;
+package activa.Expendio.vista.utils;
 
 import java.awt.event.*;
 

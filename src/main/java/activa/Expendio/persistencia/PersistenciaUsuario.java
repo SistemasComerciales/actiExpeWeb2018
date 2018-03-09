@@ -5,6 +5,7 @@
  */
 package activa.Expendio.persistencia;
 
+
 import activa.Expendio.modelo.Usuario;
 import java.util.ArrayList;
 

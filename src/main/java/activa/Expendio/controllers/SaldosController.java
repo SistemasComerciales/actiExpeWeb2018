@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Administrador
  */
 @RestController
-@RequestMapping(value = "/activaExpendio/V1/saldos")
+@RequestMapping(value = "/activaExpendio/V1")
 public class SaldosController {
     
     @CrossOrigin(origins = "*")
-    @RequestMapping(path = "/{idInterno}", method = RequestMethod.GET)
+    @RequestMapping(path = "saldos/{idInterno}", method = RequestMethod.GET)
     public ResponseEntity<?> manejadorConsultarGaleria(@PathVariable("idInterno") long idInterno) {
         PersistenciaUsuario pu = new PersistenciaUsuario();
         try {
@@ -36,4 +36,6 @@ public class SaldosController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     } 
+    
+    
 }
