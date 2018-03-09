@@ -1,6 +1,9 @@
 package utils;
 
 import java.awt.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
 
 import javax.swing.*;
 
@@ -51,6 +54,19 @@ public class Imagenes {
      */
     public static void fondoLabel(String rutaImg, JLabel label) {
         label.setIcon(CargaImagenes.getImgBoton(rutaImg));
+    }
+
+    public static boolean setFondoLabel(String rutaImagen, int ancho, int alto, JLabel label) {
+        try {
+            BufferedImage bf1 = ImageIO.read(new File(rutaImagen));
+            Image scaledInstance2 = bf1.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+            label.setIcon(new ImageIcon(scaledInstance2));
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            label.setIcon(null);
+            return false;
+        }
     }
 
     private static class backImage extends JComponent {
