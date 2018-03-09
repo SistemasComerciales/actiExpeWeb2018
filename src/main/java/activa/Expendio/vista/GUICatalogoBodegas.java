@@ -8,6 +8,7 @@ package activa.Expendio.vista;
 import activa.Expendio.modelo.DatosBaseDatos;
 import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
+import activa.Expendio.modelo.Bodega;
 import activa.Expendio.vista.utils.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,28 +23,35 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
 
 
     // Utilitarios
-    private static String nombreClase = "Bodega";
-
+    private static String nombreClase ="Bodegas";
+    private CampoLabel lbl_id, lbl_codigo, lbl_nombre, lbl_estado, lbl_usuario, lbl_eliminado, lbl_creacion, lbl_modificacion;
+    private CajaDeTexto txt_codigo;
     
     public GUICatalogoBodegas(Usuario usuario, Establecimiento establecimiento, boolean botonAdicional) {
-        super(usuario, establecimiento, botonAdicional);
-
-        prepareElementos();
-        prepareElementosInformacion();
-        prepareElementosPanelBotones(botonAdicional);
-        prepareElementosTablaGeneral();
-        preparaCamposDeTexto();
-
-        definaAccionesInformacion();
-        definaAccionesBotones();
-        
-        inicializar();
-        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, getNombreClase().toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
+        super(usuario, establecimiento, false);
     }
 
     @Override
     protected void prepareElementosTablaGeneral() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.    
+       
+        lbl_id =new CampoLabel("Id" ,"E");
+        lbl_id.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_id.alinearDerecha();
+        lbl_id.setLocation(CargaImagenes.ANCHO_PANTALLA/100*15, CargaImagenes.ALTO_PANTALLA/100*20);
+        this.add(lbl_id);
+
+        lbl_codigo =new CampoLabel("Codigo" ,"E");
+        lbl_codigo.setSize(CargaImagenes.anchoBotonCatalogos/2 , 36);
+        lbl_codigo.alinearDerecha();
+        lbl_codigo.setLocation(lbl_id.getX(), lbl_id.getY()+lbl_id.getHeight()+10);
+        this.add(lbl_codigo);
+
+        txt_codigo = new CajaDeTexto("B",15);
+        txt_codigo.setLocation(lbl_codigo.getX()+lbl_codigo.getWidth()*5/4, lbl_codigo.getY());
+        txt_codigo.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        this.add(txt_codigo); 
+          
     }
 
     @Override
@@ -128,7 +136,7 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
 
     @Override
     protected String getNombreClase() {
-        return "";
+        return nombreClase;
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
