@@ -242,8 +242,8 @@ public class Fecha {
      * @param a�oContable: ingresa el a�o contable
      * @param metodo que completa una fecha incompleta
      */
-    public static void completarFecha(JFormattedTextField cajaFecha, String anioContable){
-		if (cajaFecha.getText().replace("/", "").trim().isEmpty()) {
+    public static void completarFecha(JFormattedTextField cajaFecha, String anioContable) {
+        if (cajaFecha.getText().replace("/", "").trim().isEmpty()) {
         } else if (cajaFecha.getText().replace("/", "").trim().length() == 2) {
             Calendar fecha = new GregorianCalendar();
             String ano = anioContable.trim();
@@ -518,8 +518,8 @@ public class Fecha {
      * @param a�oContable: ingresa el a�o contable
      * @param metodo que completa una fecha incompleta
      */
-    public static void completarFechaStatic(JFormattedTextField cajaFecha, String anioContable){
-		if (cajaFecha.getText().replace("/", "").trim().isEmpty()) {
+    public static void completarFechaStatic(JFormattedTextField cajaFecha, String anioContable) {
+        if (cajaFecha.getText().replace("/", "").trim().isEmpty()) {
         } else if (cajaFecha.getText().replace("/", "").trim().length() == 2) {
             Calendar fecha = new GregorianCalendar();
 //			int ano = fecha.get(Calendar.YEAR);
@@ -796,6 +796,51 @@ public class Fecha {
         }
 
         return nombre;
+    }
+
+    /**
+     * Metodo encargado de traer el dia de la fecha ingresada
+     *
+     * @return 1..31
+     */
+    public static int dia(Date fecha) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        return cal.get(Calendar.DAY_OF_MONTH);
+
+    }
+
+    /**
+     * Metodo encargado de traer el mes de la fecha ingresada
+     *
+     * @return 1..12
+     */
+    public static int mes(Date fecha) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        return cal.get(Calendar.MONTH) + 1;
+
+    }
+
+    /**
+     * Metodo encargado de traer el a�o de la fecha ingresada
+     *
+     * @return 2016....2222
+     */
+    public static int anio(Date fecha) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        return cal.get(Calendar.YEAR);
+    }
+
+    public static String obtenerFechaString(Date date) {
+        String fecha = "";
+
+        fecha += String.valueOf(dia(date));
+        fecha += String.valueOf(mes(date));
+        fecha += String.valueOf(anio(date));
+
+        return fecha;
     }
 
 }

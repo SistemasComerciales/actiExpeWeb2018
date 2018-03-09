@@ -1,10 +1,13 @@
 package activa.Expendio.vista;
 
 import activa.Expendio.modelo.*;
+import activa.Expendio.persistencia.*;
+import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.utils.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import utils.*;
@@ -366,7 +369,83 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     }
 
     private void cargarDatosGeneral() {
-        //
+        deshacerFiltroTablaGeneral();
+        Tabla.eliminarFilasTabla(dtmTablaGeneral);
+
+        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+
+        ArrayList<Interno> internosActivos = persistencia.getActivos();
+        ArrayList<Interno> internosInactivos = persistencia.getInactivos();
+
+        for (Interno interno : internosActivos) {
+            if (!interno.estaEliminado()) {
+                Object[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
+
+                datosFila[columnaId] = interno.getId();
+
+                datosFila[columnaTd] = interno.getTd();
+                datosFila[columnaNui] = interno.getNui();
+                datosFila[columnaPrimerApellido] = interno.getPrimerApellido();
+                datosFila[columnaSegundoApellido] = interno.getSegundoApellido();
+                datosFila[columnaPrimerNombre] = interno.getPrimerNombre();
+                datosFila[columnaSegundoNombre] = interno.getSegundoNombre();
+                datosFila[columnaNacionalidad] = interno.getNacionalidad();
+                datosFila[columnaSituacionJuridica] = interno.getSituacionJuridica();
+                datosFila[columnaFechaIngreso] = Fecha.obtenerFechaString(interno.getFechaIngreso());
+                datosFila[columnaFechaSalida] = Fecha.obtenerFechaString(interno.getFechaSalida());
+                datosFila[columnaDelito] = interno.getDelito();
+                datosFila[columnaObservaciones] = interno.getObservaciones();
+                datosFila[columnaRutaImagen] = interno.getRutaImagen();
+
+                boolean estado = interno.getEstado();
+                String est;
+                if (estado) {
+                    est = DatosBaseDatos.estadoActivo;
+                } else {
+                    est = DatosBaseDatos.estadoInactivo;
+                }
+                datosFila[columnaEstado] = est;
+
+                dtmTablaGeneral.addRow(datosFila);
+            }
+        }
+        for (Interno interno : internosInactivos) {
+            if (!interno.estaEliminado()) {
+                Object[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
+
+                datosFila[columnaId] = interno.getId();
+
+                datosFila[columnaTd] = interno.getTd();
+                datosFila[columnaNui] = interno.getNui();
+                datosFila[columnaPrimerApellido] = interno.getPrimerApellido();
+                datosFila[columnaSegundoApellido] = interno.getSegundoApellido();
+                datosFila[columnaPrimerNombre] = interno.getPrimerNombre();
+                datosFila[columnaSegundoNombre] = interno.getSegundoNombre();
+                datosFila[columnaNacionalidad] = interno.getNacionalidad();
+                datosFila[columnaSituacionJuridica] = interno.getSituacionJuridica();
+                datosFila[columnaFechaIngreso] = Fecha.obtenerFechaString(interno.getFechaIngreso());
+                datosFila[columnaFechaSalida] = Fecha.obtenerFechaString(interno.getFechaSalida());
+                datosFila[columnaDelito] = interno.getDelito();
+                datosFila[columnaObservaciones] = interno.getObservaciones();
+                datosFila[columnaRutaImagen] = interno.getRutaImagen();
+
+                boolean estado = interno.getEstado();
+                String est;
+                if (estado) {
+                    est = DatosBaseDatos.estadoActivo;
+                } else {
+                    est = DatosBaseDatos.estadoInactivo;
+                }
+                datosFila[columnaEstado] = est;
+
+                dtmTablaGeneral.addRow(datosFila);
+            }
+        }
+//        try {
+//        } catch (ExpendioException ex) {
+//            ex.printStackTrace();
+//            option.tipoMensaje(GUIJOption.mensajeError, ExpendioException.getStackTrace(ex), "Error (13)", ExpendioException.getMensajeErrorBaseDatos());
+//        }
     }
 
     private void deshacerFiltroTablaGeneral() {
