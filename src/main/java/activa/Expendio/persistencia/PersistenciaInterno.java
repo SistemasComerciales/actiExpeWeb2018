@@ -6,13 +6,16 @@
 package activa.Expendio.persistencia;
 
 import activa.Expendio.modelo.Interno;
+import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
 import java.util.ArrayList;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrador
  */
-public class PersistenciaInterno {
+@Service
+public class PersistenciaInterno implements PersistenciaInternoInt{
     ArrayList<Interno> internos;
     
     /**
@@ -27,6 +30,7 @@ public class PersistenciaInterno {
      * @param interno
      * @return 
      */
+    @Override
     public Interno adicionar(Interno interno){
         internos.add(interno);
         return interno;
@@ -36,6 +40,7 @@ public class PersistenciaInterno {
      * Metodo encargado de eliminar el interno
      * @param interno 
      */
+    @Override
     public void desactivar(Interno interno){
         interno.desactivar();
         for(int i=0; i<internos.size(); i++){
@@ -50,6 +55,7 @@ public class PersistenciaInterno {
      * Metodo encargado de traer todos los productos que estan activos
      * @return 
      */
+    @Override
     public ArrayList<Interno> getActivos(){
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for(int i=0; i<internos.size(); i++){
@@ -64,6 +70,7 @@ public class PersistenciaInterno {
      * Metodo encargado de traer todos los productos que estan activos
      * @return 
      */
+    @Override
     public ArrayList<Interno> getInactivos(){
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for(int i=0; i<internos.size(); i++){
@@ -79,6 +86,7 @@ public class PersistenciaInterno {
      * Metodo encargado de eliminar el interno
      * @param interno 
      */
+    @Override
     public void eliminar(Interno interno){
         interno.eliminar();
         for(int i=0; i<internos.size(); i++){
@@ -93,6 +101,7 @@ public class PersistenciaInterno {
      * Metodo encargado de traer todos los productos que estan eliminados
      * @return 
      */
+    @Override
     public ArrayList<Interno> getEliminados(){
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for(int i=0; i<internos.size(); i++){
@@ -107,6 +116,7 @@ public class PersistenciaInterno {
      * Metodo encargado de traer todos los productos que no estan eliminados
      * @return 
      */
+    @Override
     public ArrayList<Interno> getNoEliminados(){
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for(int i=0; i<internos.size(); i++){
@@ -121,6 +131,7 @@ public class PersistenciaInterno {
      * Metodo encargado de traer todos los productos que no estan eliminados y que estan activos
      * @return 
      */
+    @Override
     public ArrayList<Interno> getNoEliminadosYActivos(){
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for(int i=0; i<internos.size(); i++){
@@ -136,6 +147,7 @@ public class PersistenciaInterno {
      * @param interno
      * @return 
      */
+    @Override
     public Interno modificar(Interno interno){
         for(int i=0; i<internos.size(); i++){
             if(interno.getId()== internos.get(i).getId()){
@@ -153,6 +165,7 @@ public class PersistenciaInterno {
      * <b>false</b>: Si no existe<br>
      * <b>true</b>: Si existe<br>
      */
+    @Override
     public boolean existeNUI(Interno interno){
         for(int i=0; i<internos.size(); i++){
             if(interno.getNui().trim().equalsIgnoreCase(internos.get(i).getNui())){
@@ -169,6 +182,7 @@ public class PersistenciaInterno {
      * <b>false</b>: Si no existe<br>
      * <b>true</b>: Si existe<br>
      */
+    @Override
     public boolean existeTD(Interno interno){
         for(int i=0; i<internos.size(); i++){
             if(interno.getTd().trim().equalsIgnoreCase(internos.get(i).getTd())){
