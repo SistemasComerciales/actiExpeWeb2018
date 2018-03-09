@@ -23,9 +23,9 @@ public class PersistenciaUsuario implements PersistenciaUsuarioInt{
         usuarios = new ArrayList();
         Usuario usuario = new Usuario();
         usuario.setId(1);
-        usuario.setLogin("supervisor");
-        usuario.setNombres("Supervisor");
-        usuario.setPassword("nuevoActiva2016!");
+        usuario.setLogin("a");
+        usuario.setNombres("a");
+        usuario.setPassword("a");
         usuarios.add(usuario);
     }
     

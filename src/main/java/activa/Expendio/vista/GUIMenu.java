@@ -653,9 +653,9 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoBodegas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                usuario.setFrameAnterior(frame);
-//                new GUICatalogoBodegas(usuario, establecimiento);
-//                frame.setVisible(false);
+                usuario.setFrameAnterior(frame);
+                new GUICatalogoBodegas(usuario, establecimiento,false);
+                frame.setVisible(false);
             }
         });
     }
