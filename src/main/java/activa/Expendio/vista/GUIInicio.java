@@ -38,6 +38,10 @@ public class GUIInicio extends ClaseGeneral {
 	actualizarFrame();
        
     }
+    public void nombreClase() {
+        //To change body of generated methods, choose Tools | Templates.
+    }
+    
  
     @Override
     public void actualizarFrame() {

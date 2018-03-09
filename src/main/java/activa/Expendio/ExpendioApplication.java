@@ -2,6 +2,7 @@ package activa.Expendio;
 
 import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
+import activa.Expendio.vista.GUICatalogoBodegas;
 import activa.Expendio.vista.GUIInicio;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,12 +16,15 @@ public class ExpendioApplication {
         establecimiento.setNombre("QUIBDÓ");
         establecimiento.setNit("");
         establecimiento.setTipo("P");
-
+        
         Usuario usuario = new Usuario();
         usuario.setPeriodoContable("2018");
         usuario.setLogin("SUPERVISOR");
         usuario.setNombres("Supervisor");
-        new GUIInicio(usuario, establecimiento);
+        
+        boolean botonAdicional = false;
+        //new GUIInicio(usuario, establecimiento);  
+        new GUICatalogoBodegas(usuario, establecimiento, botonAdicional);  
         SpringApplication.run(ExpendioApplication.class, args);
 
     }
