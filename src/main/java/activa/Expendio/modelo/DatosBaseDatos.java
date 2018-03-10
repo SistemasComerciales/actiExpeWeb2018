@@ -36,4 +36,9 @@ public class DatosBaseDatos {
     public static final String varSalidaBD = "S";
     public static final String varEntrada = "Entrada";
     public static final String varSalida = "Salida";
+    
+    public static final String varAplicaClienteBD = "C";
+    public static final String varAplicaProveedorBD = "P";
+    public static final String varAplicaCliente = "Cliente";
+    public static final String varAplicaProveedor = "Proveedor";
 }

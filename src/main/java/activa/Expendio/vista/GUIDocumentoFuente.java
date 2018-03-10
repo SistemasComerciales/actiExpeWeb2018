@@ -93,6 +93,17 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         combo_accionInv.setLocation(lbl_accion.getX()+lbl_accion.getWidth()*5/4, lbl_accion.getY());
         combo_accionInv.setSize(lbl_accion.getWidth() * 8 / 9, lbl_accion.getHeight());
         this.add(combo_accionInv);
+        
+        lbl_aplica =new CampoLabel("Aplica a" ,"E");
+        lbl_aplica.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_aplica.alinearDerecha();
+        lbl_aplica.setLocation(CargaImagenes.ANCHO_PANTALLA/100*50, CargaImagenes.ALTO_PANTALLA/100*14);
+        this.add(lbl_aplica);
+        
+        combo_aplica = new CampoCombo<String>(DatosBaseDatos.varEntrada, DatosBaseDatos.varSalida);
+        combo_aplica.setLocation(lbl_aplica.getX()+lbl_aplica.getWidth()*5/4, lbl_aplica.getY());
+        combo_aplica.setSize(lbl_aplica.getWidth() * 8 / 9, lbl_aplica.getHeight());
+        this.add(combo_aplica);
     }
 
     @Override
