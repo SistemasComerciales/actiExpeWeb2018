@@ -9,10 +9,21 @@ import activa.Expendio.modelo.DatosBaseDatos;
 import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.GrupoProducto;
 import activa.Expendio.modelo.Usuario;
+import static activa.Expendio.vista.GUIDocumentoFuente.columnaCodigo;
+import static activa.Expendio.vista.GUIDocumentoFuente.columnaId;
+import static activa.Expendio.vista.GUIDocumentoFuente.columnaIdBodega;
+import static activa.Expendio.vista.GUIDocumentoFuente.columnaNombre;
 import activa.Expendio.vista.utils.CajaDeTexto;
 import activa.Expendio.vista.utils.CampoLabel;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import utils.CampoCombo;
 import utils.CargaImagenes;
+import utils.Tabla;
+import utils.TablaNoEditable;
 /**
  *
  * @author Administrador
@@ -44,6 +55,63 @@ public class GUIProducto extends GUIInterfazCatalogos{
 
     @Override
     protected void prepareElementosTablaGeneral() {
+                int margenIzquierda = 0;
+        int margenSuperior = CargaImagenes.ALTO_PANTALLA/4+CargaImagenes.ALTO_PANTALLA/6;
+        int anchoPanel = 80*(CargaImagenes.ANCHO_PANTALLA/100);
+        int altoPanel = ((CargaImagenes.ALTO_PANTALLA/2));
+
+        margenIzquierda = (CargaImagenes.ANCHO_PANTALLA - anchoPanel)/2;
+        dtmTablaGeneral= new TablaNoEditable();
+        tablaGeneral = new JTable(dtmTablaGeneral);
+        panel_tablaGeneral=new JPanel();
+        panel_tablaGeneral.setOpaque(false);
+        panel_tablaGeneral.setBounds(margenIzquierda,margenSuperior, anchoPanel,altoPanel) ;
+        dtmTablaGeneral.addColumn("Código");//1
+        dtmTablaGeneral.addColumn("Nombre");//2
+        dtmTablaGeneral.addColumn("Presentacion");//3
+        dtmTablaGeneral.addColumn("Grupo Prod.");//4
+        dtmTablaGeneral.addColumn("C. existencia");//5
+        dtmTablaGeneral.addColumn("A. cupo");//6
+        dtmTablaGeneral.addColumn("Precio 10%");//7
+        dtmTablaGeneral.addColumn("Cod. barras");//8
+        dtmTablaGeneral.addColumn("Observaciones");//9
+        dtmTablaGeneral.addColumn("Estado");//10
+        dtmTablaGeneral.addColumn("Eliminado");//11
+        dtmTablaGeneral.addColumn("idGrupo");//12
+        dtmTablaGeneral.addColumn("id");//13
+
+        
+        tablaGeneral.setPreferredScrollableViewportSize(new Dimension(anchoPanel-25,altoPanel-27));
+        scrollPaneTablaGeneral= new JScrollPane(tablaGeneral);
+        panel_tablaGeneral.add(scrollPaneTablaGeneral);
+        scrollPaneTablaGeneral.setBounds(0,0 , anchoPanel-25,altoPanel-27);
+        this.add(panel_tablaGeneral);
+
+
+
+        tablaGeneral.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaGeneral.getTableHeader().setReorderingAllowed(false);
+        tablaGeneral.setDefaultRenderer(Object.class, new Tabla.MiRender());
+        tablaGeneral.setShowHorizontalLines(false);
+        tablaGeneral.setBorder(null);
+        tablaGeneral.setOpaque(false);
+        panel_tablaGeneral.setOpaque(false);
+        panel_tablaGeneral.setBorder(null);
+        scrollPaneTablaGeneral.setOpaque(false);
+        scrollPaneTablaGeneral.getViewport().setOpaque(false);
+        scrollPaneTablaGeneral.setBorder(null);      
+
+        int anchoTotal = anchoPanel/20;
+        tablaGeneral.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(anchoTotal);
+        tablaGeneral.getColumnModel().getColumn(columnaNombre).setPreferredWidth(3*anchoTotal);
+        
+        tablaGeneral.getColumnModel().getColumn(columnaIdBodega).setMaxWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaIdBodega).setMinWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaIdBodega).setPreferredWidth(0);
+        
+        tablaGeneral.getColumnModel().getColumn(columnaId).setMaxWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaId).setMinWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaId).setPreferredWidth(0);
     }
 
     @Override
