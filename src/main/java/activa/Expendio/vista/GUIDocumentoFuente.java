@@ -64,7 +64,7 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         lbl_codigo =new CampoLabel("Codigo" ,"E");
         lbl_codigo.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
         lbl_codigo.alinearDerecha();
-        lbl_codigo.setLocation(CargaImagenes.ANCHO_PANTALLA/100*10, CargaImagenes.ALTO_PANTALLA/100*14);
+        lbl_codigo.setLocation(CargaImagenes.ANCHO_PANTALLA/100*10, CargaImagenes.ALTO_PANTALLA/100*10);
         this.add(lbl_codigo);
         
         txt_codigo = new CajaDeTexto("G",15);
@@ -75,7 +75,7 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         lbl_nombre =new CampoLabel("Nombre" ,"E");
         lbl_nombre.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
         lbl_nombre.alinearDerecha();
-        lbl_nombre.setLocation(CargaImagenes.ANCHO_PANTALLA/100*27, CargaImagenes.ALTO_PANTALLA/100*14);
+        lbl_nombre.setLocation(CargaImagenes.ANCHO_PANTALLA/100*27, CargaImagenes.ALTO_PANTALLA/100*10);
         this.add(lbl_nombre);
         
         txt_nombre = new CajaDeTexto("G",15);
@@ -86,7 +86,7 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         lbl_accion =new CampoLabel("accion Inv." ,"E");
         lbl_accion.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
         lbl_accion.alinearDerecha();
-        lbl_accion.setLocation(CargaImagenes.ANCHO_PANTALLA/100*50, CargaImagenes.ALTO_PANTALLA/100*14);
+        lbl_accion.setLocation(CargaImagenes.ANCHO_PANTALLA/100*50, CargaImagenes.ALTO_PANTALLA/100*10);
         this.add(lbl_accion);
         
         combo_accionInv = new CampoCombo<String>(DatosBaseDatos.varEntrada, DatosBaseDatos.varSalida);
@@ -97,13 +97,125 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         lbl_aplica =new CampoLabel("Aplica a" ,"E");
         lbl_aplica.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
         lbl_aplica.alinearDerecha();
-        lbl_aplica.setLocation(CargaImagenes.ANCHO_PANTALLA/100*50, CargaImagenes.ALTO_PANTALLA/100*14);
+        lbl_aplica.setLocation(CargaImagenes.ANCHO_PANTALLA/100*10, CargaImagenes.ALTO_PANTALLA/100*15);
         this.add(lbl_aplica);
         
-        combo_aplica = new CampoCombo<String>(DatosBaseDatos.varEntrada, DatosBaseDatos.varSalida);
+        combo_aplica = new CampoCombo<String>(DatosBaseDatos.varAplicaCliente, DatosBaseDatos.varAplicaProveedor);
         combo_aplica.setLocation(lbl_aplica.getX()+lbl_aplica.getWidth()*5/4, lbl_aplica.getY());
         combo_aplica.setSize(lbl_aplica.getWidth() * 8 / 9, lbl_aplica.getHeight());
         this.add(combo_aplica);
+        
+        lbl_numera =new CampoLabel("Numera" ,"E");
+        lbl_numera.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_numera.alinearDerecha();
+        lbl_numera.setLocation(lbl_nombre.getX(), lbl_aplica.getY());
+        this.add(lbl_numera);
+        
+        combo_numera = new CampoCombo<String>(DatosBaseDatos.varSi, DatosBaseDatos.varNo);
+        combo_numera.setLocation(lbl_numera.getX()+lbl_numera.getWidth()*5/4, lbl_numera.getY());
+        combo_numera.setSize(lbl_numera.getWidth() * 8 / 9, lbl_numera.getHeight());
+        this.add(combo_numera);
+        
+        lbl_numero =new CampoLabel("Numero" ,"E");
+        lbl_numero.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_numero.alinearDerecha();
+        lbl_numero.setLocation(lbl_accion.getX(), lbl_numera.getY());
+        this.add(lbl_numero);
+        
+        txt_numero = new CajaDeTexto("G",15);
+        txt_numero.setLocation(lbl_numero.getX()+lbl_numero.getWidth()*5/4, lbl_numero.getY());
+        txt_numero.setSize(CargaImagenes.anchoBotonCatalogos*2/3 , 30);
+        this.add(txt_numero);
+        
+        lbl_controlExiistencia =new CampoLabel("C. existencia" ,"E");
+        lbl_controlExiistencia.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_controlExiistencia.alinearDerecha();
+        lbl_controlExiistencia.setLocation(lbl_codigo.getX(), CargaImagenes.ALTO_PANTALLA/100*20);
+        this.add(lbl_controlExiistencia);
+        
+        combo_controlExis = new CampoCombo<String>(DatosBaseDatos.varSi, DatosBaseDatos.varNo);
+        combo_controlExis.setLocation(lbl_controlExiistencia.getX()+lbl_controlExiistencia.getWidth()*5/4, lbl_controlExiistencia.getY());
+        combo_controlExis.setSize(lbl_controlExiistencia.getWidth() * 8 / 9, lbl_controlExiistencia.getHeight());
+        this.add(combo_controlExis);
+        
+        lbl_docBase =new CampoLabel("Doc. base" ,"E");
+        lbl_docBase.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_docBase.alinearDerecha();
+        lbl_docBase.setLocation(lbl_nombre.getX(), lbl_controlExiistencia.getY());
+        this.add(lbl_docBase);
+        
+        combo_docBase = new CampoCombo<String>(DatosBaseDatos.varSi, DatosBaseDatos.varNo);
+        combo_docBase.setLocation(lbl_docBase.getX()+lbl_docBase.getWidth()*5/4, lbl_docBase.getY());
+        combo_docBase.setSize(lbl_docBase.getWidth() * 8 / 9, lbl_docBase.getHeight());
+        this.add(combo_docBase);
+        
+        lbl_precioFijo =new CampoLabel("P. fijo" ,"E");
+        lbl_precioFijo.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_precioFijo.alinearDerecha();
+        lbl_precioFijo.setLocation(lbl_numero.getX(), lbl_controlExiistencia.getY());
+        this.add(lbl_precioFijo);
+        
+        combo_precioFijo = new CampoCombo<String>(DatosBaseDatos.varSi, DatosBaseDatos.varNo);
+        combo_precioFijo.setLocation(lbl_precioFijo.getX()+lbl_precioFijo.getWidth()*5/4, lbl_precioFijo.getY());
+        combo_precioFijo.setSize(lbl_precioFijo.getWidth() * 8 / 9, lbl_precioFijo.getHeight());
+        this.add(combo_precioFijo);
+        
+        lbl_listaPrecio =new CampoLabel("Lista precio" ,"E");
+        lbl_listaPrecio.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_listaPrecio.alinearDerecha();
+        lbl_listaPrecio.setLocation(lbl_codigo.getX(), CargaImagenes.ALTO_PANTALLA/100*25);
+        this.add(lbl_listaPrecio);
+        
+        combo_listaPrecio = new CampoCombo<String>(DatosBaseDatos.varSi, DatosBaseDatos.varNo);
+        combo_listaPrecio.setLocation(lbl_listaPrecio.getX()+lbl_listaPrecio.getWidth()*5/4, lbl_listaPrecio.getY());
+        combo_listaPrecio.setSize(lbl_listaPrecio.getWidth() * 8 / 9, lbl_listaPrecio.getHeight());
+        this.add(combo_listaPrecio);
+        
+        lbl_costeoInv =new CampoLabel("L. precio" ,"E");
+        lbl_costeoInv.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_costeoInv.alinearDerecha();
+        lbl_costeoInv.setLocation(lbl_docBase.getX(), lbl_listaPrecio.getY());
+        this.add(lbl_costeoInv);
+        
+        combo_costeoInv = new CampoCombo<String>(DatosBaseDatos.varSi, DatosBaseDatos.varNo);
+        combo_costeoInv.setLocation(lbl_costeoInv.getX()+lbl_costeoInv.getWidth()*5/4, lbl_costeoInv.getY());
+        combo_costeoInv.setSize(lbl_costeoInv.getWidth() * 8 / 9, lbl_costeoInv.getHeight());
+        this.add(combo_costeoInv);
+        
+        lbl_bodega =new CampoLabel("Bodega" ,"E");
+        lbl_bodega.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_bodega.alinearDerecha();
+        lbl_bodega.setLocation(lbl_precioFijo.getX(), lbl_listaPrecio.getY());
+        this.add(lbl_bodega);
+        
+        txt_idBodega = new CajaDeTexto("");
+        txt_bodega = new CajaDeTexto("G",15);
+        txt_bodega.setLocation(lbl_bodega.getX()+lbl_bodega.getWidth()*5/4, lbl_bodega.getY());
+        txt_bodega.setSize(CargaImagenes.anchoBotonCatalogos*2/3 , 30);
+        this.add(txt_bodega);
+        
+        lbl_estado =new CampoLabel("Estado" ,"E");
+        lbl_estado.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_estado.alinearDerecha();
+        lbl_estado.setLocation(lbl_listaPrecio.getX() , CargaImagenes.ALTO_PANTALLA/100*30);
+        this.add(lbl_estado);
+        
+        combo_estado = new CampoCombo<String>(DatosBaseDatos.estadoActivo, DatosBaseDatos.estadoInactivo);
+        combo_estado.setLocation(lbl_estado.getX()+lbl_estado.getWidth()*5/4, lbl_estado.getY());
+        combo_estado.setSize(lbl_estado.getWidth() * 8 / 9, lbl_estado.getHeight());
+        this.add(combo_estado);
+        
+        lbl_eliminado  =new CampoLabel("" ,"E");
+        lbl_eliminado.setSize(CargaImagenes.anchoBotonCatalogos/2 , 30);
+        lbl_eliminado.alinearDerecha();
+        lbl_eliminado.setLocation(lbl_listaPrecio.getX() , CargaImagenes.ALTO_PANTALLA/100*30);
+        this.add(lbl_eliminado);
+        
+        combo_estado = new CampoCombo<String>(DatosBaseDatos.estadoActivo, DatosBaseDatos.estadoInactivo);
+        combo_estado.setLocation(lbl_estado.getX()+lbl_estado.getWidth()*5/4, lbl_estado.getY());
+        combo_estado.setSize(lbl_estado.getWidth() * 8 / 9, lbl_estado.getHeight());
+        this.add(combo_estado);
+
     }
 
     @Override
