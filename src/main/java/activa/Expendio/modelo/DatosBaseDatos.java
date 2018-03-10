@@ -31,4 +31,9 @@ public class DatosBaseDatos {
 
     public static final String formatoFechaConsultaBD = "\"%d/%m/%Y\"";
 
+    // accion sobre Inventario
+    public static final String varEntradaBD = "E";
+    public static final String varSalidaBD = "S";
+    public static final String varEntrada = "Entrada";
+    public static final String varSalida = "Salida";
 }
