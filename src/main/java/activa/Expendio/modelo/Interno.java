@@ -13,7 +13,8 @@ import java.util.Date;
  * @author Administrador
  */
 public class Interno {
-    private long id;
+
+    private Long id;
     private String td;
     private String primerApellido;
     private String segundoApellido;
@@ -26,13 +27,13 @@ public class Interno {
     private Date fechaSalida;
     private String delito;
     private String observaciones;
-    private boolean estado;
+    private Boolean estado;
     private Usuario usuario;
+    private String accionUsuario;
     private boolean eliminado;
     private Timestamp creacion;
     private Timestamp modificacion;
     private String rutaImagen;
-    
 
     /**
      * @return the td
@@ -205,14 +206,14 @@ public class Interno {
     /**
      * @return the estado
      */
-    public boolean getEstado() {
+    public Boolean getEstado() {
         return estado;
     }
 
     /**
      * @param estado the estado to set
      */
-    public void setEstado(boolean estado) {
+    public void setEstado(Boolean estado) {
         this.estado = estado;
     }
 
@@ -275,30 +276,30 @@ public class Interno {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    
-    public void desactivar(){
+
+    public void desactivar() {
         estado = false;
     }
-    
-    public boolean estaActivo(){
+
+    public boolean estaActivo() {
         return estado;
     }
-    
-    public void eliminar(){
+
+    public void eliminar() {
         estado = false;
     }
-    
-    public boolean estaEliminado(){
+
+    public boolean estaEliminado() {
         return estado;
     }
 
@@ -315,6 +316,62 @@ public class Interno {
     public void setRutaImagen(String rutaImagen) {
         this.rutaImagen = rutaImagen;
     }
-    
-    
+
+    public String getAccionUsuario() {
+        return accionUsuario;
+    }
+
+    public void setAccionUsuario(String accionUsuario) {
+        this.accionUsuario = accionUsuario;
+    }
+
+    public String validarCamposObligatorios(boolean esModificar) {
+        if (td == null || (td != null && td.trim().isEmpty())) {
+            return "TD";
+        }
+        if (nui == null || (nui != null && nui.trim().isEmpty())) {
+            return "NUI";
+        }
+        if (primerApellido == null || (primerApellido != null && primerApellido.trim().isEmpty())) {
+            return "PRIMERAPELLIDO";
+        }
+        if (segundoApellido == null || (segundoApellido != null && segundoApellido.trim().isEmpty())) {
+            return "SEGUNDOAPELLIDO";
+        }
+        if (primerNombre == null || (primerNombre != null && primerNombre.trim().isEmpty())) {
+            return "PRIMERNOMBRE";
+        }
+        if (segundoNombre == null || (segundoNombre != null && segundoNombre.trim().isEmpty())) {
+            return "SEGUNDONOMBRE";
+        }
+        if (nacionalidad == null || (nacionalidad != null && nacionalidad.trim().isEmpty())) {
+            return "NACIONALIDAD";
+        }
+        if (situacionJuridica == null || (situacionJuridica != null && situacionJuridica.trim().isEmpty())) {
+            return "SITUACIONJURIDICA";
+        }
+        if (fechaIngreso == null) {
+            return "FECHAINGRESO";
+        }
+//        if (fechaSalida == null) {
+//            return "FECHASALIDA";
+//        }
+//        if (delito == null || (delito != null && delito.trim().isEmpty())) {
+//            return "DELITO";
+//        }
+//        if (observaciones == null || (observaciones != null && observaciones.trim().isEmpty())) {
+//            return "OBSERVACIONES";
+//        }
+        if (rutaImagen == null || (rutaImagen != null && rutaImagen.trim().isEmpty())) {
+            return "RUTAFOTO";
+        }
+        if (estado == null) {
+            return "ESTADO";
+        }
+        if (esModificar && id == null) {
+            return "ID";
+        }
+        return null;
+    }
+
 }

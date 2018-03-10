@@ -527,7 +527,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     @Override
     protected void accionBotonAgregar() {// Insertando nuevo cargo
 //        try {
-//            setValoresCargo();
+//            Interno interno = setValoresInterno();
 //
 //            boolean valido = puedeInsertarOModificar(false);
 //            if (valido) {
@@ -562,6 +562,58 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 //            usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
 //            ex.printStackTrace();
 //        }
+    }
+
+    private Interno setValoresInterno() {
+        Interno interno = new Interno();
+
+        Long id = idInterno != null && !idInterno.trim().isEmpty() ? Long.parseLong(idInterno) : null;
+        interno.setId(id);
+
+        interno.setTd(txt_td.getText().trim());
+        interno.setNui(txt_nui.getText().trim());
+        interno.setPrimerApellido(txt_primerApellido.getText().trim());
+        interno.setSegundoApellido(txt_segundoApellido.getText().trim());
+        interno.setPrimerNombre(txt_primerNombre.getText().trim());
+        interno.setSegundoNombre(txt_segundoNombre.getText().trim());
+        interno.setNacionalidad(txt_nacionalidad.getText().trim());
+        interno.setSituacionJuridica(txt_situacionJuridica.getText().trim());
+
+        String fechaIngreso = txt_fechaIngreso.getText().trim();
+        String fechaSalida = txt_fechaSalida.getText().trim();
+
+        Date fechaI = null;
+        if (!fechaIngreso.replace("/", "").trim().isEmpty()) {
+            fechaI = Fecha.getDate(fechaIngreso);
+        }
+        interno.setFechaIngreso(fechaI);
+
+        Date fechaF = null;
+        if (!fechaSalida.replace("/", "").trim().isEmpty()) {
+            fechaF = Fecha.getDate(fechaSalida);
+        }
+        interno.setFechaSalida(fechaF);
+
+        interno.setDelito(txt_delito.getText().trim());
+        interno.setObservaciones(txt_observaciones.getText().trim());
+        interno.setRutaImagen(txt_foto.getText().trim());
+
+        Boolean est = null;
+        String estado = CampoCombo.getComboValue(combo_estado);
+        if (estado != null && !estado.trim().isEmpty()) {
+            switch (estado) {
+                case DatosBaseDatos.estadoActivo:
+                    est = true;
+                    break;
+                case DatosBaseDatos.estadoInactivo:
+                default:
+                    est = false;
+                    break;
+            }
+        }
+        interno.setEstado(est);
+
+        return interno;
     }
 
     @Override
