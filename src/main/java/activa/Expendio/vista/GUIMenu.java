@@ -585,9 +585,9 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoDocumentos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                usuario.setFrameAnterior(frame);
-//                new GUICatalogoDocumentos(usuario, establecimiento);
-//                frame.setVisible(false);
+                usuario.setFrameAnterior(frame);
+                new GUIDocumentoFuente(usuario, establecimiento);
+                frame.setVisible(false);
             }
         });
 
