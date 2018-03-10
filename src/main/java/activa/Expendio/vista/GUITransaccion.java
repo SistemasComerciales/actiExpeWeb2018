@@ -31,7 +31,6 @@ public class GUITransaccion extends ClaseGeneral {
     protected void prepareElementos() {
         this.setTitle("Transacciones");
         Imagenes.fondoInternalFrame(NombreImagenes.imFondoG, this.getWidth(), this.getHeight(), this);
-
     }
     
     @Override
