@@ -24,7 +24,19 @@ public class GUIProducto extends GUIInterfazCatalogos{
     private CajaDeTexto txt_codigo, txt_nombre, txt_presentacion, txt_grupo, txt_idGrupo, txt_codigoBarras, txt_observaciones;
     private CampoCombo<String> combo_controlExistencia, combo_afectaCupo, combo_controlSerial, combo_precio10Porciento, combo_estado, combo_eliminado;
     
-//    private static int columna
+    private static int columnaCodigo = 0;
+    private static int columnanombre = 1;
+    private static int columnapresentacion = 2;
+    private static int columnaGrupoProducto = 3;
+    private static int columnaIdGrupoProducto = 4;
+    private static int columnaControlExistencia = 5;
+    private static int columnaAfectaCupo = 6;
+    private static int columnaControlSerial = 7;
+    private static int columnaPrecio10 = 8;
+    private static int columnaCodigoBarras = 9;
+    private static int columnaNota = 10;
+    private static int columnaEstado = 11;
+    private static int columnaEliminado = 12;
     
     public GUIProducto(Usuario usuario, Establecimiento establecimiento ) {
 	super(usuario, establecimiento, false);
