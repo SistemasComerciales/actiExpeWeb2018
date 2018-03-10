@@ -48,6 +48,7 @@ public class GUIProducto extends GUIInterfazCatalogos{
     private static int columnaNota = 10;
     private static int columnaEstado = 11;
     private static int columnaEliminado = 12;
+    private static int columnaId = 13;
     
     public GUIProducto(Usuario usuario, Establecimiento establecimiento ) {
 	super(usuario, establecimiento, false);
@@ -66,11 +67,12 @@ public class GUIProducto extends GUIInterfazCatalogos{
         panel_tablaGeneral=new JPanel();
         panel_tablaGeneral.setOpaque(false);
         panel_tablaGeneral.setBounds(margenIzquierda,margenSuperior, anchoPanel,altoPanel) ;
-        dtmTablaGeneral.addColumn("Código");//1
-        dtmTablaGeneral.addColumn("Nombre");//2
-        dtmTablaGeneral.addColumn("Presentacion");//3
-        dtmTablaGeneral.addColumn("Grupo Prod.");//4
-        dtmTablaGeneral.addColumn("C. existencia");//5
+        dtmTablaGeneral.addColumn("Código");//0
+        dtmTablaGeneral.addColumn("Nombre");//1
+        dtmTablaGeneral.addColumn("Presentacion");//2
+        dtmTablaGeneral.addColumn("Grupo Prod.");//3
+        dtmTablaGeneral.addColumn("idGrupo");//4
+        dtmTablaGeneral.addColumn("C. existecia");//5
         dtmTablaGeneral.addColumn("A. cupo");//6
         dtmTablaGeneral.addColumn("Precio 10%");//7
         dtmTablaGeneral.addColumn("Cod. barras");//8
@@ -105,9 +107,9 @@ public class GUIProducto extends GUIInterfazCatalogos{
         tablaGeneral.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(anchoTotal);
         tablaGeneral.getColumnModel().getColumn(columnaNombre).setPreferredWidth(3*anchoTotal);
         
-        tablaGeneral.getColumnModel().getColumn(columnaIdBodega).setMaxWidth(0);
-        tablaGeneral.getColumnModel().getColumn(columnaIdBodega).setMinWidth(0);
-        tablaGeneral.getColumnModel().getColumn(columnaIdBodega).setPreferredWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaIdGrupoProducto).setMaxWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaIdGrupoProducto).setMinWidth(0);
+        tablaGeneral.getColumnModel().getColumn(columnaIdGrupoProducto).setPreferredWidth(0);
         
         tablaGeneral.getColumnModel().getColumn(columnaId).setMaxWidth(0);
         tablaGeneral.getColumnModel().getColumn(columnaId).setMinWidth(0);
