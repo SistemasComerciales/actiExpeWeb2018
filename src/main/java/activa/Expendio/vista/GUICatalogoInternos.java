@@ -1,6 +1,6 @@
 package activa.Expendio.vista;
 
-import activa.Expendio.*;
+import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
 import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.utils.*;
@@ -372,7 +372,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         deshacerFiltroTablaGeneral();
         Tabla.eliminarFilasTabla(dtmTablaGeneral);
 
-        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
         ArrayList<Interno> internos = persistencia.getNoEliminados();
 

@@ -1,6 +1,6 @@
 package activa.Expendio.vista;
 
-import activa.Expendio.*;
+import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
 import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.utils.*;
@@ -153,7 +153,7 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
         deshacerFiltroTablaGeneral();
         Tabla.eliminarFilasTabla(dtmTablaGeneral);
 
-        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+        PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
 
         ArrayList<Bodega> bodegas = persistencia.consultarTodos();
 

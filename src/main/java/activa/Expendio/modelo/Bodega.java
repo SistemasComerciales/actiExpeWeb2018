@@ -1,6 +1,6 @@
 package activa.Expendio.modelo;
 
-import activa.Expendio.*;
+import activa.Expendio.controllers.*;
 import activa.Expendio.persistencia.Interface.*;
 import java.sql.*;
 import utils.ExpendioException;
@@ -159,7 +159,7 @@ public class Bodega {
     }
 
     public boolean validarExiste(boolean esModificar) throws ExpendioException {
-        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+        PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
 
         try {
             boolean existe = false;
@@ -175,7 +175,7 @@ public class Bodega {
     }
 
     public boolean insertar(Usuario usuario) {
-        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+        PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
 
         long ultimoId = persistencia.consultarTodos().size();
         if (ultimoId == -1) {
@@ -195,7 +195,7 @@ public class Bodega {
     }
 
     public boolean modificar(Usuario usuario) {
-        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+        PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
 
         eliminado = false;
         accionUsuario = DatosBaseDatos.accionUsuarioModificar;
@@ -206,7 +206,7 @@ public class Bodega {
     }
 
     public boolean borrar(Usuario usuario) {
-        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+        PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
 
         eliminado = true;
         accionUsuario = DatosBaseDatos.accionUsuarioEliminado;

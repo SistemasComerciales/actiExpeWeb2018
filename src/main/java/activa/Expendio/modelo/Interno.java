@@ -1,6 +1,6 @@
 package activa.Expendio.modelo;
 
-import activa.Expendio.ExpendioApplication;
+import activa.Expendio.controllers.*;
 import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.*;
 import java.sql.*;
@@ -245,7 +245,7 @@ public class Interno {
     }
 
     public boolean validarExiste(boolean esModificar) throws ExpendioException {
-        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
         try {
             boolean existe = false;
@@ -261,7 +261,7 @@ public class Interno {
     }
 
     public boolean insertar(Usuario usuario) {
-        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
         long ultimoId = persistencia.getNoEliminados().size();
         if (ultimoId == -1) {
@@ -281,7 +281,7 @@ public class Interno {
     }
 
     public boolean modificar(Usuario usuario) {
-        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
         eliminado = false;
         accionUsuario = DatosBaseDatos.accionUsuarioModificar;
@@ -292,7 +292,7 @@ public class Interno {
     }
 
     public boolean borrar(Usuario usuario) {
-        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
         eliminado = true;
         accionUsuario = DatosBaseDatos.accionUsuarioEliminado;
@@ -304,7 +304,7 @@ public class Interno {
     }
 
     public static String traerUltimoNumeroTdInterno(Usuario usuario) {
-        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
         ArrayList<Interno> internos = persistencia.getNoEliminados();
 

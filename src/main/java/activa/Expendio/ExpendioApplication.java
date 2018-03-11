@@ -4,19 +4,13 @@ import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
 import activa.Expendio.vista.*;
 import javax.swing.*;
-import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.*;
 import utils.*;
 
 @SpringBootApplication
 public class ExpendioApplication {
 
     public static final ValidacionApertura control = ValidacionApertura.getInstance("imagenes\\Activa");
-    public static SaldosController saldosController;
-    public static UserController userController;
-    public static InternosController internosController;
-    public static BodegasController bodegasController;
 
     public static void main(String[] args) {
         try {
@@ -37,7 +31,9 @@ public class ExpendioApplication {
                                 control.cerrarApp();
                             }
                         }
-                        metodoMain(usuario, args);
+
+                        Servicios.iniciarServicios(args);
+                        new GUIInicio(usuario);
                     } else {
                         if (retorno.trim().equalsIgnoreCase("ERRORBD")) {
                             ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeError, "Base de datos no configurada", "Error! Base de datos no configurada!", "");
@@ -61,12 +57,4 @@ public class ExpendioApplication {
         }
     }
 
-    public static void metodoMain(Usuario usuario, String[] args) {
-        ConfigurableApplicationContext ac = SpringApplication.run(ExpendioApplication.class, args);
-        saldosController = ac.getBean(SaldosController.class);
-        userController = ac.getBean(UserController.class);
-        internosController = ac.getBean(InternosController.class);
-        bodegasController = ac.getBean(BodegasController.class);
-        new GUIInicio(usuario);
-    }
 }
