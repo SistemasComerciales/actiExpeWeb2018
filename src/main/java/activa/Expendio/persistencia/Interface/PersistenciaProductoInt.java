@@ -15,18 +15,24 @@ import java.util.ArrayList;
 public interface PersistenciaProductoInt {
     
     public ArrayList<Producto> getProductos();
+
+    public void setProductos(ArrayList<Producto> productos);
     
     public Producto adicionar(Producto producto);
     
-    public void eliminar(Producto producto);
-    
-    public ArrayList<Producto> getProductosActivos();
-    
     public Producto modificar(Producto producto);
     
-    public boolean existeCodigo(Producto producto);
+    public void eliminar(Producto producto);
+    
+    public ArrayList<Producto> consultarTodos();
+    
+    public ArrayList<Producto> consultarActivosNoEliminados();
+    
+    public boolean validarExiste(Producto producto);
     
     public Producto consultarPorCodigo(String codigo);
     
-    public Producto consultarPorId(long id);
+    public Producto consultarPorId(String id);
+
+    public boolean existeID(Producto producto);
 }

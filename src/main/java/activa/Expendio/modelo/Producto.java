@@ -1,18 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package activa.Expendio.modelo;
 
-import java.sql.Timestamp;
+import activa.Expendio.controllers.*;
+import activa.Expendio.persistencia.Interface.*;
+import java.sql.*;
+import utils.*;
 
 /**
  *
  * @author Administrador
  */
 public class Producto {
-    private long id;
+
+    private Long id;
     private String codigo;
     private String nombre;
     private String presentacion;
@@ -23,244 +22,234 @@ public class Producto {
     private boolean precio10Porciento;
     private String codigoBarras;
     private String observaciones;
-    private String estado;
+    private Boolean estado;
     private Usuario usuario;
+    private String accionUsuario;
     private boolean eliminado;
     private Timestamp creacion;
     private Timestamp modificacion;
 
-    
-    /**
-     * @return the codigo
-     */
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
-    /**
-     * @param codigo the codigo to set
-     */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the presentacion
-     */
     public String getPresentacion() {
         return presentacion;
     }
 
-    /**
-     * @param presentacion the presentacion to set
-     */
     public void setPresentacion(String presentacion) {
         this.presentacion = presentacion;
     }
 
-    /**
-     * @return the grupo
-     */
     public GrupoProducto getGrupo() {
         return grupo;
     }
 
-    /**
-     * @param grupo the grupo to set
-     */
     public void setGrupo(GrupoProducto grupo) {
         this.grupo = grupo;
     }
 
-    /**
-     * @return the controlExistencia
-     */
     public boolean isControlExistencia() {
         return controlExistencia;
     }
 
-    /**
-     * @param controlExistencia the controlExistencia to set
-     */
     public void setControlExistencia(boolean controlExistencia) {
         this.controlExistencia = controlExistencia;
     }
 
-    /**
-     * @return the afectaCupo
-     */
     public boolean isAfectaCupo() {
         return afectaCupo;
     }
 
-    /**
-     * @param afectaCupo the afectaCupo to set
-     */
     public void setAfectaCupo(boolean afectaCupo) {
         this.afectaCupo = afectaCupo;
     }
 
-    /**
-     * @return the controlSerial
-     */
     public boolean isControlSerial() {
         return controlSerial;
     }
 
-    /**
-     * @param controlSerial the controlSerial to set
-     */
     public void setControlSerial(boolean controlSerial) {
         this.controlSerial = controlSerial;
     }
 
-    /**
-     * @return the precio10Porciento
-     */
     public boolean isPrecio10Porciento() {
         return precio10Porciento;
     }
 
-    /**
-     * @param precio10Porciento the precio10Porciento to set
-     */
     public void setPrecio10Porciento(boolean precio10Porciento) {
         this.precio10Porciento = precio10Porciento;
     }
 
-    /**
-     * @return the codigoBarras
-     */
     public String getCodigoBarras() {
         return codigoBarras;
     }
 
-    /**
-     * @param codigoBarras the codigoBarras to set
-     */
     public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
 
-    /**
-     * @return the observaciones
-     */
     public String getObservaciones() {
         return observaciones;
     }
 
-    /**
-     * @param observaciones the observaciones to set
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
 
-    /**
-     * @return the estado
-     */
-    public String getEstado() {
+    public Boolean getEstado() {
         return estado;
     }
 
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(String estado) {
+    public void setEstado(Boolean estado) {
         this.estado = estado;
     }
 
-    /**
-     * @return the usuario
-     */
     public Usuario getUsuario() {
         return usuario;
     }
 
-    /**
-     * @param usuario the usuario to set
-     */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    /**
-     * @return the eliminado
-     */
-    public boolean getEliminado() {
+    public boolean isEliminado() {
         return eliminado;
     }
 
-    /**
-     * @param eliminado the eliminado to set
-     */
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }
 
-    /**
-     * @return the creacion
-     */
     public Timestamp getCreacion() {
         return creacion;
     }
 
-    /**
-     * @param creacion the creacion to set
-     */
     public void setCreacion(Timestamp creacion) {
         this.creacion = creacion;
     }
 
-    /**
-     * @return the modificacion
-     */
     public Timestamp getModificacion() {
         return modificacion;
     }
 
-    /**
-     * @param modificacion the modificacion to set
-     */
     public void setModificacion(Timestamp modificacion) {
         this.modificacion = modificacion;
     }
 
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
+    public String getAccionUsuario() {
+        return accionUsuario;
     }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
+    public void setAccionUsuario(String accionUsuario) {
+        this.accionUsuario = accionUsuario;
     }
-    
-    
-    public void eliminar(){
-        this.eliminado = true;
+
+    public String validarCamposObligatorios(boolean esModificar) {
+        if (codigo == null || (codigo != null && codigo.trim().isEmpty())) {
+            return "CODIGO";
+        }
+        if (nombre == null || (nombre != null && nombre.trim().isEmpty())) {
+            return "NOMBRE";
+        }
+        if (presentacion == null || (presentacion != null && presentacion.trim().isEmpty())) {
+            return "PRESENTACION";
+        }
+        if (grupo == null) {
+            return "GRUPO";
+        }
+        if (codigoBarras == null || (codigoBarras != null && codigoBarras.trim().isEmpty())) {
+            return "CODIGOBARRAS";
+        }
+//        if (observaciones == null || (observaciones != null && observaciones.trim().isEmpty())) {
+//            return "OBSERVACIONES";
+//        }
+        if (estado == null) {
+            return "ESTADO";
+        }
+        if (esModificar && id == null) {
+            return "ID";
+        }
+        return null;
     }
-    
-    public boolean estaEliminado(){
-        return eliminado;
+
+    public boolean validarExiste(boolean esModificar) throws ExpendioException {
+        PersistenciaProductoInt persistencia = Servicios.productosController.productosRepository;
+
+        try {
+            boolean existe = false;
+            if (persistencia.validarExiste(this) && !persistencia.existeID(this)) {
+                existe = true;
+            }
+
+            return existe;
+        } catch (Exception ex) {
+            Log.adicionar(ex, "26", usuario, ExpendioException.getMensajeErrorBaseDatos());
+            throw new ExpendioException(ex);
+        }
     }
-    
+
+    public boolean insertar(Usuario usuario) {
+        PersistenciaProductoInt persistencia = Servicios.productosController.productosRepository;
+
+        long ultimoId = persistencia.consultarTodos().size();
+        if (ultimoId == -1) {
+            ultimoId = 0;
+        }
+        ultimoId++;
+
+        id = ultimoId;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioInsertar;
+        this.usuario = usuario;
+        creacion = new Timestamp(System.currentTimeMillis());
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.adicionar(this) != null;
+    }
+
+    public boolean modificar(Usuario usuario) {
+        PersistenciaProductoInt persistencia = Servicios.productosController.productosRepository;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioModificar;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.modificar(this) != null;
+    }
+
+    public boolean borrar(Usuario usuario) {
+        PersistenciaProductoInt persistencia = Servicios.productosController.productosRepository;
+
+        eliminado = true;
+        accionUsuario = DatosBaseDatos.accionUsuarioEliminado;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        persistencia.eliminar(this);
+        return true;
+    }
+
 }

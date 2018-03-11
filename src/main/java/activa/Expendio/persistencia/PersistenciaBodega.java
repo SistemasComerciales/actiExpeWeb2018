@@ -91,7 +91,7 @@ public class PersistenciaBodega implements PersistenciaBodegaInt {
     @Override
     public boolean validarExiste(Bodega bodega) {
         for (int i = 0; i < bodegas.size(); i++) {
-            if (bodega.getCodigo().equals(bodegas.get(i).getCodigo())) {
+            if (bodega.getCodigo().equalsIgnoreCase(bodegas.get(i).getCodigo())) {
                 if (!bodegas.get(i).isEliminado()) {
                     return true;
                 }

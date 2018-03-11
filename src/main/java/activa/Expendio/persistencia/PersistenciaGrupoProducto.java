@@ -95,7 +95,7 @@ public class PersistenciaGrupoProducto implements PersistenciaGrupoProductoInt {
     @Override
     public boolean validarExiste(GrupoProducto grupoProducto) {
         for (int i = 0; i < listaGrupoProductos.size(); i++) {
-            if (grupoProducto.getCodigo().equals(listaGrupoProductos.get(i).getCodigo())) {
+            if (grupoProducto.getCodigo().equalsIgnoreCase(listaGrupoProductos.get(i).getCodigo())) {
                 if (!listaGrupoProductos.get(i).isEliminado()) {
                     return true;
                 }

@@ -173,7 +173,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public boolean existeNUI(Interno interno) {
         for (int i = 0; i < internos.size(); i++) {
             if (!internos.get(i).isEliminado()) {
-                if (interno.getNui().trim().equalsIgnoreCase(internos.get(i).getNui())) {
+                if (interno.getNui().equalsIgnoreCase(internos.get(i).getNui())) {
                     return true;
                 }
             }
@@ -193,7 +193,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public boolean existeTD(Interno interno) {
         for (int i = 0; i < internos.size(); i++) {
             if (!internos.get(i).isEliminado()) {
-                if (interno.getTd().trim().equalsIgnoreCase(internos.get(i).getTd())) {
+                if (interno.getTd().equalsIgnoreCase(internos.get(i).getTd())) {
                     return true;
                 }
             }
