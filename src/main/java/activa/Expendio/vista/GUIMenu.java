@@ -1,6 +1,7 @@
 package activa.Expendio.vista;
 
 import activa.Expendio.ExpendioApplication;
+import activa.Expendio.modelo.Configuracion;
 import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
 import activa.Expendio.vista.utils.*;
@@ -41,8 +42,8 @@ public class GUIMenu extends ClaseGeneral {
 
     private int anchoBotonesPanel1, altoBotonesPanel1;
 
-    public GUIMenu(Usuario usuario, Establecimiento establecimiento) {
-        super(usuario, establecimiento);
+    public GUIMenu(Usuario usuario) {
+        super(usuario);
 
         Imagenes.fondoInternalFrame(NombreImagenes.imFondoMenu, this.getWidth(), this.getHeight(), this);
         anchoBotonesPanel1 = 2 * this.getWidth() / 7;
@@ -563,7 +564,7 @@ public class GUIMenu extends ClaseGeneral {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuario.setFrameAnterior(frame);
-                new GUICatalogoInternos(usuario, establecimiento);
+                new GUICatalogoInternos(usuario);
                 frame.setVisible(false);
             }
         });
@@ -586,11 +587,11 @@ public class GUIMenu extends ClaseGeneral {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuario.setFrameAnterior(frame);
-                new GUIDocumentoFuente(usuario, establecimiento);
+                new GUIDocumentoFuente(usuario);
                 frame.setVisible(false);
-                
+
                 usuario.setFrameAnterior(frame);
-                new GUITransaccion(usuario, establecimiento);
+                new GUITransaccion(usuario);
                 frame.setVisible(false);
             }
         });
@@ -613,7 +614,7 @@ public class GUIMenu extends ClaseGeneral {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuario.setFrameAnterior(frame);
-                new GUIGrupoProducto(usuario, establecimiento);
+                new GUIGrupoProducto(usuario);
                 frame.setVisible(false);
             }
         });
@@ -636,7 +637,7 @@ public class GUIMenu extends ClaseGeneral {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuario.setFrameAnterior(frame);
-                new GUIProducto(usuario, establecimiento);
+                new GUIProducto(usuario);
                 frame.setVisible(false);
             }
         });
@@ -659,7 +660,7 @@ public class GUIMenu extends ClaseGeneral {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuario.setFrameAnterior(frame);
-                new GUICatalogoBodegas(usuario, establecimiento,false);
+                new GUICatalogoBodegas(usuario, false);
                 frame.setVisible(false);
             }
         });
@@ -1600,9 +1601,9 @@ public class GUIMenu extends ClaseGeneral {
 
     @Override
     public void actualizarFrame() {
-        lbl_periodoContable.setText(usuario.getPeriodoContable());
+        lbl_periodoContable.setText(Configuracion.periodoContable);
         lbl_nombreUsuario.setText(usuario.getNombres().trim());
-        lbl_nombreEmpresa.setText(establecimiento.getNombre());
+        lbl_nombreEmpresa.setText(Configuracion.nombreEstablecimiento);
 
         new FechaHora(lbl_fecha);
     }

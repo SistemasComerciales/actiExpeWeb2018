@@ -22,3 +22,9 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+/Log.log
+/config.txt
+/Archivos/
+/iReport-5.6.0/
+/jaspersoftstudio/

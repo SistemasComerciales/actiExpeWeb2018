@@ -1,6 +1,6 @@
 package activa.Expendio.vista.utils;
 
-import activa.Expendio.modelo.Usuario;
+import activa.Expendio.modelo.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.*;
@@ -70,7 +70,7 @@ public class CajaDeTextoConFormato extends JFormattedTextField {
             public void focusLost(FocusEvent arg0) {
                 if (tipo.equals("F")) {
                     if (!txt.getText().replace(" ", "").replace("/", "").isEmpty()) {
-                        Fecha.completarFechaStatic(txt, usuario.getPeriodoContable());
+                        Fecha.completarFechaStatic(txt, Configuracion.periodoContable);
                         String resultado = Fecha.validarFechaDDMMYYYYStatic(txt.getText().trim());
                         if (resultado.equals("mes")) {
                             JOptionPane.showOptionDialog(null, "Ha ingresado un mes inv�lido. Int�ntelo de nuevo", "Error (4182)", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, "aceptar");
@@ -113,9 +113,9 @@ public class CajaDeTextoConFormato extends JFormattedTextField {
                     if (KeyEvent.getKeyText(e.getKeyCode()).equals("H")) {
                         txt.setText(Fecha.fechaActualStatic());
                     } else if (e.getKeyCode() == KeyEvent.VK_I) {
-                        txt.setText("01" + "01" + usuario.getPeriodoContable());
+                        txt.setText("01" + "01" + Configuracion.periodoContable);
                     } else if (e.getKeyCode() == KeyEvent.VK_F) {
-                        txt.setText("31" + "12" + usuario.getPeriodoContable());
+                        txt.setText("31" + "12" + Configuracion.periodoContable);
                     }
                 }
             }

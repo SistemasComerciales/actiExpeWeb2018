@@ -1,12 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package activa.Expendio.modelo;
 
-import java.sql.Timestamp;
+import activa.Expendio.persistencia.Interface.*;
+import activa.Expendio.persistencia.*;
+import activa.Expendio.vista.*;
+import java.sql.*;
+import java.util.*;
 import java.util.Date;
+import javax.swing.*;
+import utils.*;
 
 /**
  *
@@ -371,6 +372,78 @@ public class Interno {
         if (esModificar && id == null) {
             return "ID";
         }
+        return null;
+    }
+
+    public boolean validarExiste(boolean esModificar) throws ExpendioException {
+        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+
+        try {
+            boolean existe = false;
+            if (persistencia.existeTD(this) || persistencia.existeNUI(this)) {
+                existe = true;
+            }
+
+            return existe;
+        } catch (Exception ex) {
+            Log.adicionar(ex, "26", usuario, ExpendioException.getMensajeErrorBaseDatos());
+            throw new ExpendioException(ex);
+        }
+    }
+
+    public boolean insertar(Usuario usuario) {
+        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+
+        long ultimoId = persistencia.getActivos().size() + persistencia.getInactivos().size();
+        if (ultimoId == -1) {
+            ultimoId = 0;
+        }
+        ultimoId++;
+
+        id = ultimoId;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioInsertar;
+        this.usuario = usuario;
+        creacion = new Timestamp(System.currentTimeMillis());
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.adicionar(this) != null;
+    }
+
+    public boolean modificar(Usuario usuario) {
+        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioModificar;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.modificar(this) != null;
+    }
+
+    public static String traerUltimoNumeroTdInterno(ClaseGeneral frame, Usuario usuario) {
+        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+
+        ArrayList<Interno> internos = persistencia.getInternos();
+
+        // Obtener el TD maximo.
+        int max = -1;
+        for (Interno interno : internos) {
+            int td = Integer.parseInt(interno.getTd());
+            if (td > max) {
+                max = td;
+            }
+        }
+
+        if (max == -1) {// no se encontro un interno en el establecimiento
+            int respuesta = frame.option.tipoMensaje(GUIJOption.mensajePregunta, "Numeración actual.", "No se ha encontrado ningún TD en el establecimiento.", " ¿Desea reiniciar la numeración?");
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+            }
+        } else {
+        }
+
         return null;
     }
 
