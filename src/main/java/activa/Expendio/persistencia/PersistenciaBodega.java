@@ -117,6 +117,23 @@ public class PersistenciaBodega implements PersistenciaBodegaInt {
     }
 
     /**
+     * Metodo encargado de traer todos los bodegas activos que no estan
+     * eliminados
+     *
+     * @return
+     */
+    @Override
+    public ArrayList<Bodega> consultarActivosNoEliminados() {
+        ArrayList<Bodega> bodegas = new ArrayList<>();
+        for (int i = 0; i < this.bodegas.size(); i++) {
+            if (!this.bodegas.get(i).isEliminado() && this.bodegas.get(i).getEstado()) {
+                bodegas.add(this.bodegas.get(i));
+            }
+        }
+        return bodegas;
+    }
+
+    /**
      * metodo que consulta una bodega por id
      *
      * @param id

@@ -121,6 +121,23 @@ public class PersistenciaGrupoProducto implements PersistenciaGrupoProductoInt {
     }
 
     /**
+     * Metodo encargado de traer todos los grupos activos que no estan
+     * eliminados
+     *
+     * @return
+     */
+    @Override
+    public ArrayList<GrupoProducto> consultarActivosNoEliminados() {
+        ArrayList<GrupoProducto> grupos = new ArrayList<>();
+        for (int i = 0; i < listaGrupoProductos.size(); i++) {
+            if (!listaGrupoProductos.get(i).isEliminado() && listaGrupoProductos.get(i).getEstado()) {
+                grupos.add(listaGrupoProductos.get(i));
+            }
+        }
+        return grupos;
+    }
+
+    /**
      * metodo que consulta una GrupoProducto por id
      *
      * @param id

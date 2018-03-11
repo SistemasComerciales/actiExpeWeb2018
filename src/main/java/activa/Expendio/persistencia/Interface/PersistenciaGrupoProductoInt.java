@@ -22,6 +22,8 @@ public interface PersistenciaGrupoProductoInt {
     public boolean validarExiste(GrupoProducto grupoProducto);
 
     public ArrayList<GrupoProducto> consultarTodos();
+    
+    public ArrayList<GrupoProducto> consultarActivosNoEliminados();
 
     public GrupoProducto consultarPorId(String id);
 

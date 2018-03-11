@@ -22,6 +22,8 @@ public interface PersistenciaBodegaInt {
     public boolean validarExiste(Bodega bodega);
 
     public ArrayList<Bodega> consultarTodos();
+    
+    public ArrayList<Bodega> consultarActivosNoEliminados();
 
     public Bodega consultarPorId(String id);
 
