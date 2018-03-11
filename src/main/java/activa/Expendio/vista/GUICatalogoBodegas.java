@@ -27,8 +27,8 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
     private CampoLabel lbl_id, lbl_codigo, lbl_nombre, lbl_estado, lbl_usuario, lbl_eliminado, lbl_creacion, lbl_modificacion;
     private CajaDeTexto txt_codigo;
     
-    public GUICatalogoBodegas(Usuario usuario, Establecimiento establecimiento, boolean botonAdicional) {
-        super(usuario, establecimiento, false);
+    public GUICatalogoBodegas(Usuario usuario) {
+        super(usuario, false);
     }
 
     @Override

@@ -50,8 +50,8 @@ public class GUIProducto extends GUIInterfazCatalogos{
     private static int columnaEliminado = 12;
     private static int columnaId = 13;
     
-    public GUIProducto(Usuario usuario, Establecimiento establecimiento ) {
-	super(usuario, establecimiento, false);
+    public GUIProducto(Usuario usuario ) {
+	super(usuario, false);
     }
 
     @Override

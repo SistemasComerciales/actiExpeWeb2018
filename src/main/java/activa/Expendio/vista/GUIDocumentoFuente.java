@@ -52,8 +52,8 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
      * @param usuario
      * @param establecimiento 
      */
-    public GUIDocumentoFuente(Usuario usuario, Establecimiento establecimiento) {
-        super(usuario, establecimiento, false);
+    public GUIDocumentoFuente(Usuario usuario) {
+        super(usuario, false);
     }
 
     @Override

@@ -41,8 +41,8 @@ public class GUIGrupoProducto extends GUIInterfazCatalogos {
     /**
      * constructor
      */
-    public GUIGrupoProducto(Usuario usuario, Establecimiento establecimiento){
-        super(usuario, establecimiento, false);
+    public GUIGrupoProducto(Usuario usuario){
+        super(usuario, false);
         
     }
 

@@ -660,7 +660,7 @@ public class GUIMenu extends ClaseGeneral {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuario.setFrameAnterior(frame);
-                new GUICatalogoBodegas(usuario, false);
+                new GUICatalogoBodegas(usuario);
                 frame.setVisible(false);
             }
         });
