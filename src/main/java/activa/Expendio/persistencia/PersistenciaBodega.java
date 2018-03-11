@@ -56,7 +56,7 @@ public class PersistenciaBodega implements PersistenciaBodegaInt {
     public Bodega modificar(Bodega bodega) {
         Long id = bodega.getId();
         for (int i = 0; i <= bodegas.size(); i++) {
-            if (id == bodegas.get(i).getId()) {
+            if (Objects.equals(id, bodegas.get(i).getId())) {
                 bodegas.set(i, bodega);
                 return bodega;
 

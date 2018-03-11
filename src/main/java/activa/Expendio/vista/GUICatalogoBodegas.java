@@ -128,7 +128,7 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
         dtmTablaGeneral.addColumn("Estado");
         dtmTablaGeneral.addColumn("ID");
 
-        int anchoTotal = anchoPanel / 6;
+        int anchoTotal = anchoPanel / 5;
 
         for (int i = 0; i < tablaGeneral.getColumnCount(); i++) {
             tablaGeneral.getColumnModel().getColumn(i).setMaxWidth(0);
@@ -165,7 +165,7 @@ public class GUICatalogoBodegas extends GUIInterfazCatalogos {
             datosFila[columnaCodigo] = bodega.getCodigo();
             datosFila[columnaNombre] = bodega.getNombre();
 
-            boolean estado = bodega.isEstado();
+            boolean estado = bodega.getEstado();
             String est;
             if (estado) {
                 est = DatosBaseDatos.estadoActivo;

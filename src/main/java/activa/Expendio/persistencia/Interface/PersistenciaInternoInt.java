@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package activa.Expendio.persistencia.Interface;
 
-import activa.Expendio.modelo.Interno;
-import java.util.ArrayList;
+import activa.Expendio.modelo.*;
+import java.util.*;
 
 /**
  *

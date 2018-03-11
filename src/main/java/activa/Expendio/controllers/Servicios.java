@@ -14,6 +14,7 @@ public class Servicios {
     public static UserController userController;
     public static InternosController internosController;
     public static BodegasController bodegasController;
+    public static GruposController gruposController;
 
     /**
      * Inicia todos los servicios REST.
@@ -26,5 +27,6 @@ public class Servicios {
         userController = ac.getBean(UserController.class);
         internosController = ac.getBean(InternosController.class);
         bodegasController = ac.getBean(BodegasController.class);
+        gruposController = ac.getBean(GruposController.class);
     }
 }

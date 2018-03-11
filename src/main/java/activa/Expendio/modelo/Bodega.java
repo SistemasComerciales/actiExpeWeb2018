@@ -3,8 +3,7 @@ package activa.Expendio.modelo;
 import activa.Expendio.controllers.*;
 import activa.Expendio.persistencia.Interface.*;
 import java.sql.*;
-import utils.ExpendioException;
-import utils.Log;
+import utils.*;
 
 /**
  *
@@ -22,116 +21,44 @@ public class Bodega {
     private Timestamp creacion;
     private Timestamp modificacion;
 
-    /**
-     * @return the codigo
-     */
-    public String getCodigo() {
-        return codigo;
-    }
-
-    /**
-     * @return the nombre
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @return the estado
-     */
-    public Boolean isEstado() {
-        return estado;
-    }
-
-    /**
-     * @param codigo the codigo to set
-     */
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
-    }
-
-    /**
-     * @return the usuario
-     */
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    /**
-     * @param usuario the usuario to set
-     */
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    /**
-     * @return the creacion
-     */
-    public Timestamp getCreacion() {
-        return creacion;
-    }
-
-    /**
-     * @param creacion the creacion to set
-     */
-    public void setCreacion(Timestamp creacion) {
-        this.creacion = creacion;
-    }
-
-    /**
-     * @return the modificacion
-     */
-    public Timestamp getModificacion() {
-        return modificacion;
-    }
-
-    /**
-     * @param modificacion the modificacion to set
-     */
-    public void setModificacion(Timestamp modificacion) {
-        this.modificacion = modificacion;
-    }
-
-    /**
-     * @return the id
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * @return the eliminado
-     */
-    public boolean isEliminado() {
-        return eliminado;
+    public String getCodigo() {
+        return codigo;
     }
 
-    /**
-     * @param eliminado the eliminado to set
-     */
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getAccionUsuario() {
@@ -140,6 +67,30 @@ public class Bodega {
 
     public void setAccionUsuario(String accionUsuario) {
         this.accionUsuario = accionUsuario;
+    }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public Timestamp getCreacion() {
+        return creacion;
+    }
+
+    public void setCreacion(Timestamp creacion) {
+        this.creacion = creacion;
+    }
+
+    public Timestamp getModificacion() {
+        return modificacion;
+    }
+
+    public void setModificacion(Timestamp modificacion) {
+        this.modificacion = modificacion;
     }
 
     public String validarCamposObligatorios(boolean esModificar) {
