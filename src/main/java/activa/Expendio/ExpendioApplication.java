@@ -34,6 +34,7 @@ public class ExpendioApplication {
 
                         Servicios.iniciarServicios(args);
                         new GUIInicio(usuario);
+                        a.dispose();
                     } else {
                         if (retorno.trim().equalsIgnoreCase("ERRORBD")) {
                             ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeError, "Base de datos no configurada", "Error! Base de datos no configurada!", "");
