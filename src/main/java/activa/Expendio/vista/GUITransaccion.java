@@ -271,33 +271,34 @@ public class GUITransaccion extends ClaseGeneral {
 		
 		
 		txt_codigo = new CajaDeTexto("G", 20);
-		txt_codigo.setBounds(posicionXTxt, posicionYTxt, tablaPrincipal.getColumnModel().getColumn(1).getMaxWidth(), 20);
+		txt_codigo.setBounds(posicionXTxt, posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaCodigo).getMaxWidth(), 20);
 		this.add(txt_codigo);
 		
 		txt_descripcion = new CajaDeTexto("G", 20);
-		txt_descripcion.setBounds(txt_codigo.getX()+txt_codigo.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(2).getMaxWidth(), 20);
+		txt_descripcion.setBounds(txt_codigo.getX()+txt_codigo.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaDescripcion).getMaxWidth(), 20);
 		this.add(txt_descripcion);
 		txt_descripcion.setEnabled(false);
 		
 		txt_empaque = new CajaDeTexto("G", 20);
-		txt_empaque.setBounds(txt_descripcion.getX()+txt_descripcion.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(3).getMaxWidth(), 20);
+		txt_empaque.setBounds(txt_descripcion.getX()+txt_descripcion.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaEmpaque).getMaxWidth(), 20);
 		this.add(txt_empaque);
 		txt_empaque.setEnabled(false);
 		
 		txt_idBodega = new CajaDeTexto("G", 20);
 		txt_bodega = new CajaDeTexto("G", 20);
+                txt_bodega.setBounds(txt_descripcion.getX()+txt_descripcion.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaBodega).getMaxWidth(), 20);
 		this.add(txt_bodega);
 	
 		txt_cantidad = new CajaDeTexto("D", 20);
-		txt_cantidad.setBounds(txt_bodega.getX()+txt_bodega.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(6).getMaxWidth(), 20);
+		txt_cantidad.setBounds(txt_bodega.getX()+txt_bodega.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaCantidad).getMaxWidth(), 20);
 		this.add(txt_cantidad);
 
 		txt_ValorUnitario = new CajaDeTexto("M", 20);
-		txt_ValorUnitario.setBounds(txt_cantidad.getX()+txt_cantidad.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(7).getMaxWidth(), 20);
+		txt_ValorUnitario.setBounds(txt_cantidad.getX()+txt_cantidad.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaVunitario).getMaxWidth(), 20);
 		this.add(txt_ValorUnitario);
 		
 		txt_valorTotal = new CajaDeTexto("M", 20);
-		txt_valorTotal.setBounds(txt_ValorUnitario.getX()+txt_ValorUnitario.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(8).getMaxWidth(), 20);
+		txt_valorTotal.setBounds(txt_ValorUnitario.getX()+txt_ValorUnitario.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaVtotal).getMaxWidth(), 20);
 		txt_valorTotal.setEnabled(false);
 		this.add(txt_valorTotal);
 	}
@@ -352,33 +353,37 @@ public class GUITransaccion extends ClaseGeneral {
 		//int columna1=ANCHO_PANTALLA/130;
 		int columna1=CargaImagenes.ANCHO_PANTALLA/24;
         
-        tablaPrincipal.getColumnModel().getColumn(columnaCodigo).setMaxWidth(columna1*2);
+        tablaPrincipal.getColumnModel().getColumn(columnaidBodega).setMaxWidth(0);
+        tablaPrincipal.getColumnModel().getColumn(columnaidBodega).setMinWidth(0);
+        tablaPrincipal.getColumnModel().getColumn(columnaidBodega).setPreferredWidth(0);
+                
+        tablaPrincipal.getColumnModel().getColumn(columnaCodigo).setMaxWidth(columna1*3);
         tablaPrincipal.getColumnModel().getColumn(columnaCodigo).setMinWidth(columna1*1);
-        tablaPrincipal.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna1*2);
+        tablaPrincipal.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna1*3);
         
-        tablaPrincipal.getColumnModel().getColumn(columnaDescripcion).setMaxWidth(columna1*7);
+        tablaPrincipal.getColumnModel().getColumn(columnaDescripcion).setMaxWidth(columna1*8);
         tablaPrincipal.getColumnModel().getColumn(columnaDescripcion).setMinWidth(columna1*4);
-        tablaPrincipal.getColumnModel().getColumn(columnaDescripcion).setPreferredWidth(columna1*7);
+        tablaPrincipal.getColumnModel().getColumn(columnaDescripcion).setPreferredWidth(columna1*8);
         
-        tablaPrincipal.getColumnModel().getColumn(columnaEmpaque).setMaxWidth(columna1);
+        tablaPrincipal.getColumnModel().getColumn(columnaEmpaque).setMaxWidth(columna1*3/2);
         tablaPrincipal.getColumnModel().getColumn(columnaEmpaque).setMinWidth(columna1/2);
-        tablaPrincipal.getColumnModel().getColumn(columnaEmpaque).setPreferredWidth(columna1);
+        tablaPrincipal.getColumnModel().getColumn(columnaEmpaque).setPreferredWidth(columna1*3/2);
         
-        tablaPrincipal.getColumnModel().getColumn(columnaBodega).setMaxWidth(columna1);
+        tablaPrincipal.getColumnModel().getColumn(columnaBodega).setMaxWidth(columna1*3/2);
         tablaPrincipal.getColumnModel().getColumn(columnaBodega).setMinWidth(columna1/2);
-        tablaPrincipal.getColumnModel().getColumn(columnaBodega).setPreferredWidth(columna1);
+        tablaPrincipal.getColumnModel().getColumn(columnaBodega).setPreferredWidth(columna1*3/2);
         
-        tablaPrincipal.getColumnModel().getColumn(columnaCantidad).setMaxWidth(columna1*3/2);
+        tablaPrincipal.getColumnModel().getColumn(columnaCantidad).setMaxWidth(columna1*2);
         tablaPrincipal.getColumnModel().getColumn(columnaCantidad).setMinWidth(columna1);
-        tablaPrincipal.getColumnModel().getColumn(columnaCantidad).setPreferredWidth(columna1*3/2);
+        tablaPrincipal.getColumnModel().getColumn(columnaCantidad).setPreferredWidth(columna1*2);
         
-        tablaPrincipal.getColumnModel().getColumn(columnaVunitario).setMaxWidth(columna1*2);
+        tablaPrincipal.getColumnModel().getColumn(columnaVunitario).setMaxWidth(columna1*3);
         tablaPrincipal.getColumnModel().getColumn(columnaVunitario).setMinWidth(columna1);
-        tablaPrincipal.getColumnModel().getColumn(columnaVunitario).setPreferredWidth(columna1*2);
+        tablaPrincipal.getColumnModel().getColumn(columnaVunitario).setPreferredWidth(columna1*3);
         
-        tablaPrincipal.getColumnModel().getColumn(columnaVtotal).setMaxWidth(columna1*5/2);
+        tablaPrincipal.getColumnModel().getColumn(columnaVtotal).setMaxWidth(columna1*4);
         tablaPrincipal.getColumnModel().getColumn(columnaVtotal).setMinWidth(columna1*2);
-        tablaPrincipal.getColumnModel().getColumn(columnaVtotal).setPreferredWidth(columna1*5/2);
+        tablaPrincipal.getColumnModel().getColumn(columnaVtotal).setPreferredWidth(columna1*4);
 	}
     
     @Override
