@@ -1,22 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package activa.Expendio.modelo;
 
-import java.sql.Timestamp;
+import activa.Expendio.*;
+import activa.Expendio.persistencia.Interface.*;
+import java.sql.*;
+import utils.ExpendioException;
+import utils.Log;
 
 /**
  *
  * @author Usuario
  */
 public class Bodega {
-    private long id;
+
+    private Long id;
     private String codigo;
     private String nombre;
-    private boolean estado;
+    private Boolean estado;
     private Usuario usuario;
+    private String accionUsuario;
     private boolean eliminado;
     private Timestamp creacion;
     private Timestamp modificacion;
@@ -38,7 +39,7 @@ public class Bodega {
     /**
      * @return the estado
      */
-    public boolean isEstado() {
+    public Boolean isEstado() {
         return estado;
     }
 
@@ -59,7 +60,7 @@ public class Bodega {
     /**
      * @param estado the estado to set
      */
-    public void setEstado(boolean estado) {
+    public void setEstado(Boolean estado) {
         this.estado = estado;
     }
 
@@ -77,7 +78,6 @@ public class Bodega {
         this.usuario = usuario;
     }
 
-    
     /**
      * @return the creacion
      */
@@ -109,14 +109,14 @@ public class Bodega {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -133,7 +133,88 @@ public class Bodega {
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }
-    
-    
-    
+
+    public String getAccionUsuario() {
+        return accionUsuario;
+    }
+
+    public void setAccionUsuario(String accionUsuario) {
+        this.accionUsuario = accionUsuario;
+    }
+
+    public String validarCamposObligatorios(boolean esModificar) {
+        if (codigo == null || (codigo != null && codigo.trim().isEmpty())) {
+            return "CODIGO";
+        }
+        if (nombre == null || (nombre != null && nombre.trim().isEmpty())) {
+            return "NOMBRE";
+        }
+        if (estado == null) {
+            return "ESTADO";
+        }
+        if (esModificar && id == null) {
+            return "ID";
+        }
+        return null;
+    }
+
+    public boolean validarExiste(boolean esModificar) throws ExpendioException {
+        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+
+        try {
+            boolean existe = false;
+            if (persistencia.validarExiste(this) && !persistencia.existeID(this)) {
+                existe = true;
+            }
+
+            return existe;
+        } catch (Exception ex) {
+            Log.adicionar(ex, "26", usuario, ExpendioException.getMensajeErrorBaseDatos());
+            throw new ExpendioException(ex);
+        }
+    }
+
+    public boolean insertar(Usuario usuario) {
+        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+
+        long ultimoId = persistencia.consultarTodos().size();
+        if (ultimoId == -1) {
+            ultimoId = 0;
+        }
+        ultimoId++;
+
+        id = ultimoId;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioInsertar;
+        this.usuario = usuario;
+        creacion = new Timestamp(System.currentTimeMillis());
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.adicionar(this) != null;
+    }
+
+    public boolean modificar(Usuario usuario) {
+        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioModificar;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.modificar(this) != null;
+    }
+
+    public boolean borrar(Usuario usuario) {
+        PersistenciaBodegaInt persistencia = ExpendioApplication.bodegasController.bodegasRepository;
+
+        eliminado = true;
+        accionUsuario = DatosBaseDatos.accionUsuarioEliminado;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        persistencia.eliminar(this);
+        return true;
+    }
+
 }

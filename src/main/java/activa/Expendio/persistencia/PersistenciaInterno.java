@@ -39,22 +39,6 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     }
 
     /**
-     * Metodo encargado de eliminar el interno
-     *
-     * @param interno
-     */
-    @Override
-    public void desactivar(Interno interno) {
-        interno.desactivar();
-        for (int i = 0; i < internos.size(); i++) {
-            if (interno.getId() == internos.get(i).getId()) {
-                internos.set(i, interno);
-                break;
-            }
-        }
-    }
-
-    /**
      * Metodo encargado de traer todos los productos que estan activos
      *
      * @return
@@ -77,7 +61,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public ArrayList<Interno> getActivos() {
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for (int i = 0; i < internos.size(); i++) {
-            if (internos.get(i).estaActivo()) {
+            if (internos.get(i).getEstado()) {
                 internosRetorno.add(internos.get(i));
             }
         }
@@ -93,7 +77,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public ArrayList<Interno> getInactivos() {
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for (int i = 0; i < internos.size(); i++) {
-            if (!internos.get(i).estaActivo()) {
+            if (!internos.get(i).getEstado()) {
                 internosRetorno.add(internos.get(i));
             }
         }
@@ -107,9 +91,9 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
      */
     @Override
     public void eliminar(Interno interno) {
-        interno.eliminar();
         for (int i = 0; i < internos.size(); i++) {
-            if (interno.getId() == internos.get(i).getId()) {
+            if (Objects.equals(interno.getId(), internos.get(i).getId())) {
+                internos.get(i).setEliminado(true);
                 internos.set(i, interno);
                 break;
             }
@@ -125,7 +109,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public ArrayList<Interno> getEliminados() {
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for (int i = 0; i < internos.size(); i++) {
-            if (internos.get(i).estaEliminado()) {
+            if (internos.get(i).isEliminado()) {
                 internosRetorno.add(internos.get(i));
             }
         }
@@ -141,7 +125,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public ArrayList<Interno> getNoEliminados() {
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for (int i = 0; i < internos.size(); i++) {
-            if (!internos.get(i).estaEliminado()) {
+            if (!internos.get(i).isEliminado()) {
                 internosRetorno.add(internos.get(i));
             }
         }
@@ -158,7 +142,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public ArrayList<Interno> getNoEliminadosYActivos() {
         ArrayList<Interno> internosRetorno = new ArrayList<>();
         for (int i = 0; i < internos.size(); i++) {
-            if (!internos.get(i).estaEliminado() && internos.get(i).estaActivo()) {
+            if (!internos.get(i).isEliminado() && internos.get(i).getEstado()) {
                 internosRetorno.add(internos.get(i));
             }
         }
@@ -174,7 +158,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     @Override
     public Interno modificar(Interno interno) {
         for (int i = 0; i < internos.size(); i++) {
-            if (interno.getId() == internos.get(i).getId()) {
+            if (Objects.equals(interno.getId(), internos.get(i).getId())) {
                 internos.set(i, interno);
                 return interno;
             }
@@ -193,8 +177,10 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     @Override
     public boolean existeNUI(Interno interno) {
         for (int i = 0; i < internos.size(); i++) {
-            if (interno.getNui().trim().equalsIgnoreCase(internos.get(i).getNui())) {
-                return true;
+            if (!internos.get(i).isEliminado()) {
+                if (interno.getNui().trim().equalsIgnoreCase(internos.get(i).getNui())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -211,8 +197,10 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     @Override
     public boolean existeTD(Interno interno) {
         for (int i = 0; i < internos.size(); i++) {
-            if (interno.getTd().trim().equalsIgnoreCase(internos.get(i).getTd())) {
-                return true;
+            if (!internos.get(i).isEliminado()) {
+                if (interno.getTd().trim().equalsIgnoreCase(internos.get(i).getTd())) {
+                    return true;
+                }
             }
         }
         return false;

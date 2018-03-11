@@ -589,10 +589,6 @@ public class GUIMenu extends ClaseGeneral {
                 Configuracion.setFrameAnterior(frame);
                 new GUIDocumentoFuente(usuario);
                 frame.setVisible(false);
-
-                Configuracion.setFrameAnterior(frame);
-                new GUITransaccion(usuario);
-                frame.setVisible(false);
             }
         });
 

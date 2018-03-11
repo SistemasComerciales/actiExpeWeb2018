@@ -278,7 +278,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         tablaGeneral.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaGeneral.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tablaGeneral.getTableHeader().setReorderingAllowed(false);
-        tablaGeneral.setDefaultRenderer(Object.class, new Tabla.MiRenderColumnasPesos());
+        tablaGeneral.setDefaultRenderer(Object.class, new Tabla.MiRender());
         tablaGeneral.setShowHorizontalLines(false);
         tablaGeneral.setBorder(null);
         tablaGeneral.setOpaque(false);
@@ -374,39 +374,37 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
         PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
 
-        ArrayList<Interno> internos = persistencia.getInternos();
+        ArrayList<Interno> internos = persistencia.getNoEliminados();
 
         for (Interno interno : internos) {
-            if (!interno.estaEliminado()) {
-                String[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
+            String[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
 
-                datosFila[columnaId] = String.valueOf(interno.getId());
+            datosFila[columnaId] = String.valueOf(interno.getId());
 
-                datosFila[columnaTd] = interno.getTd();
-                datosFila[columnaNui] = interno.getNui();
-                datosFila[columnaPrimerApellido] = interno.getPrimerApellido();
-                datosFila[columnaSegundoApellido] = interno.getSegundoApellido();
-                datosFila[columnaPrimerNombre] = interno.getPrimerNombre();
-                datosFila[columnaSegundoNombre] = interno.getSegundoNombre();
-                datosFila[columnaNacionalidad] = interno.getNacionalidad();
-                datosFila[columnaSituacionJuridica] = interno.getSituacionJuridica();
-                datosFila[columnaFechaIngreso] = interno.getFechaIngreso() != null ? Fecha.obtenerFechaString(interno.getFechaIngreso()) : "";
-                datosFila[columnaFechaSalida] = interno.getFechaSalida() != null ? Fecha.obtenerFechaString(interno.getFechaSalida()) : "";
-                datosFila[columnaDelito] = interno.getDelito();
-                datosFila[columnaObservaciones] = interno.getObservaciones();
-                datosFila[columnaRutaImagen] = interno.getRutaImagen();
+            datosFila[columnaTd] = interno.getTd();
+            datosFila[columnaNui] = interno.getNui();
+            datosFila[columnaPrimerApellido] = interno.getPrimerApellido();
+            datosFila[columnaSegundoApellido] = interno.getSegundoApellido();
+            datosFila[columnaPrimerNombre] = interno.getPrimerNombre();
+            datosFila[columnaSegundoNombre] = interno.getSegundoNombre();
+            datosFila[columnaNacionalidad] = interno.getNacionalidad();
+            datosFila[columnaSituacionJuridica] = interno.getSituacionJuridica();
+            datosFila[columnaFechaIngreso] = interno.getFechaIngreso() != null ? Fecha.obtenerFechaString(interno.getFechaIngreso()) : "";
+            datosFila[columnaFechaSalida] = interno.getFechaSalida() != null ? Fecha.obtenerFechaString(interno.getFechaSalida()) : "";
+            datosFila[columnaDelito] = interno.getDelito();
+            datosFila[columnaObservaciones] = interno.getObservaciones();
+            datosFila[columnaRutaImagen] = interno.getRutaImagen();
 
-                boolean estado = interno.getEstado();
-                String est;
-                if (estado) {
-                    est = DatosBaseDatos.estadoActivo;
-                } else {
-                    est = DatosBaseDatos.estadoInactivo;
-                }
-                datosFila[columnaEstado] = est;
-
-                dtmTablaGeneral.addRow(datosFila);
+            boolean estado = interno.getEstado();
+            String est;
+            if (estado) {
+                est = DatosBaseDatos.estadoActivo;
+            } else {
+                est = DatosBaseDatos.estadoInactivo;
             }
+            datosFila[columnaEstado] = est;
+
+            dtmTablaGeneral.addRow(datosFila);
         }
 //        try {
 //        } catch (ExpendioException ex) {
@@ -497,7 +495,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     }
 
     @Override
-    protected void accionBotonAgregar() {// Insertando nuevo cargo
+    protected void accionBotonAgregar() {// Insertando nuevo interno
         try {
             Interno interno = setValoresInterno();
 
@@ -536,7 +534,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     }
 
     @Override
-    protected void accionBotonAgregarModificar() {// Editando cargo seleccionado de la tabla
+    protected void accionBotonAgregarModificar() {// Editando interno seleccionado de la tabla
         try {
             Interno interno = setValoresInterno();
 

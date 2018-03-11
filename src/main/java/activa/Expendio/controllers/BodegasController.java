@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  *
- * @author Avuunita
+ * @author Avuuna la Luz del Alba
  */
 @RestController
-@RequestMapping(value = "/activaExpendio/V1/internos")
-public class InternosController {
+@RequestMapping(value = "/activaExpendio/V1/bodegas")
+public class BodegasController {
 
     @Autowired
-    public PersistenciaInternoInt internosRepository;
+    public PersistenciaBodegaInt bodegasRepository;
+
 }

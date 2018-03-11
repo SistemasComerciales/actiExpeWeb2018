@@ -16,8 +16,6 @@ public interface PersistenciaInternoInt {
 
     public Interno adicionar(Interno interno);
 
-    public void desactivar(Interno interno);
-
     public ArrayList<Interno> getInternos();
 
     public ArrayList<Interno> getActivos();
