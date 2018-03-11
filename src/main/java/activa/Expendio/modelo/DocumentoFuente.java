@@ -1,18 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package activa.Expendio.modelo;
 
-import java.sql.Timestamp;
+import activa.Expendio.controllers.*;
+import activa.Expendio.persistencia.Interface.*;
+import java.sql.*;
+import utils.*;
 
 /**
  *
  * @author Usuario
  */
 public class DocumentoFuente {
-    private long id;
+
+    private Long id;
     private String codigo;
     private String nombre;
     private String accion;
@@ -25,268 +24,247 @@ public class DocumentoFuente {
     private boolean listaPrecio;
     private boolean costeoInventario;
     private int idBodega;
-    private boolean estado;
+    private Boolean estado;
     private Usuario usuario;
+    private String accionUsuario;
     private boolean eliminado;
     private Timestamp creacion;
     private Timestamp modificacion;
 
-    
-    /**
-     * @return the codigo
-     */
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
-    
-    
-    /**
-     * @param codigo the codigo to set
-     */
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the accion
-     */
     public String getAccion() {
         return accion;
     }
 
-    /**
-     * @param accion the accion to set
-     */
     public void setAccion(String accion) {
         this.accion = accion;
     }
 
-    /**
-     * @return the aplica
-     */
     public String getAplica() {
         return aplica;
     }
 
-    /**
-     * @param aplica the aplica to set
-     */
     public void setAplica(String aplica) {
         this.aplica = aplica;
     }
 
-    /**
-     * @return the numera
-     */
     public boolean isNumera() {
         return numera;
     }
 
-    /**
-     * @param numera the numera to set
-     */
     public void setNumera(boolean numera) {
         this.numera = numera;
     }
 
-    /**
-     * @return the numero
-     */
     public String getNumero() {
         return numero;
     }
 
-    /**
-     * @param numero the numero to set
-     */
     public void setNumero(String numero) {
         this.numero = numero;
     }
 
-    /**
-     * @return the controlExistencia
-     */
     public boolean isControlExistencia() {
         return controlExistencia;
     }
 
-    /**
-     * @param controlExistencia the controlExistencia to set
-     */
     public void setControlExistencia(boolean controlExistencia) {
         this.controlExistencia = controlExistencia;
     }
 
-    /**
-     * @return the docBase
-     */
     public boolean isDocBase() {
         return docBase;
     }
 
-    /**
-     * @param docBase the docBase to set
-     */
     public void setDocBase(boolean docBase) {
         this.docBase = docBase;
     }
 
-    /**
-     * @return the precioFijo
-     */
     public boolean isPrecioFijo() {
         return precioFijo;
     }
 
-    /**
-     * @param precioFijo the precioFijo to set
-     */
     public void setPrecioFijo(boolean precioFijo) {
         this.precioFijo = precioFijo;
     }
 
-    /**
-     * @return the listaPrecio
-     */
     public boolean isListaPrecio() {
         return listaPrecio;
     }
 
-    /**
-     * @param listaPrecio the listaPrecio to set
-     */
     public void setListaPrecio(boolean listaPrecio) {
         this.listaPrecio = listaPrecio;
     }
 
-    /**
-     * @return the costeoInventario
-     */
     public boolean isCosteoInventario() {
         return costeoInventario;
     }
 
-    /**
-     * @param costeoInventario the costeoInventario to set
-     */
     public void setCosteoInventario(boolean costeoInventario) {
         this.costeoInventario = costeoInventario;
     }
 
-    /**
-     * @return the idBodega
-     */
     public int getIdBodega() {
         return idBodega;
     }
 
-    /**
-     * @param idBodega the idBodega to set
-     */
     public void setIdBodega(int idBodega) {
         this.idBodega = idBodega;
     }
 
-    /**
-     * @return the estado
-     */
-    public boolean isEstado() {
+    public Boolean getEstado() {
         return estado;
     }
 
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(boolean estado) {
+    public void setEstado(Boolean estado) {
         this.estado = estado;
     }
 
-    /**
-     * @return the usuario
-     */
     public Usuario getUsuario() {
         return usuario;
     }
 
-    /**
-     * @param usuario the usuario to set
-     */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-
-
-    /**
-     * @return the creacion
-     */
-    public Timestamp getCreacion() {
-        return creacion;
+    public String getAccionUsuario() {
+        return accionUsuario;
     }
 
-    /**
-     * @param creacion the creacion to set
-     */
-    public void setCreacion(Timestamp creacion) {
-        this.creacion = creacion;
+    public void setAccionUsuario(String accionUsuario) {
+        this.accionUsuario = accionUsuario;
     }
 
-    /**
-     * @return the modificacion
-     */
-    public Timestamp getModificacion() {
-        return modificacion;
-    }
-
-    /**
-     * @param modificacion the modificacion to set
-     */
-    public void setModificacion(Timestamp modificacion) {
-        this.modificacion = modificacion;
-    }
-
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the eliminado
-     */
     public boolean isEliminado() {
         return eliminado;
     }
 
-    /**
-     * @param eliminado the eliminado to set
-     */
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }
-    
-    
+
+    public Timestamp getCreacion() {
+        return creacion;
+    }
+
+    public void setCreacion(Timestamp creacion) {
+        this.creacion = creacion;
+    }
+
+    public Timestamp getModificacion() {
+        return modificacion;
+    }
+
+    public void setModificacion(Timestamp modificacion) {
+        this.modificacion = modificacion;
+    }
+
+    public String validarCamposObligatorios(boolean esModificar) {
+        if (codigo == null || (codigo != null && codigo.trim().isEmpty())) {
+            return "CODIGO";
+        }
+        if (nombre == null || (nombre != null && nombre.trim().isEmpty())) {
+            return "NOMBRE";
+        }
+        if (accion == null || (accion != null && accion.trim().isEmpty())) {
+            return "ACCION";
+        }
+        if (aplica == null || (aplica != null && aplica.trim().isEmpty())) {
+            return "APLICA";
+        }
+        if (numera && (numero == null || (numero != null && numero.trim().isEmpty()))) {
+            return "NUMERO";
+        }
+        if (estado == null) {
+            return "ESTADO";
+        }
+        if (esModificar && id == null) {
+            return "ID";
+        }
+        return null;
+    }
+
+    public boolean validarExiste(boolean esModificar) throws ExpendioException {
+        PersistenciaDocFuenteInt persistencia = Servicios.documentosController.documentosRepository;
+
+        try {
+            boolean existe = false;
+            if (persistencia.validarExiste(this) && !persistencia.existeID(this)) {
+                existe = true;
+            }
+
+            return existe;
+        } catch (Exception ex) {
+            Log.adicionar(ex, "26", usuario, ExpendioException.getMensajeErrorBaseDatos());
+            throw new ExpendioException(ex);
+        }
+    }
+
+    public boolean insertar(Usuario usuario) {
+        PersistenciaDocFuenteInt persistencia = Servicios.documentosController.documentosRepository;
+
+        long ultimoId = persistencia.consultarTodos().size();
+        if (ultimoId == -1) {
+            ultimoId = 0;
+        }
+        ultimoId++;
+
+        id = ultimoId;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioInsertar;
+        this.usuario = usuario;
+        creacion = new Timestamp(System.currentTimeMillis());
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.adicionar(this) != null;
+    }
+
+    public boolean modificar(Usuario usuario) {
+        PersistenciaDocFuenteInt persistencia = Servicios.documentosController.documentosRepository;
+
+        eliminado = false;
+        accionUsuario = DatosBaseDatos.accionUsuarioModificar;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        return persistencia.modificar(this) != null;
+    }
+
+    public boolean borrar(Usuario usuario) {
+        PersistenciaDocFuenteInt persistencia = Servicios.documentosController.documentosRepository;
+
+        eliminado = true;
+        accionUsuario = DatosBaseDatos.accionUsuarioEliminado;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        persistencia.eliminar(this);
+        return true;
+    }
+
 }
