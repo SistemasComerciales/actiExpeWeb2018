@@ -38,4 +38,6 @@ public interface PersistenciaInternoInt {
 
     public boolean existeTD(Interno interno);
 
+    public boolean existeID(Interno interno);
+
 }

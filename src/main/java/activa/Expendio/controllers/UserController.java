@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 public class UserController  {
 
     @Autowired
-    private PersistenciaUsuarioInt userRepository;
+    public PersistenciaUsuarioInt userRepository;
     
     
     @RequestMapping( value = "/login", method = RequestMethod.POST )

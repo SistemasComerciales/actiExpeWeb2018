@@ -563,7 +563,7 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoInternos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                usuario.setFrameAnterior(frame);
+                Configuracion.setFrameAnterior(frame);
                 new GUICatalogoInternos(usuario);
                 frame.setVisible(false);
             }
@@ -586,11 +586,11 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoDocumentos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                usuario.setFrameAnterior(frame);
+                Configuracion.setFrameAnterior(frame);
                 new GUIDocumentoFuente(usuario);
                 frame.setVisible(false);
 
-                usuario.setFrameAnterior(frame);
+                Configuracion.setFrameAnterior(frame);
                 new GUITransaccion(usuario);
                 frame.setVisible(false);
             }
@@ -613,7 +613,7 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoGrupos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                usuario.setFrameAnterior(frame);
+                Configuracion.setFrameAnterior(frame);
                 new GUIGrupoProducto(usuario);
                 frame.setVisible(false);
             }
@@ -636,7 +636,7 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoProductos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                usuario.setFrameAnterior(frame);
+                Configuracion.setFrameAnterior(frame);
                 new GUIProducto(usuario);
                 frame.setVisible(false);
             }
@@ -659,7 +659,7 @@ public class GUIMenu extends ClaseGeneral {
         btn_catalogoBodegas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                usuario.setFrameAnterior(frame);
+                Configuracion.setFrameAnterior(frame);
                 new GUICatalogoBodegas(usuario);
                 frame.setVisible(false);
             }

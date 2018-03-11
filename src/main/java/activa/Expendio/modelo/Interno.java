@@ -1,5 +1,7 @@
 package activa.Expendio.modelo;
 
+import activa.Expendio.ExpendioApplication;
+import activa.Expendio.controllers.InternosController;
 import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.persistencia.*;
 import activa.Expendio.vista.*;
@@ -297,11 +299,11 @@ public class Interno {
     }
 
     public void eliminar() {
-        estado = false;
+        eliminado = false;
     }
 
     public boolean estaEliminado() {
-        return estado;
+        return eliminado;
     }
 
     /**
@@ -342,9 +344,9 @@ public class Interno {
         if (primerNombre == null || (primerNombre != null && primerNombre.trim().isEmpty())) {
             return "PRIMERNOMBRE";
         }
-        if (segundoNombre == null || (segundoNombre != null && segundoNombre.trim().isEmpty())) {
-            return "SEGUNDONOMBRE";
-        }
+//        if (segundoNombre == null || (segundoNombre != null && segundoNombre.trim().isEmpty())) {
+//            return "SEGUNDONOMBRE";
+//        }
         if (nacionalidad == null || (nacionalidad != null && nacionalidad.trim().isEmpty())) {
             return "NACIONALIDAD";
         }
@@ -376,11 +378,11 @@ public class Interno {
     }
 
     public boolean validarExiste(boolean esModificar) throws ExpendioException {
-        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
 
         try {
             boolean existe = false;
-            if (persistencia.existeTD(this) || persistencia.existeNUI(this)) {
+            if ((persistencia.existeTD(this) || persistencia.existeNUI(this)) && !persistencia.existeID(this)) {
                 existe = true;
             }
 
@@ -392,9 +394,9 @@ public class Interno {
     }
 
     public boolean insertar(Usuario usuario) {
-        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
 
-        long ultimoId = persistencia.getActivos().size() + persistencia.getInactivos().size();
+        long ultimoId = persistencia.getInternos().size();
         if (ultimoId == -1) {
             ultimoId = 0;
         }
@@ -412,7 +414,7 @@ public class Interno {
     }
 
     public boolean modificar(Usuario usuario) {
-        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
 
         eliminado = false;
         accionUsuario = DatosBaseDatos.accionUsuarioModificar;
@@ -422,29 +424,38 @@ public class Interno {
         return persistencia.modificar(this) != null;
     }
 
-    public static String traerUltimoNumeroTdInterno(ClaseGeneral frame, Usuario usuario) {
-        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+    public boolean borrar(Usuario usuario) {
+        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
+
+        eliminado = true;
+        accionUsuario = DatosBaseDatos.accionUsuarioEliminado;
+        this.usuario = usuario;
+        modificacion = new Timestamp(System.currentTimeMillis());
+
+        persistencia.eliminar(this);
+        return true;
+    }
+
+    public static String traerUltimoNumeroTdInterno(Usuario usuario) {
+        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
 
         ArrayList<Interno> internos = persistencia.getInternos();
 
         // Obtener el TD maximo.
-        int max = -1;
+        long max = -1;
         for (Interno interno : internos) {
-            int td = Integer.parseInt(interno.getTd());
+            long td = Long.parseLong(interno.getTd());
             if (td > max) {
                 max = td;
             }
         }
 
         if (max == -1) {// no se encontro un interno en el establecimiento
-            int respuesta = frame.option.tipoMensaje(GUIJOption.mensajePregunta, "Numeración actual.", "No se ha encontrado ningún TD en el establecimiento.", " ¿Desea reiniciar la numeración?");
-
-            if (respuesta == JOptionPane.YES_OPTION) {
-            }
+            ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeInformacion, "Numeración actual.", "No se ha encontrado ningún TD en el establecimiento.", " Se reiniciará la numeración.");
+            return Configuracion.codigoEstablecimiento + "000000";
         } else {
+            return String.valueOf(max);
         }
-
-        return null;
     }
 
 }

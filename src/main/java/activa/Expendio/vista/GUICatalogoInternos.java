@@ -1,7 +1,7 @@
 package activa.Expendio.vista;
 
+import activa.Expendio.*;
 import activa.Expendio.modelo.*;
-import activa.Expendio.persistencia.*;
 import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.utils.*;
 import java.awt.*;
@@ -372,15 +372,15 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         deshacerFiltroTablaGeneral();
         Tabla.eliminarFilasTabla(dtmTablaGeneral);
 
-        PersistenciaInternoInt persistencia = new PersistenciaInterno();
+        PersistenciaInternoInt persistencia = ExpendioApplication.internosController.internosRepository;
 
         ArrayList<Interno> internos = persistencia.getInternos();
 
         for (Interno interno : internos) {
             if (!interno.estaEliminado()) {
-                Object[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
+                String[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
 
-                datosFila[columnaId] = interno.getId();
+                datosFila[columnaId] = String.valueOf(interno.getId());
 
                 datosFila[columnaTd] = interno.getTd();
                 datosFila[columnaNui] = interno.getNui();
@@ -390,8 +390,8 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
                 datosFila[columnaSegundoNombre] = interno.getSegundoNombre();
                 datosFila[columnaNacionalidad] = interno.getNacionalidad();
                 datosFila[columnaSituacionJuridica] = interno.getSituacionJuridica();
-                datosFila[columnaFechaIngreso] = Fecha.obtenerFechaString(interno.getFechaIngreso());
-                datosFila[columnaFechaSalida] = Fecha.obtenerFechaString(interno.getFechaSalida());
+                datosFila[columnaFechaIngreso] = interno.getFechaIngreso() != null ? Fecha.obtenerFechaString(interno.getFechaIngreso()) : "";
+                datosFila[columnaFechaSalida] = interno.getFechaSalida() != null ? Fecha.obtenerFechaString(interno.getFechaSalida()) : "";
                 datosFila[columnaDelito] = interno.getDelito();
                 datosFila[columnaObservaciones] = interno.getObservaciones();
                 datosFila[columnaRutaImagen] = interno.getRutaImagen();
@@ -439,7 +439,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    btn_foto.doClick();
+                    accionBotonFoto();
                 } else {
                     ValidacionCampos.teclasDireccion(e, txt_observaciones, btn_agregar, null, null, btn_foto);
                 }
@@ -468,9 +468,14 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
                 boolean selecciono = seleccionarImagen(txt_foto.getText().trim());
                 if (!selecciono) {
                     txt_foto.setText("");
+                    btn_foto.grabFocus();
+                } else {
+                    btn_agregar.grabFocus();
                 }
             } else {
                 option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", "¡Error! La ubicación de la foto es demasiado larga.", "(Longitud máxima: " + longitudMaximaFoto + ")");
+                txt_foto.setText("");
+                btn_foto.grabFocus();
             }
         }
     }
@@ -625,21 +630,23 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
         boolean correcto = true;
 
-        correcto = correcto && validarCampo(campos, "ID", "Por favor seleccione un interno.", txt_td);
-        correcto = correcto && validarCampo(campos, "TD", "Por favor ingrese el TD.", txt_td);
-        correcto = correcto && validarCampo(campos, "NUI", "Por favor ingrese el NUI.", txt_nui);
-        correcto = correcto && validarCampo(campos, "PRIMERAPELLIDO", "Por favor ingrese el primer apellido.", txt_primerApellido);
-        correcto = correcto && validarCampo(campos, "SEGUNDOAPELLIDO", "Por favor ingrese el segundo apellido.", txt_segundoApellido);
-        correcto = correcto && validarCampo(campos, "PRIMERNOMBRE", "Por favor ingrese el primer nombre.", txt_primerNombre);
-        correcto = correcto && validarCampo(campos, "SEGUNDONOMBRE", "Por favor ingrese el segundo nombre.", txt_segundoNombre);
-        correcto = correcto && validarCampo(campos, "NACIONALIDAD", "Por favor ingrese la nacionalidad.", txt_nacionalidad);
-        correcto = correcto && validarCampo(campos, "SITUACIONJURIDICA", "Por favor ingrese la situación jurídica.", txt_situacionJuridica);
-        correcto = correcto && validarCampo(campos, "FECHAINGRESO", "Por favor ingrese la fecha de ingreso.", txt_fechaIngreso);
-//        correcto = correcto && validarCampo(campos, "FECHASALIDA", "Por favor ingrese la fecha de salida.",txt_fechaSalida);
-//        correcto = correcto && validarCampo(campos, "DELITO", "Por favor ingrese el delito.",txt_delito);
-//        correcto = correcto && validarCampo(campos, "OBSERVACIONES", "Por favor ingrese las observaciones.",txt_observaciones);
-        correcto = correcto && validarCampo(campos, "RUTAFOTO", "Por favor ingrese la foto.", txt_foto);
-        correcto = correcto && validarCampo(campos, "ESTADO", "Por favor ingrese el estado.", combo_estado);
+        if (campos != null) {
+            correcto = correcto && validarCampo(campos, "ID", "Por favor seleccione un interno.", txt_td);
+            correcto = correcto && validarCampo(campos, "TD", "Por favor ingrese el TD.", txt_td);
+            correcto = correcto && validarCampo(campos, "NUI", "Por favor ingrese el NUI.", txt_nui);
+            correcto = correcto && validarCampo(campos, "PRIMERAPELLIDO", "Por favor ingrese el primer apellido.", txt_primerApellido);
+            correcto = correcto && validarCampo(campos, "SEGUNDOAPELLIDO", "Por favor ingrese el segundo apellido.", txt_segundoApellido);
+            correcto = correcto && validarCampo(campos, "PRIMERNOMBRE", "Por favor ingrese el primer nombre.", txt_primerNombre);
+//            correcto = correcto && validarCampo(campos, "SEGUNDONOMBRE", "Por favor ingrese el segundo nombre.", txt_segundoNombre);
+            correcto = correcto && validarCampo(campos, "NACIONALIDAD", "Por favor ingrese la nacionalidad.", txt_nacionalidad);
+            correcto = correcto && validarCampo(campos, "SITUACIONJURIDICA", "Por favor ingrese la situación jurídica.", txt_situacionJuridica);
+            correcto = correcto && validarCampo(campos, "FECHAINGRESO", "Por favor ingrese la fecha de ingreso.", txt_fechaIngreso);
+//            correcto = correcto && validarCampo(campos, "FECHASALIDA", "Por favor ingrese la fecha de salida.", txt_fechaSalida);
+//            correcto = correcto && validarCampo(campos, "DELITO", "Por favor ingrese el delito.", txt_delito);
+//            correcto = correcto && validarCampo(campos, "OBSERVACIONES", "Por favor ingrese las observaciones.", txt_observaciones);
+            correcto = correcto && validarCampo(campos, "RUTAFOTO", "Por favor ingrese la foto.", txt_foto);
+            correcto = correcto && validarCampo(campos, "ESTADO", "Por favor ingrese el estado.", combo_estado);
+        }
 
         correcto = correcto && validarExiste(esModificar, interno);
 
@@ -678,9 +685,11 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
             int model = tablaGeneral.convertRowIndexToModel(selected);
 
-            idInterno = (Long) dtmTablaGeneral.getValueAt(model, columnaId);
+            idInterno = Long.parseLong((String) dtmTablaGeneral.getValueAt(model, columnaId));
 
             txt_td.setText((String) dtmTablaGeneral.getValueAt(model, columnaTd));
+            txt_td.setEnabled(false);
+
             txt_nui.setText((String) dtmTablaGeneral.getValueAt(model, columnaNui));
             txt_primerApellido.setText((String) dtmTablaGeneral.getValueAt(model, columnaPrimerApellido));
 
@@ -840,82 +849,42 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         } else {
             int fila = tablaGeneral.convertRowIndexToModel(selected);
 
-//            String idCargo = dtmTablaGeneral.getValueAt(fila, columnaId).toString();
-//            cargo.inicializarCampos();
-//            cargo.setIdCargo(idCargo);
-//
-//            String idConcepto = dtmTablaGeneral.getValueAt(fila, columnaIdConcepto).toString();
-//            Concepto concepto = new Concepto(usuario);
-//            concepto.setIdConcepto(idConcepto);
-//            cargo.setConcepto(concepto);
-//
-//            String idAlumno = dtmTablaGeneral.getValueAt(fila, columnaIdAlumno).toString();
-//            Alumnos alumno = new Alumnos(usuario);
-//            alumno.setIdAlumno(idAlumno);
-//            cargo.setAlumno(alumno);
-//
-//            cargo.setAnio(dtmTablaGeneral.getValueAt(fila, columnaAnio).toString());
-//            cargo.setMes0(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes0).toString()));
-//
-//            cargo.setMes1(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes1).toString()));
-//            cargo.setMes2(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes2).toString()));
-//            cargo.setMes3(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes3).toString()));
-//            cargo.setMes4(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes4).toString()));
-//            cargo.setMes5(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes5).toString()));
-//            cargo.setMes6(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes6).toString()));
-//            cargo.setMes7(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes7).toString()));
-//            cargo.setMes8(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes8).toString()));
-//            cargo.setMes9(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes9).toString()));
-//            cargo.setMes10(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes10).toString()));
-//            cargo.setMes11(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes11).toString()));
-//            cargo.setMes12(Formatos.quitarFormatoValorString(dtmTablaGeneral.getValueAt(fila, columnaMes12).toString()));
-//
-//            cargo.setBeca(dtmTablaGeneral.getValueAt(fila, columnaBeca).toString());
-//            cargo.setPorcentajeBeca(Formatos.QuitaformatoPorcentaje(dtmTablaGeneral.getValueAt(fila, columnaPorcentajeBeca).toString()));
-//
-//            String anualidad = dtmTablaGeneral.getValueAt(fila, columnaAnualidad).toString();
-//            boolean anual = false;
-//            if (DatosBaseDatos.varSi.equals(anualidad)) {
-//                anual = true;
-//            } else if (DatosBaseDatos.varNo.equals(anualidad)) {
-//                anual = false;
-//            }
-//            cargo.setAnualidad(anual);
-//
-//            cargo.setEstado(dtmTablaGeneral.getValueAt(fila, columnaEstado).toString());
-//
-//            int respuesta = usuario.getClases().getGUIOption().tipoMensaje("P", "", "", "¿Está seguro que desea eliminar el alumno seleccionado?");
-//            if (respuesta == JOptionPane.YES_OPTION) {
-//                try {
-//                    deshacerFiltroTablaGeneral();
-//
-//                    boolean accion = cargo.borrar();
-//                    cargo.insertarHistorial(DatosBaseDatos.accionUsuarioEliminado);
-//                    cargarDatosGeneral();
-//
-//                    String mensaje = null, titulo = null, tipo = null;
-//                    if (accion) {
-//                        mensaje = "Se ha eliminado satisfactoriamente el alumno.";
-//                        titulo = "Eliminado";
-//                        tipo = "I";
-//                    } else {
-//                        mensaje = "Ha ocurrido un error y no se ha podido eliminar el cargo. Por favor inténtelo de nuevo.";
-//                        titulo = "Error (126)";
-//                        tipo = "A";
-//                    }
-//                    usuario.getClases().getGUIOption().tipoMensaje(tipo, "", titulo, mensaje);
-//
-//                    iniciarBusqueda();
-//                    ocultarTxtBuscar();
-//                    desactivarModificar();
-//                    desactivarBusqueda();
-//
-//                    inicializarInformacion();
-//                } catch (TesoreriaException ex) {
-//                    usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
-//                    ex.printStackTrace();
-//                }
-//            }
+            long id = Long.parseLong((String) dtmTablaGeneral.getValueAt(fila, columnaId));
+
+            int respuesta = option.tipoMensaje(GUIJOption.mensajePregunta, "", "", "¿Está seguro que desea eliminar el interno seleccionado?");
+            if (respuesta == JOptionPane.YES_OPTION) {
+                try {
+                    deshacerFiltroTablaGeneral();
+
+                    Interno interno = new Interno();
+                    interno.setId(id);
+
+                    boolean accion = interno.borrar(usuario);
+                    cargarDatosGeneral();
+
+                    String mensaje = null, titulo = null, tipo = null;
+                    if (accion) {
+                        mensaje = "Se ha eliminado satisfactoriamente el interno.";
+                        titulo = "Eliminado";
+                        tipo = GUIJOption.mensajeInformacion;
+                    } else {
+                        mensaje = "Ha ocurrido un error y no se ha podido eliminar el interno. Por favor inténtelo de nuevo.";
+                        titulo = "Error (126)";
+                        tipo = GUIJOption.mensajeAdvertencia;
+                    }
+                    option.tipoMensaje(tipo, "", titulo, mensaje);
+
+                    iniciarBusqueda();
+                    ocultarTxtBuscar();
+                    desactivarModificar();
+                    desactivarBusqueda();
+
+                    inicializarInformacion();
+                } catch (Exception ex) {
+                    option.tipoMensaje(GUIJOption.mensajeError, "", "Error (35)", ExpendioException.getMensajeErrorBaseDatos());
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
@@ -953,30 +922,30 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         lbl_imagenFoto.setIcon(null);
 
         combo_estado.setSelectedIndex(0);// Estado activo por defecto
+
+        asignarNumeroConsecutivoGeneral();
     }
 
-//    private final void asignarNumeroConsecutivoGeneral() {
-//        String numeracion = "S";
-//        if (numeracion.equalsIgnoreCase("S")) {
-//            String ultimoNumero = "";
-//            ultimoNumero = Alumnos.traerUltimoNumeroCodigoAlumno(this, usuario);
-//            if (ultimoNumero.equals("ERROR")) {
-//                usuario.getClases().getGUIOption().tipoMensaje("E", "Error, No se ha podido traer el �ltimo numero de la base de datos.", "Int�ntelo de nuevo", "140");
-//            } else {
-//                ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(1, ultimoNumero, usuario, this);
-//                if (ultimoNumero.equalsIgnoreCase("")) {
-//                    usuario.getClases().getGUIOption().tipoMensaje("E", "Error, no se ha podido convertir la numeraci�n.", "Int�ntelo de nuevo", "142");
-//                } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
-//                    usuario.getClases().getGUIOption().tipoMensaje("E", "Error, no hay cupo en la numeraci�n actual.", "Int�ntelo de nuevo", "143");
-//                } else {
-//                    txt_codigo.setText(ultimoNumero);
-//                    if (ultimoNumero.endsWith("001")) {
-//                        txt_codigo.setEnabled(true);
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private final void asignarNumeroConsecutivoGeneral() {
+        String ultimoNumero = Interno.traerUltimoNumeroTdInterno(usuario);
+        if (ultimoNumero.equals("ERROR")) {
+            option.tipoMensaje(GUIJOption.mensajeAdvertencia, "141", "No se ha podido traer el último número de la base de datos.", "Inténtelo de nuevo.");
+        } else {
+            ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(String.valueOf(Configuracion.codigoEstablecimiento - 1).length(), ultimoNumero, usuario);
+            if (ultimoNumero.equalsIgnoreCase("")) {
+                option.tipoMensaje(GUIJOption.mensajeAdvertencia, "142", "No se ha podido convertir la numeración.", "Inténtelo de nuevo.");
+            } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
+                option.tipoMensaje(GUIJOption.mensajeAdvertencia, "143", "No hay cupo en la numeración actual.", "Inténtelo de nuevo.");
+            } else {
+                txt_td.setText(ultimoNumero);
+                if (ultimoNumero.endsWith("000001")) {
+                    txt_td.setEnabled(true);
+                } else {
+                    txt_td.setEnabled(false);
+                }
+            }
+        }
+    }
 
     @Override
     public void actualizarFrame() {

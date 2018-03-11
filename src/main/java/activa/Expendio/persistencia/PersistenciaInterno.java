@@ -5,10 +5,10 @@
  */
 package activa.Expendio.persistencia;
 
-import activa.Expendio.modelo.Interno;
-import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
-import java.util.ArrayList;
-import org.springframework.stereotype.Service;
+import activa.Expendio.modelo.*;
+import activa.Expendio.persistencia.Interface.*;
+import java.util.*;
+import org.springframework.stereotype.*;
 
 /**
  *
@@ -212,6 +212,16 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public boolean existeTD(Interno interno) {
         for (int i = 0; i < internos.size(); i++) {
             if (interno.getTd().trim().equalsIgnoreCase(internos.get(i).getTd())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean existeID(Interno interno) {
+        for (int i = 0; i < internos.size(); i++) {
+            if (Objects.equals(interno.getId(), internos.get(i).getId())) {
                 return true;
             }
         }

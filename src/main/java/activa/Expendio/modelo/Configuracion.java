@@ -65,6 +65,16 @@ public class Configuracion {
      */
     public static String tipoEstablecimiento;
 
+    private static JFrame frameAnterior;
+
+    public static JFrame getFrameAnterior() {
+        return frameAnterior;
+    }
+
+    public static void setFrameAnterior(JFrame frameAnterior) {
+        Configuracion.frameAnterior = frameAnterior;
+    }
+
     /**
      * 0 = Direccion Servidor<br>
      * 1 = Base Datos<br>

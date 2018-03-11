@@ -17,7 +17,6 @@ public class Usuario {
     private String login;
     private String nombres;
     private String password;
-    private JFrame frameAnterior;
 
     /**
      * @return the login
@@ -73,14 +72,6 @@ public class Usuario {
      */
     public void setId(long id) {
         this.id = id;
-    }
-
-    public JFrame getFrameAnterior() {
-        return frameAnterior;
-    }
-
-    public void setFrameAnterior(JFrame frameAnterior) {
-        this.frameAnterior = frameAnterior;
     }
 
 }

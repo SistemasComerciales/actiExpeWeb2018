@@ -834,13 +834,13 @@ public class Fecha {
     }
 
     public static String obtenerFechaString(Date date) {
-        String fecha = "";
+        Calendar fecha = Calendar.getInstance();
+        fecha.setTime(date);
+        int anio = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH) + 1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
 
-        fecha += String.valueOf(dia(date));
-        fecha += String.valueOf(mes(date));
-        fecha += String.valueOf(anio(date));
-
-        return fecha;
+        return String.format("%02d/%02d/%02d", dia, mes, anio);
     }
 
 }

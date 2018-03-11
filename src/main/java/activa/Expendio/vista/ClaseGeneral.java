@@ -99,7 +99,7 @@ public abstract class ClaseGeneral extends JFrame {
     protected final void accionBotonSalir() {// XXX Boton Salir
         frame.setCursor(cursorEspera);
 
-        ClaseGeneral anterior = (ClaseGeneral) usuario.getFrameAnterior();
+        ClaseGeneral anterior = (ClaseGeneral) Configuracion.getFrameAnterior();
         anterior.setVisible(true);
         anterior.inicializar();
         frame.setVisible(false);

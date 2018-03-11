@@ -5,8 +5,9 @@
  */
 package activa.Expendio.vista;
 
+import activa.Expendio.*;
 import activa.Expendio.modelo.*;
-import activa.Expendio.persistencia.*;
+import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.utils.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -23,7 +24,6 @@ public class GUIInicio extends ClaseGeneral {
     private JButton btn_iniciarSesion;
 
     private int anchoBotonesPanel1, altoBotonesPanel1;
-    private PersistenciaUsuario repositorioUsuarios = new PersistenciaUsuario();
 
     public GUIInicio(Usuario usuario) {
         super(usuario);
@@ -126,6 +126,7 @@ public class GUIInicio extends ClaseGeneral {
         btn_iniciarSesion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                PersistenciaUsuarioInt repositorioUsuarios = ExpendioApplication.userController.userRepository;
                 Usuario usuario = new Usuario();
                 usuario.setLogin(txt_usuario.getText().trim());
                 usuario.setPassword(String.valueOf(txt_contrasena.getPassword()));
