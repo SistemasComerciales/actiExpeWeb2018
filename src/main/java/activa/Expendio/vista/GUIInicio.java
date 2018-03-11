@@ -25,8 +25,8 @@ public class GUIInicio extends ClaseGeneral {
     private int anchoBotonesPanel1, altoBotonesPanel1;
     private PersistenciaUsuario repositorioUsuarios = new PersistenciaUsuario();
 
-    public GUIInicio(Usuario usuario, Establecimiento establecimiento) {
-        super(usuario, establecimiento);
+    public GUIInicio(Usuario usuario) {
+        super(usuario);
 
         Imagenes.fondoInternalFrame(NombreImagenes.imFondo, this.getWidth(), this.getHeight(), this);
         anchoBotonesPanel1 = 2 * this.getWidth() / 7;
@@ -134,7 +134,7 @@ public class GUIInicio extends ClaseGeneral {
                     option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", "Usuario/Password inválidos", "");
                     inicializarDatos();
                 } else {
-                    new GUIMenu(usuario, establecimiento);
+                    new GUIMenu(usuario);
                     frame.setVisible(false);
                 }
 //                System.out.println("Aca: " + repositorioUsuarios.getUsuarios().size());

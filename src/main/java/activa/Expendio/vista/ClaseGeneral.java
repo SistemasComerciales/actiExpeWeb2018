@@ -15,15 +15,13 @@ public abstract class ClaseGeneral extends JFrame {
 
     public static final Cursor cursorEspera = new Cursor(Cursor.WAIT_CURSOR);
 
-    protected GUIJOption option;
+    public static GUIJOption option;
     protected Usuario usuario;
-    protected Establecimiento establecimiento;
     protected JFrame frame;
 
-    public ClaseGeneral(Usuario usuario, Establecimiento establecimiento) {
+    public ClaseGeneral(Usuario usuario) {
         option = new GUIJOption(this);
         this.usuario = usuario;
-        this.establecimiento = establecimiento;
         frame = this;
 
         this.setLocation(0, 0);

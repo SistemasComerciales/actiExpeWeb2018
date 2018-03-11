@@ -22,7 +22,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     private JPanel panel_informacion;
     private CampoLabel lbl_td, lbl_nui, lbl_primerApellido, lbl_segundoApellido, lbl_primerNombre, lbl_segundoNombre;
     private CampoLabel lbl_nacionalidad, lbl_situacionJuridica, lbl_fechaIngreso, lbl_fechaSalida, lbl_delito, lbl_observaciones, lbl_estado, lbl_foto;
-    private String idInterno;
+    private Long idInterno;
     private CajaDeTexto txt_td, txt_nui, txt_primerApellido, txt_segundoApellido, txt_primerNombre, txt_segundoNombre;
     private CajaDeTexto txt_nacionalidad, txt_situacionJuridica, txt_foto;
     private CajaDeTextoConFormato txt_fechaIngreso, txt_fechaSalida;
@@ -54,8 +54,8 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
     public static final int columnaEstado = columnaRutaImagen + 1;
     public static final int columnaId = columnaEstado + 1;
 
-    public GUICatalogoInternos(Usuario usuario, Establecimiento establecimiento) {
-        super(usuario, establecimiento, false);
+    public GUICatalogoInternos(Usuario usuario) {
+        super(usuario, false);
     }
 
     @Override
@@ -374,42 +374,9 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
         PersistenciaInternoInt persistencia = new PersistenciaInterno();
 
-        ArrayList<Interno> internosActivos = persistencia.getActivos();
-        ArrayList<Interno> internosInactivos = persistencia.getInactivos();
+        ArrayList<Interno> internos = persistencia.getInternos();
 
-        for (Interno interno : internosActivos) {
-            if (!interno.estaEliminado()) {
-                Object[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
-
-                datosFila[columnaId] = interno.getId();
-
-                datosFila[columnaTd] = interno.getTd();
-                datosFila[columnaNui] = interno.getNui();
-                datosFila[columnaPrimerApellido] = interno.getPrimerApellido();
-                datosFila[columnaSegundoApellido] = interno.getSegundoApellido();
-                datosFila[columnaPrimerNombre] = interno.getPrimerNombre();
-                datosFila[columnaSegundoNombre] = interno.getSegundoNombre();
-                datosFila[columnaNacionalidad] = interno.getNacionalidad();
-                datosFila[columnaSituacionJuridica] = interno.getSituacionJuridica();
-                datosFila[columnaFechaIngreso] = Fecha.obtenerFechaString(interno.getFechaIngreso());
-                datosFila[columnaFechaSalida] = Fecha.obtenerFechaString(interno.getFechaSalida());
-                datosFila[columnaDelito] = interno.getDelito();
-                datosFila[columnaObservaciones] = interno.getObservaciones();
-                datosFila[columnaRutaImagen] = interno.getRutaImagen();
-
-                boolean estado = interno.getEstado();
-                String est;
-                if (estado) {
-                    est = DatosBaseDatos.estadoActivo;
-                } else {
-                    est = DatosBaseDatos.estadoInactivo;
-                }
-                datosFila[columnaEstado] = est;
-
-                dtmTablaGeneral.addRow(datosFila);
-            }
-        }
-        for (Interno interno : internosInactivos) {
+        for (Interno interno : internos) {
             if (!interno.estaEliminado()) {
                 Object[] datosFila = new String[dtmTablaGeneral.getColumnCount()];
 
@@ -526,49 +493,86 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
     @Override
     protected void accionBotonAgregar() {// Insertando nuevo cargo
-//        try {
-//            Interno interno = setValoresInterno();
-//
-//            boolean valido = puedeInsertarOModificar(false);
-//            if (valido) {
-//                deshacerFiltroTablaGeneral();
-//
-//                boolean accion = cargo.insertar();
-//                cargo.insertarHistorial(DatosBaseDatos.accionUsuarioInsertar);
-//                cargarDatosGeneral();
-//
-//                String mensaje = null, titulo = null, tipo = null;
-//                if (accion) {
-//                    mensaje = "Se ha insertado satisfactoriamente el cargo.";
-//                    titulo = "Insertado";
-//                    tipo = "I";
-//                } else {
-//                    mensaje = "Ha ocurrido un error y no se ha podido insertar el cargo. Por favor inténtelo de nuevo.";
-//                    titulo = "Error (123)";
-//                    tipo = "A";
-//                }
-//                usuario.getClases().getGUIOption().tipoMensaje(tipo, "", titulo, mensaje);
-//
-//                if (accion) {
-//                    iniciarBusqueda();
-//                    ocultarTxtBuscar();
-//                    desactivarModificar();
-//
-//                    inicializarInformacion();
-//                    seleccionarFila(cargo.getIdTablaValue());
-//                }
-//            }
-//        } catch (TesoreriaException ex) {
-//            usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
-//            ex.printStackTrace();
-//        }
+        try {
+            Interno interno = setValoresInterno();
+
+            boolean valido = puedeInsertarOModificar(false, interno);
+            if (valido) {
+                deshacerFiltroTablaGeneral();
+
+                boolean accion = interno.insertar(usuario);
+                cargarDatosGeneral();
+
+                String mensaje = null, titulo = null, tipo = null;
+                if (accion) {
+                    mensaje = "Se ha insertado satisfactoriamente el interno.";
+                    titulo = "Insertado";
+                    tipo = GUIJOption.mensajeInformacion;
+                } else {
+                    mensaje = "Ha ocurrido un error y no se ha podido insertar el interno. Por favor inténtelo de nuevo.";
+                    titulo = "Error (123)";
+                    tipo = GUIJOption.mensajeAdvertencia;
+                }
+                option.tipoMensaje(tipo, "", titulo, mensaje);
+
+                if (accion) {
+                    iniciarBusqueda();
+                    ocultarTxtBuscar();
+                    desactivarModificar();
+
+                    inicializarInformacion();
+                    seleccionarFila(String.valueOf(interno.getId()), columnaId);
+                }
+            }
+        } catch (ExpendioException ex) {
+            option.tipoMensaje(GUIJOption.mensajeError, ExpendioException.getStackTrace(ex), "Error (35)", ExpendioException.getMensajeErrorBaseDatos());
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void accionBotonAgregarModificar() {// Editando cargo seleccionado de la tabla
+        try {
+            Interno interno = setValoresInterno();
+
+            boolean valido = puedeInsertarOModificar(true, interno);
+            if (valido) {
+                deshacerFiltroTablaGeneral();
+
+                boolean accion = interno.modificar(usuario);
+                cargarDatosGeneral();
+
+                String mensaje = null, titulo = null, tipo = null;
+                if (accion) {
+                    mensaje = "Se ha modificado satisfactoriamente el cargo.";
+                    titulo = "Modificado";
+                    tipo = GUIJOption.mensajeInformacion;
+                } else {
+                    mensaje = "Ha ocurrido un error y no se ha podido modificar el cargo. Por favor inténtelo de nuevo.";
+                    titulo = "Error (124)";
+                    tipo = GUIJOption.mensajeAdvertencia;
+                }
+                option.tipoMensaje(tipo, "", titulo, mensaje);
+
+                if (accion) {
+                    iniciarBusqueda();
+                    ocultarTxtBuscar();
+                    desactivarModificar();
+
+                    inicializarInformacion();
+                    seleccionarFila(String.valueOf(interno.getId()), columnaId);
+                }
+            }
+        } catch (ExpendioException ex) {
+            option.tipoMensaje(GUIJOption.mensajeError, "", "Error (35)", ExpendioException.getMensajeErrorBaseDatos());
+            ex.printStackTrace();
+        }
     }
 
     private Interno setValoresInterno() {
         Interno interno = new Interno();
 
-        Long id = idInterno != null && !idInterno.trim().isEmpty() ? Long.parseLong(idInterno) : null;
-        interno.setId(id);
+        interno.setId(idInterno);
 
         interno.setTd(txt_td.getText().trim());
         interno.setNui(txt_nui.getText().trim());
@@ -616,44 +620,48 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         return interno;
     }
 
-    @Override
-    protected void accionBotonAgregarModificar() {// Editando cargo seleccionado de la tabla
-//        try {
-//            setValoresCargo();
-//
-//            boolean valido = puedeInsertarOModificar(true);
-//            if (valido) {
-//                deshacerFiltroTablaGeneral();
-//
-//                boolean accion = cargo.modificar();
-//                cargo.insertarHistorial(DatosBaseDatos.accionUsuarioModificar);
-//                cargarDatosGeneral();
-//
-//                String mensaje = null, titulo = null, tipo = null;
-//                if (accion) {
-//                    mensaje = "Se ha modificado satisfactoriamente el cargo.";
-//                    titulo = "Modificado";
-//                    tipo = "I";
-//                } else {
-//                    mensaje = "Ha ocurrido un error y no se ha podido modificar el cargo. Por favor inténtelo de nuevo.";
-//                    titulo = "Error (124)";
-//                    tipo = "A";
-//                }
-//                usuario.getClases().getGUIOption().tipoMensaje(tipo, "", titulo, mensaje);
-//
-//                if (accion) {
-//                    iniciarBusqueda();
-//                    ocultarTxtBuscar();
-//                    desactivarModificar();
-//
-//                    inicializarInformacion();
-//                    seleccionarFila(cargo.getIdTablaValue());
-//                }
-//            }
-//        } catch (TesoreriaException ex) {
-//            usuario.getClases().getGUIOption().tipoMensaje("E", "", "Error (35)", TesoreriaException.getMensajeErrorBaseDatos());
-//            ex.printStackTrace();
-//        }
+    private boolean puedeInsertarOModificar(boolean esModificar, Interno interno) throws ExpendioException {
+        String campos = interno.validarCamposObligatorios(esModificar);
+
+        boolean correcto = true;
+
+        correcto = correcto && validarCampo(campos, "ID", "Por favor seleccione un interno.", txt_td);
+        correcto = correcto && validarCampo(campos, "TD", "Por favor ingrese el TD.", txt_td);
+        correcto = correcto && validarCampo(campos, "NUI", "Por favor ingrese el NUI.", txt_nui);
+        correcto = correcto && validarCampo(campos, "PRIMERAPELLIDO", "Por favor ingrese el primer apellido.", txt_primerApellido);
+        correcto = correcto && validarCampo(campos, "SEGUNDOAPELLIDO", "Por favor ingrese el segundo apellido.", txt_segundoApellido);
+        correcto = correcto && validarCampo(campos, "PRIMERNOMBRE", "Por favor ingrese el primer nombre.", txt_primerNombre);
+        correcto = correcto && validarCampo(campos, "SEGUNDONOMBRE", "Por favor ingrese el segundo nombre.", txt_segundoNombre);
+        correcto = correcto && validarCampo(campos, "NACIONALIDAD", "Por favor ingrese la nacionalidad.", txt_nacionalidad);
+        correcto = correcto && validarCampo(campos, "SITUACIONJURIDICA", "Por favor ingrese la situación jurídica.", txt_situacionJuridica);
+        correcto = correcto && validarCampo(campos, "FECHAINGRESO", "Por favor ingrese la fecha de ingreso.", txt_fechaIngreso);
+//        correcto = correcto && validarCampo(campos, "FECHASALIDA", "Por favor ingrese la fecha de salida.",txt_fechaSalida);
+//        correcto = correcto && validarCampo(campos, "DELITO", "Por favor ingrese el delito.",txt_delito);
+//        correcto = correcto && validarCampo(campos, "OBSERVACIONES", "Por favor ingrese las observaciones.",txt_observaciones);
+        correcto = correcto && validarCampo(campos, "RUTAFOTO", "Por favor ingrese la foto.", txt_foto);
+        correcto = correcto && validarCampo(campos, "ESTADO", "Por favor ingrese el estado.", combo_estado);
+
+        correcto = correcto && validarExiste(esModificar, interno);
+
+        return correcto;
+    }
+
+    private boolean validarExiste(boolean esModificar, Interno interno) throws ExpendioException {
+        boolean valido = !interno.validarExiste(esModificar);
+        if (!valido) {
+            option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", "", "Ya existe un TD o NUI asociado a este interno.");
+            txt_nui.grabFocus();
+        }
+        return valido;
+    }
+
+    private boolean validarCampo(String resultado, String campo, String mensaje, JComponent elemento) {
+        if (resultado.equals(campo)) {
+            option.tipoMensaje(GUIJOption.mensajeInformacion, "", "", mensaje);
+            elemento.grabFocus();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -670,7 +678,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
             int model = tablaGeneral.convertRowIndexToModel(selected);
 
-            idInterno = (String) dtmTablaGeneral.getValueAt(model, columnaId);
+            idInterno = (Long) dtmTablaGeneral.getValueAt(model, columnaId);
 
             txt_td.setText((String) dtmTablaGeneral.getValueAt(model, columnaTd));
             txt_nui.setText((String) dtmTablaGeneral.getValueAt(model, columnaNui));
@@ -946,6 +954,29 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
         combo_estado.setSelectedIndex(0);// Estado activo por defecto
     }
+
+//    private final void asignarNumeroConsecutivoGeneral() {
+//        String numeracion = "S";
+//        if (numeracion.equalsIgnoreCase("S")) {
+//            String ultimoNumero = "";
+//            ultimoNumero = Alumnos.traerUltimoNumeroCodigoAlumno(this, usuario);
+//            if (ultimoNumero.equals("ERROR")) {
+//                usuario.getClases().getGUIOption().tipoMensaje("E", "Error, No se ha podido traer el �ltimo numero de la base de datos.", "Int�ntelo de nuevo", "140");
+//            } else {
+//                ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(1, ultimoNumero, usuario, this);
+//                if (ultimoNumero.equalsIgnoreCase("")) {
+//                    usuario.getClases().getGUIOption().tipoMensaje("E", "Error, no se ha podido convertir la numeraci�n.", "Int�ntelo de nuevo", "142");
+//                } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
+//                    usuario.getClases().getGUIOption().tipoMensaje("E", "Error, no hay cupo en la numeraci�n actual.", "Int�ntelo de nuevo", "143");
+//                } else {
+//                    txt_codigo.setText(ultimoNumero);
+//                    if (ultimoNumero.endsWith("001")) {
+//                        txt_codigo.setEnabled(true);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void actualizarFrame() {

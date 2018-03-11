@@ -12,11 +12,11 @@ import javax.swing.JFrame;
  * @author Administrador
  */
 public class Usuario {
+
     private long id;
     private String login;
     private String nombres;
     private String password;
-    private String periodoContable;
     private JFrame frameAnterior;
 
     /**
@@ -75,14 +75,6 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getPeriodoContable() {
-        return periodoContable;
-    }
-
-    public void setPeriodoContable(String periodoContable) {
-        this.periodoContable = periodoContable;
-    }
-
     public JFrame getFrameAnterior() {
         return frameAnterior;
     }
@@ -90,6 +82,5 @@ public class Usuario {
     public void setFrameAnterior(JFrame frameAnterior) {
         this.frameAnterior = frameAnterior;
     }
-    
-    
+
 }
