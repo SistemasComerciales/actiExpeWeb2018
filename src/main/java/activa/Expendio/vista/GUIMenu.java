@@ -28,12 +28,17 @@ public class GUIMenu extends ClaseGeneral {
 
     // Panel Boton Transacciones
     private JPanel panel_BotonTransacciones;
-    private Boton btn_transaPagos;
+    private Boton btn_transaPagos, btn_transaConsignaciones;
 
     //Panel de Transacciones
     private JPanel panel_trasaccionesPagos;
     private Boton btn_transPagosRegistrar, btn_transPagosModificar, btn_transPagosConsultar, btn_transPagosConsignaciones;
 
+    //Panel de Consignaciones
+    private JPanel panel_trasaccionesConsig;
+    private Boton btn_transConsigRegistrar,  btn_transConsigConsultar;
+
+    
     // Panel Boton Reportes
     private JPanel panel_BotonReportes;
 
@@ -61,7 +66,9 @@ public class GUIMenu extends ClaseGeneral {
         prepareMostrarPanelConfiguracionUsuarios();
         prepareMostrarPanelTransaccion();
         prepareMostrarPanelTransaccionPagos();
+        prepareMostrarPanelTransaccionConsignaciones();
         prepareMostrarPanelReporte();
+        
 
         definaAccionesBotonesPrincipales();
         accionBotonesPanelCatalogo();
@@ -70,6 +77,7 @@ public class GUIMenu extends ClaseGeneral {
         accionBotonesPanelTransaccion();
         accionBotonesPanelTransaccionPagos();
         accionBotonesPanelReporte();
+        accionBotonesPanelTransaccionConsignaciones();
 
         inicializar();
     }
@@ -681,6 +689,10 @@ public class GUIMenu extends ClaseGeneral {
         btn_transaPagos = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Transacciones");
         btn_transaPagos.textoParaMenuPrimerNivel();
         panel_BotonTransacciones.add(btn_transaPagos);
+        
+        btn_transaConsignaciones = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Consignaciones");
+        btn_transaConsignaciones.textoParaMenuPrimerNivel();
+        panel_BotonTransacciones.add(btn_transaConsignaciones);
 
         this.add(panel_BotonTransacciones);
         panel_BotonTransacciones.setVisible(false);
@@ -773,6 +785,93 @@ public class GUIMenu extends ClaseGeneral {
             public void mouseClicked(MouseEvent arg0) {
             }
         });
+        
+        
+        btn_transaConsignaciones.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (panel_trasaccionesConsig.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaConsignaciones);
+                    panel_trasaccionesConsig.setVisible(false);
+                } else {
+                    
+                    estadoInicialPanelTransaccion();
+                    ocultarPanelesNivel2();
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_transaConsignaciones);
+                    panel_trasaccionesConsig.setLocation(panel_BotonTransacciones.getX() + panel_BotonTransacciones.getWidth() + anchoBotonesPanel1 / 14, panel_BotonTransacciones.getY() + btn_transaConsignaciones.getY());
+                    panel_trasaccionesConsig.setVisible(true);
+                }
+            }
+        });
+        btn_transaConsignaciones.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                accionesKeyListenerConClick(btn_transaConsignaciones, btn_transaccion, panel_BotonTransacciones, panel_botonesPrincipales, e, panel_trasaccionesConsig);
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    if (!panel_trasaccionesConsig.isVisible()) {
+                        btn_transaConsignaciones.doClick();
+                        panel_trasaccionesConsig.getComponent(0).requestFocus();
+                        ((JButton) panel_trasaccionesConsig.getComponent(0)).grabFocus();
+                    }
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+        });
+        btn_transaConsignaciones.addFocusListener(new FocusListener() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (!panel_trasaccionesConsig.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaConsignaciones);
+                } else {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_transaConsignaciones);
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (!panel_trasaccionesConsig.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu2, btn_transaConsignaciones);
+                }
+            }
+        });
+        btn_transaConsignaciones.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent arg0) {
+                if (!panel_trasaccionesConsig.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaConsignaciones);
+                } else {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_transaConsignaciones);
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent arg0) {
+                if (!panel_trasaccionesConsig.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu2, btn_transaConsignaciones);
+                }
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+            }
+        });
+        
+        
 
 //        btn_transaGenerarMoras.addActionListener(new ActionListener() {
 //            @Override
@@ -820,7 +919,7 @@ public class GUIMenu extends ClaseGeneral {
 
         btn_transPagosConsignaciones = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Registrar Consignación");
         btn_transPagosConsignaciones.textoParaMenuSegundoNivel();
-        panel_trasaccionesPagos.add(btn_transPagosConsignaciones);
+//        panel_trasaccionesPagos.add(btn_transPagosConsignaciones);
 
         this.add(panel_trasaccionesPagos);
         panel_trasaccionesPagos.setVisible(false);
@@ -901,22 +1000,71 @@ public class GUIMenu extends ClaseGeneral {
             }
         });
 
-        btn_transPagosConsignaciones.addActionListener(new ActionListener() {
+
+    }
+    
+    
+    /**
+     * Metodo encargado de crear el panel de transacciones de pagos
+     */
+    public void prepareMostrarPanelTransaccionConsignaciones() {
+        panel_trasaccionesConsig = new JPanel();
+        panel_trasaccionesConsig.setLayout(new GridLayout(0, 1));
+        panel_trasaccionesConsig.setOpaque(false);
+
+        btn_transConsigRegistrar = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Registrar");
+        btn_transConsigRegistrar.textoParaMenuSegundoNivel();
+        panel_trasaccionesConsig.add(btn_transConsigRegistrar);
+
+        btn_transConsigConsultar = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Consultar");
+        btn_transConsigConsultar.textoParaMenuSegundoNivel();
+        panel_trasaccionesConsig.add(btn_transConsigConsultar);
+
+        this.add(panel_trasaccionesConsig);
+        panel_trasaccionesConsig.setVisible(false);
+        panel_trasaccionesConsig.setSize(CargaImagenes.anchoBotonSegundoNivelMenu, panel_trasaccionesConsig.getComponentCount() * CargaImagenes.altoBotonSegundoNivelMenu + (CargaImagenes.altoBotonSegundoNivelMenu));
+    }
+    
+    private void accionBotonesPanelTransaccionConsignaciones() {
+        btn_transConsigRegistrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Configuracion.setFrameAnterior(frame);
-                new GUIRegistroConsignaciones(usuario);
+                new GUIConsignacionesRegistrar(usuario);
                 frame.setVisible(false);
             }
         });
-        btn_transPagosConsignaciones.addKeyListener(new KeyListener() {
+        btn_transConsigRegistrar.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                accionesKeyLIstenerConFoco(btn_transPagosConsignaciones, btn_transaPagos, panel_BotonTransacciones, panel_trasaccionesPagos, e);
+                accionesKeyLIstenerConFoco(btn_transConsigRegistrar, btn_transaConsignaciones, panel_BotonTransacciones, panel_trasaccionesConsig, e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+        });
+        
+        btn_transConsigConsultar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Configuracion.setFrameAnterior(frame);
+                new GUIConsignacionesConsultarSeleccionar(usuario);
+                frame.setVisible(false);
+            }
+        });
+        btn_transConsigConsultar.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                accionesKeyLIstenerConFoco(btn_transConsigConsultar, btn_transaConsignaciones, panel_BotonTransacciones, panel_trasaccionesConsig, e);
             }
 
             @Override
@@ -1394,6 +1542,10 @@ public class GUIMenu extends ClaseGeneral {
             panel_trasaccionesPagos.setVisible(false);
 //            estadoInicialPanelTransaccionesPagos();
         }
+        if (panel_trasaccionesConsig.isVisible()) {
+            panel_trasaccionesConsig.setVisible(false);
+//            estadoInicialPanelTransaccionesPagos();
+        }
 //        if (panel_reportesListadoAlumnos.isVisible()) {
 //            panel_reportesListadoAlumnos.setVisible(false);
 ////            estadoInicialPanelReporteListadoAlumnos();
@@ -1464,7 +1616,8 @@ public class GUIMenu extends ClaseGeneral {
      * configuración
      */
     private void estadoInicialPanelTransaccion() {
-//        Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaPagos);
+        Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaPagos);
+        Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaConsignaciones);
     }
 
     /**

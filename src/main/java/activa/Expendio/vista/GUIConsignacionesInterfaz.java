@@ -3,6 +3,7 @@ package activa.Expendio.vista;
 import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
 import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
+import static activa.Expendio.vista.ClaseGeneral.option;
 import activa.Expendio.vista.utils.*;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -18,46 +19,49 @@ import utils.*;
  *
  * @author Avuuna la Luz del Alba
  */
-public class GUIRegistroConsignaciones extends ClaseGeneral {
+public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
 
     // Campos Informacion
-    private CampoLabel lbl_numeroTransaccion, lbl_fecha;
-    private CampoLabel lbl_td, lbl_nombre, lbl_saldoActual, lbl_estado;
-    private Long idInterno;
-    private CajaDeTexto txt_numeroTransaccion;
-    private CajaDeTextoConFormato txt_fecha;
-    private CajaDeTexto txt_td;
-    private CampoLabel txt_nombre, txt_saldoActual, txt_estado;
-    private JLabel lbl_imagenFoto;
+    protected CampoLabel lbl_numeroTransaccion, lbl_fecha;
+    protected CampoLabel lbl_td, lbl_nombre, lbl_saldoActual, lbl_estado;
+    protected CajaDeTexto txt_numeroTransaccion;
+    protected CajaDeTextoConFormato txt_fecha;
+    protected CajaDeTexto txt_td;
+    protected CampoLabel txt_nombre, txt_saldoActual, txt_estado;
+    protected JLabel lbl_imagenFoto;
 
     // Campos Movimiento
-    private CampoLabel lbl_concepto, lbl_numeroRecibo, lbl_valor, lbl_cajasEspeciales, lbl_observaciones;
-    private CampoCombo<String> combo_concepto;
-    private CajaDeTexto txt_numeroRecibo, txt_valor, txt_cajasEspeciales;
-    private CajaTextoArea txt_observaciones;
-    private JScrollPane scroll_observaciones;
+    protected CampoLabel lbl_concepto, lbl_numeroRecibo, lbl_valor, lbl_cajasEspeciales, lbl_observaciones;
+    protected CampoCombo<String> combo_concepto;
+    protected CajaDeTexto txt_numeroRecibo, txt_valor, txt_cajasEspeciales;
+    protected CajaTextoArea txt_observaciones;
+    protected JScrollPane scroll_observaciones;
 
     // Botones
-    private JPanel panel_botones;
-    private Boton btn_registrar, btn_reporte, btn_otro, btn_borrar, btn_salir;
+    protected JPanel panel_botones;
+    protected Boton btn_registrar, btn_reporte, btn_otro, btn_borrar, btn_salir;
 
-    private Consignacion consignacion;
-    private Interno interno;
+    protected Consignacion consignacion;
+    protected Interno interno;
 
     // Utilitarios
-    private static final String nombreClase = "Registro de Consignaciones y Traslados";
+    protected static final String nombreClase = "Consignaciones y Traslados";
     public static final int limiteCaracteresNumero = 15;
     public static final int limiteCaracteresTD = String.valueOf(Configuracion.codigoEstablecimiento).length() + 6;
 
     //Tabla Internos
-    private JPanel panelTablaInternos;
+    protected JPanel panelTablaInternos;
     private DefaultTableModel dtmTablaInternos;
     private JTable tablaInternos;
     private JScrollPane scrollPaneTablaInternos;
     private TableRowSorter<DefaultTableModel> trsFiltroInternos;
 
-    public GUIRegistroConsignaciones(Usuario usuario) {
+    public GUIConsignacionesInterfaz(Usuario usuario) {
         super(usuario);
+    }
+
+    public void GUIConsignacionesInterfaz(Usuario usuario, String titulo) {
+//        super(usuario);
 
         prepareElementos();
         prepareElementosInformacion();
@@ -71,7 +75,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         prepareElementosTablaInternos();
         accionTablaInterno();
         inicializar();
-        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, nombreClase.toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
+        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, titulo.toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
     }
 
     /**
@@ -400,34 +404,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     }
 
     @Override
-    public void actualizarFrame() {
-        txt_numeroTransaccion.setText("");
-        txt_fecha.setText("");
-
-        idInterno = null;
-        txt_td.setText("");
-        txt_nombre.setText("");
-        txt_saldoActual.setText("");
-        txt_estado.setText("");
-        lbl_imagenFoto.setIcon(null);
-
-        combo_concepto.setSelectedIndex(-1);
-        txt_numeroRecibo.setText("");
-        txt_valor.setText("");
-        txt_cajasEspeciales.setText("");
-        txt_observaciones.setText("");
-
-        btn_otro.setEnabled(false);
-        btn_reporte.setEnabled(false);
-
-        consignacion = new Consignacion();
-        consignacion.setNumeroTransaccion(Servicios.consignacionesController.consignacionesRepository.traerSiguienteNumeroTransaccion());
-        consignacion.setFecha(new Date());
-        cargarTerceros();
-//        System.out.println("Fecha: "+consignacion.getFecha());
-        asignarAplicacionesAPresentacion();
-//        seleccionarInterno();
-    }
+    public abstract void actualizarFrame(); 
 
     @Override
     public void eliminarReferencia() {
@@ -458,10 +435,19 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         this.interno = interno;
     }
 
-    private void asignarAplicacionesAPresentacion() {
+    protected void asignarAplicacionesAPresentacion() {
         txt_numeroTransaccion.setText(consignacion.getNumeroTransaccion());
         txt_fecha.setText(consignacion.getFechaString());
-//        seleccionarInterno();
+        this.interno = consignacion.getInterno();
+        if(interno!=null){
+            seleccionarInterno(consignacion.getInterno());
+        }
+        combo_concepto.setSelectedItem(consignacion.getConcepto());
+        txt_numeroRecibo.setText(consignacion.getNumeroRecibo());
+        txt_valor.setText(Formatos.formatearValorDecimalesString(String.valueOf(consignacion.getValor()), DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        txt_cajasEspeciales.setText(Formatos.formatearValorDecimalesString(String.valueOf(consignacion.getCajasEspeciales()), DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        txt_observaciones.setText(consignacion.getObservaciones());
+        
     }
 
     /**
@@ -523,7 +509,8 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
 
     }
 
-    private void cargarTerceros() {
+    protected void cargarTerceros() {
+//        System.err.println("Date: "+new Date().getTime());
         deshacerFiltroTercero();
         Tabla.eliminarFilasTabla(dtmTablaInternos);
 
@@ -583,6 +570,19 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
                 }
             }
         });
+    }
+    
+    
+    protected void deshabilitarCamposConsultar(){
+        txt_numeroTransaccion.setEnabled(false);
+        txt_fecha.setEnabled(false);
+        txt_td.setEnabled(false);
+        combo_concepto.setEnabled(false);
+        txt_numeroRecibo.setEnabled(false);
+        txt_valor.setEnabled(false);
+        txt_cajasEspeciales.setEnabled(false);
+        txt_observaciones.setEnabled(false);
+        btn_registrar.setEnabled(false);
     }
 
 }
