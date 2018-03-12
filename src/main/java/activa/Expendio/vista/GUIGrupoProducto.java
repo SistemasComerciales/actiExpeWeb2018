@@ -193,7 +193,7 @@ public class GUIGrupoProducto extends GUIInterfazCatalogos {
     }
 
     @Override
-    protected void accionBotonAgregar() {// Insertando nueva grupo
+    protected void accionBotonAgregar() {// Insertando nuevo grupo
         try {
             GrupoProducto grupo = setValoresGrupo();
 
@@ -232,7 +232,7 @@ public class GUIGrupoProducto extends GUIInterfazCatalogos {
     }
 
     @Override
-    protected void accionBotonAgregarModificar() {// Editando grupo seleccionada de la tabla
+    protected void accionBotonAgregarModificar() {// Editando grupo seleccionado de la tabla
         try {
             GrupoProducto grupo = setValoresGrupo();
 
