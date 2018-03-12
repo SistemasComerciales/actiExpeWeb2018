@@ -49,9 +49,9 @@ public class NumeroConsecutivo {
         int longitudNumeroAnterior = numero.length();
         int longitudNuevoNumeroAA = temporalParaLongitud.length();
 
-        if (longitudNumeroAnterior < longitudNuevoNumeroAA) {
-            return "NOHAYCUPO";
-        }
+//        if (longitudNumeroAnterior < longitudNuevoNumeroAA) {
+//            return "NOHAYCUPO";
+//        }
         ////////////////////////////////
 
         String longitudNuevoNumero = String.valueOf(nuevoNumero);

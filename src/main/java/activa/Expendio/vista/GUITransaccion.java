@@ -2211,7 +2211,7 @@ public class GUITransaccion extends ClaseGeneral {
         }
         
         public static String asignarNumeroConsecutivo(Usuario usuario, boolean esPorVRi) {
-            String ultimoNumero = Transaccion.traerUltimoNumerotransaccion(usuario);
+            String ultimoNumero = Transaccion.traerUltimoNumerotransaccion(usuario, esPorVRi);
             System.out.println("1:  "+ ultimoNumero);
             if (ultimoNumero.equals("ERROR")) {
                 if (!esPorVRi) {

@@ -172,7 +172,7 @@ public class Transaccion  {
     public void setId(long id) {
         this.id = id;
     }
-      public static String traerUltimoNumerotransaccion(Usuario usuario) {
+      public static String traerUltimoNumerotransaccion(Usuario usuario, boolean esPorIVR) {
         PersistenciaTransaccionInt persistencia = Servicios.transaccionController.transaccionRepository;
 
         ArrayList<Transaccion> transacciones = persistencia.getListaTransacciones();
@@ -187,7 +187,9 @@ public class Transaccion  {
         }
 
         if (max == -1) {// no se encontro un interno en el establecimiento
-            ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeInformacion, "Numeración actual.", "No se ha encontrado ningún numero.", " Se reiniciará la numeración.");
+            if (!esPorIVR) {
+                           ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeInformacion, "Numeración actual.", "No se ha encontrado ningún numero.", " Se reiniciará la numeración.");
+            }
             return  "0";
         } else {
             return String.valueOf(max);
