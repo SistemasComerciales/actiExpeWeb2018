@@ -28,8 +28,32 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
     
     public PersistenciaTransaccion(){
         listaTransacciones = new ArrayList<>();
+//        crearMock();
     }
 
+    /**
+     * 
+     */
+    public void crearMock(){
+        Transaccion transaccion = new Transaccion();
+        transaccion.setCondicion("");
+        transaccion.setCreacion(new Timestamp(System.currentTimeMillis()));
+        transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorCodigo("RI"));
+        transaccion.setFecha(new Date());
+        transaccion.setId(1);
+        transaccion.setInterno(Servicios.internosController.internosRepository.consultarPorTd("302131"));
+        TransaccionItem item = new TransaccionItem();
+        transaccion.setListItem(new ArrayList<>());
+        item.setCantidad(1);
+        item.setProducto(Servicios.productosController.productosRepository.consultarPorCodigo("RE"));
+        item.setValorUnitario(3000);
+        adicionar(item, transaccion);
+
+        transaccion.setModificacion(new Timestamp(System.currentTimeMillis()));
+        transaccion.setNumero("1");
+        transaccion.setUsuario(null);
+        listaTransacciones.add(transaccion);
+    }
     
     /**
      * @return the listaTransacciones
