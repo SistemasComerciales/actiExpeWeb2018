@@ -5,25 +5,11 @@
  */
 package activa.Expendio.vista;
 
-import activa.Expendio.modelo.DatosBaseDatos;
-import activa.Expendio.modelo.Establecimiento;
-import activa.Expendio.modelo.GrupoProducto;
-import activa.Expendio.modelo.Usuario;
-import static activa.Expendio.vista.GUIDocumentoFuente.columnaCodigo;
-import static activa.Expendio.vista.GUIDocumentoFuente.columnaId;
-import static activa.Expendio.vista.GUIDocumentoFuente.columnaIdBodega;
-import static activa.Expendio.vista.GUIDocumentoFuente.columnaNombre;
-import activa.Expendio.vista.utils.CajaDeTexto;
-import activa.Expendio.vista.utils.CampoLabel;
+import activa.Expendio.modelo.*;
+import activa.Expendio.vista.utils.*;
 import java.awt.Dimension;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import utils.CampoCombo;
-import utils.CargaImagenes;
-import utils.Tabla;
-import utils.TablaNoEditable;
+import javax.swing.*;
+import utils.*;
 /**
  *
  * @author Administrador
@@ -36,7 +22,7 @@ public class GUIProducto extends GUIInterfazCatalogos{
     private CampoCombo<String> combo_controlExistencia, combo_afectaCupo, combo_controlSerial, combo_precio10Porciento, combo_estado, combo_eliminado;
     
     private static int columnaCodigo = 0;
-    private static int columnanombre = 1;
+    private static int columnaNombre = 1;
     private static int columnapresentacion = 2;
     private static int columnaGrupoProducto = 3;
     private static int columnaIdGrupoProducto = 4;

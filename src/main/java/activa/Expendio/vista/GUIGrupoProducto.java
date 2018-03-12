@@ -25,7 +25,7 @@ public class GUIGrupoProducto extends GUIInterfazCatalogos {
 
     // Utilitarios
     private static String nombreClase = "Grupo Producto";
-    private static final int limiteCaracteresCampoSoloLetras = 100;
+    public static final int limiteCaracteresCampoSoloLetras = 100;
 
     // Indices de la tabla general
     public static final int columnaCodigo = 0;
