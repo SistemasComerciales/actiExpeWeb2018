@@ -89,7 +89,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
         txt_td = new CajaDeTexto(CajaDeTexto.textoLetrasNumeros);
         txt_td.setLocation(lbl_td.getX() + lbl_td.getWidth() + var, lbl_td.getY());
         txt_td.setSize(txtWidth, lbl_td.getHeight());
-        txt_td.setEnabled(false);
+//        txt_td.setEnabled(false);
         panel_informacion.add(txt_td);
 
         lbl_nui = new CampoLabel("NUI:", CampoLabel.labelEstatico);
@@ -686,7 +686,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
             idInterno = Long.parseLong((String) dtmTablaGeneral.getValueAt(model, columnaId));
 
             txt_td.setText((String) dtmTablaGeneral.getValueAt(model, columnaTd));
-            txt_td.setEnabled(false);
+//            txt_td.setEnabled(false);
 
             txt_nui.setText((String) dtmTablaGeneral.getValueAt(model, columnaNui));
             txt_primerApellido.setText((String) dtmTablaGeneral.getValueAt(model, columnaPrimerApellido));
@@ -921,7 +921,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
         combo_estado.setSelectedIndex(0);// Estado activo por defecto
 
-        asignarNumeroConsecutivoGeneral();
+//        asignarNumeroConsecutivoGeneral();
     }
 
     private final void asignarNumeroConsecutivoGeneral() {
@@ -967,7 +967,7 @@ public class GUICatalogoInternos extends GUIInterfazCatalogos {
 
     @Override
     public void asignarFoco() {
-        txt_nui.grabFocus();
+        txt_td.grabFocus();
     }
 
     @Override
