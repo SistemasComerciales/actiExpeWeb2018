@@ -19,8 +19,8 @@ public class GUITransaccionConsultar extends ClaseGeneral {
 
     private CampoLabel lbl_nombreDocFuente;
 
-    private CampoLabel lbl_documento, lbl_numero, lbl_fecha, lbl_nit, lbl_condiciones, lbl_nombre, lbl_nombreDin, lbl_direccion, lbl_direccionDin, lbl_ciudad, lbl_ciudadDin, lbl_telefono, lbl_telefonoDin;
-    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo, txt_documentoCierre, txt_numero, txt_estado, txt_idTercero, txt_nit, txt_nitAntiguo, txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero, txt_ControlExistenciaDocFuente, txt_preCostoDocFuente, txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete;
+    private CampoLabel lbl_documento, lbl_numero, lbl_fecha, lbl_nit, lbl_condiciones, lbl_nombre, lbl_nombreDin, lbl_cupoDiario, lbl_cupoDiarioDin, lbl_ciudad, lbl_ciudadDin, lbl_cupoMensual, lbl_cupoMensualDin, lbl_cupoTotal, lbl_cupoTotalDin;
+    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo, txt_documentoCierre, txt_numero, txt_estado, txt_idTercero, txt_nit, txt_nitAntiguo, txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_ControlExistenciaDocFuente, txt_preCostoDocFuente, txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete;
     private CajaDeTextoConFormato txt_fecha;
 
     ////////////panel REGISTRO2 MVTRANSACCION///////////
@@ -63,7 +63,7 @@ public class GUITransaccionConsultar extends ClaseGeneral {
         accionBotones();
         inicializar();
 
-        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, nombreClase.toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
+        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, "".toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
     }
 
     /**
@@ -105,7 +105,7 @@ public class GUITransaccionConsultar extends ClaseGeneral {
         lbl_fecha.setBounds(posicionXLbl, lbl_numero.getY() + lbl_numero.getHeight() + 5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral / 2);
         this.add(lbl_fecha);
 
-        lbl_nit = new CampoLabel("NIT/c.c:  ", "E");
+        lbl_nit = new CampoLabel("TD:  ", "E");
         lbl_nit.alinearIzquierda();
         lbl_nit.setBounds(posicionXLbl, lbl_fecha.getY() + lbl_fecha.getHeight() + 5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral / 2);
         this.add(lbl_nit);
@@ -125,35 +125,45 @@ public class GUITransaccionConsultar extends ClaseGeneral {
         lbl_nombreDin.setBounds(lbl_nombre.getX() + lbl_nombre.getWidth(), lbl_nombre.getY(), CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
         this.add(lbl_nombreDin);
 
-        lbl_direccion = new CampoLabel("Direccion:  ", "E");
-        lbl_direccion.alinearIzquierda();
-        lbl_direccion.setBounds(lbl_nombre.getX(), lbl_nombre.getY() + lbl_nombre.getHeight() + 5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral / 2);
-        this.add(lbl_direccion);
-
-        lbl_direccionDin = new CampoLabel("", "V");
-        lbl_direccionDin.alinearIzquierda();
-        lbl_direccionDin.setBounds(lbl_nombreDin.getX(), lbl_nombre.getY() + lbl_nombre.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
-        this.add(lbl_direccionDin);
-
         lbl_ciudad = new CampoLabel("Ciudad:  ", "E");
         lbl_ciudad.alinearIzquierda();
-        lbl_ciudad.setBounds(lbl_nombre.getX(), lbl_direccion.getY() + lbl_direccion.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        lbl_ciudad.setBounds(lbl_nombre.getX(), lbl_nombre.getY() + lbl_nombre.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
         this.add(lbl_ciudad);
 
         lbl_ciudadDin = new CampoLabel("", "V");
         lbl_ciudadDin.alinearIzquierda();
-        lbl_ciudadDin.setBounds(lbl_direccionDin.getX(), lbl_direccion.getY() + lbl_direccion.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        lbl_ciudadDin.setBounds(lbl_nombreDin.getX(), lbl_nombre.getY() + lbl_nombre.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
         this.add(lbl_ciudadDin);
 
-        lbl_telefono = new CampoLabel("Teléfono:  ", "E");
-        lbl_telefono.alinearIzquierda();
-        lbl_telefono.setBounds(lbl_nombre.getX(), lbl_ciudad.getY() + lbl_ciudad.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
-        this.add(lbl_telefono);
+        lbl_cupoDiario = new CampoLabel("C. Diario:  ", "E");
+        lbl_cupoDiario.alinearIzquierda();
+        lbl_cupoDiario.setBounds(lbl_nombre.getX(), lbl_ciudad.getY() + lbl_ciudad.getHeight() + 5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral / 2);
+        this.add(lbl_cupoDiario);
 
-        lbl_telefonoDin = new CampoLabel("", "V");
-        lbl_telefonoDin.alinearIzquierda();
-        lbl_telefonoDin.setBounds(lbl_ciudadDin.getX(), lbl_ciudad.getY() + lbl_ciudad.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
-        this.add(lbl_telefonoDin);
+        lbl_cupoDiarioDin = new CampoLabel("", "V");
+        lbl_cupoDiarioDin.alinearIzquierda();
+        lbl_cupoDiarioDin.setBounds(lbl_nombreDin.getX(), lbl_ciudad.getY() + lbl_ciudad.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        this.add(lbl_cupoDiarioDin);
+
+        lbl_cupoMensual = new CampoLabel("C. Mensual:  ", "E");
+        lbl_cupoMensual.alinearIzquierda();
+        lbl_cupoMensual.setBounds(lbl_nombre.getX(), lbl_cupoDiario.getY() + lbl_cupoDiario.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        this.add(lbl_cupoMensual);
+
+        lbl_cupoMensualDin = new CampoLabel("", "V");
+        lbl_cupoMensualDin.alinearIzquierda();
+        lbl_cupoMensualDin.setBounds(lbl_cupoDiarioDin.getX(), lbl_cupoDiario.getY() + lbl_cupoDiario.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        this.add(lbl_cupoMensualDin);
+
+        lbl_cupoTotal = new CampoLabel("C. Total:  ", "E");
+        lbl_cupoTotal.alinearIzquierda();
+        lbl_cupoTotal.setBounds(lbl_nombre.getX(), lbl_cupoMensual.getY() + lbl_cupoMensual.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        this.add(lbl_cupoTotal);
+
+        lbl_cupoTotalDin = new CampoLabel("", "V");
+        lbl_cupoTotalDin.alinearIzquierda();
+        lbl_cupoTotalDin.setBounds(lbl_cupoMensualDin.getX(), lbl_cupoMensual.getY() + lbl_cupoMensual.getHeight() + 5, CargaImagenes.anchoBotonGeneral * 2, CargaImagenes.altoBotonGeneral / 2);
+        this.add(lbl_cupoTotalDin);
 
         //////////////////JTEXTFIELD////////////////////////////
         txt_idDocumentoFuente = new CajaDeTexto("G");
@@ -771,8 +781,9 @@ public class GUITransaccionConsultar extends ClaseGeneral {
         txt_nit.setText(transaccion.getInterno().getTd());
         lbl_nombreDin.setText(transaccion.getInterno().getPrimerApellido() + " " + transaccion.getInterno().getSegundoApellido() + " " + transaccion.getInterno().getPrimerNombre() + " " + transaccion.getInterno().getSegundoNombre());
         lbl_ciudadDin.setText(transaccion.getInterno().getNacionalidad());
-        lbl_direccionDin.setText(Formatos.quitarFormatoValorString(transaccion.getInterno().getSaldoDiarioActualGastado() + ""));
-        lbl_telefonoDin.setText(Formatos.quitarFormatoValorString(transaccion.getInterno().getSaldoMensualActualGastado() + ""));
+        lbl_cupoDiarioDin.setText(Formatos.formatearValorDecimalesString(transaccion.getInterno().traerSaldoDiarioDisponibleValidado() + "", DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        lbl_cupoMensualDin.setText(Formatos.formatearValorDecimalesString(transaccion.getInterno().traerSaldoMensualDisponibleValidado() + "", DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        lbl_cupoTotalDin.setText(Formatos.formatearValorDecimalesString(transaccion.getInterno().getSaldoDisponible() + "", DatosGeneralesPrograma.cantidadDecimalesMoneda));
 
         txt_condiciones.setText(transaccion.getCondicion());
 
