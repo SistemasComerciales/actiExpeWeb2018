@@ -397,8 +397,8 @@ public class GUITransaccion extends ClaseGeneral {
 	 */
 	public void preparaElementosBotones2(){
 		
-		int anchoBotonB = CargaImagenes.anchoBotonGeneral/10*6;
-		int altoBotonB =  CargaImagenes.altoBotonGeneral/10*8;
+		int anchoBotonB = CargaImagenes.anchoBotonMini;
+		int altoBotonB =  CargaImagenes.altoBotonMini;
 		
 		int posicionXBtn = CargaImagenes.ANCHO_PANTALLA/100;
 		int posicionYBtn = CargaImagenes.ALTO_PANTALLA/100*63;
@@ -445,50 +445,50 @@ public class GUITransaccion extends ClaseGeneral {
 		
 
 		
-//		btn_adicionar = new Boton(NombreImagenes.imBadicionar1, NombreImagenes.imBadicionar2, usuario.getImagenes());
-//		this.add(btn_adicionar);
-//		btn_adicionar.setToolTipText("adicionar");
-//		btn_adicionar.setLocation(posicionXBtn, posicionYBtn);
-//		btn_adicionar.setSize(anchoBotonB,altoBotonB);
-//		
-//		btn_guardarMv = new Boton(NombreImagenes.imBguardarMv1,NombreImagenes.imBguardarMv2 , usuario.getImagenes());
-//		this.add(btn_guardarMv);
-//		btn_guardarMv.setToolTipText("adicionar");
-//		btn_guardarMv.setLocation(posicionXBtn, posicionYBtn);
-//		btn_guardarMv.setSize(anchoBotonB,altoBotonB);
-//		btn_guardarMv.setVisible(false);
-//		
-//		btn_borrar2 = new Boton(NombreImagenes.imBborrarcat1,NombreImagenes.imBborrarcat2 , usuario.getImagenes());
-//		this.add(btn_borrar2);
-//		btn_borrar2.setToolTipText("borrar2");
-//		btn_borrar2.setLocation(btn_adicionar.getX()+btn_adicionar.getWidth()*3/4, btn_adicionar.getY());
-//		btn_borrar2.setSize(anchoBotonB,altoBotonB);
-//		
-//		btn_insertar = new Boton(NombreImagenes.imBinsertar1,NombreImagenes.imBinsertar2 , usuario.getImagenes());
-//		this.add(btn_insertar);
-//		btn_insertar.setToolTipText("insertar");
-//		btn_insertar.setLocation(btn_borrar2.getX()+btn_borrar2.getWidth()*3/4	, btn_borrar2.getY());
-//		btn_insertar.setSize(anchoBotonB,altoBotonB);
-//
-//
-//		btn_modificar = new Boton(NombreImagenes.imBEditar1,NombreImagenes.imBEditar2 , usuario.getImagenes());
-//		this.add(btn_modificar);
-//		btn_modificar.setToolTipText("Modificar");
-//		btn_modificar.setLocation(btn_insertar.getX()+btn_insertar.getWidth()*3/4, btn_insertar.getY());
-//		btn_modificar.setSize(anchoBotonB,altoBotonB);
-//		
-//		btn_cancelarMv = new Boton(NombreImagenes.imBCancelarmv1,NombreImagenes.imBCancelarmv2 , usuario.getImagenes());
-//		this.add(btn_cancelarMv);
-//		btn_cancelarMv.setToolTipText("Cancelar");
-//		btn_cancelarMv.setLocation(btn_insertar.getX()+btn_insertar.getWidth()*3/4, btn_modificar.getY());
-//		btn_cancelarMv.setSize(anchoBotonB,altoBotonB);
-//		btn_cancelarMv.setVisible(false);
-//		
-//		btn_repetir = new Boton(NombreImagenes.imBRepetirmv1, NombreImagenes.imBRepetirmv2, usuario.getImagenes());
-//		this.add(btn_repetir);
-//		btn_repetir.setToolTipText("Repetir");
-//		btn_repetir.setLocation(btn_modificar.getX()+btn_modificar.getWidth()*3/4	, btn_cancelarMv.getY());
-//		btn_repetir.setSize(anchoBotonB,altoBotonB);
+		btn_adicionar = new Boton(NombreImagenes.imBGeneralMini1, NombreImagenes.imBGeneralMini2, "A");
+		this.add(btn_adicionar);
+		btn_adicionar.setToolTipText("adicionar");
+		btn_adicionar.setLocation(posicionXBtn, posicionYBtn);
+		btn_adicionar.setSize(anchoBotonB,altoBotonB);
+		
+		btn_guardarMv = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "G");
+		this.add(btn_guardarMv);
+		btn_guardarMv.setToolTipText("adicionar");
+		btn_guardarMv.setLocation(posicionXBtn, posicionYBtn);
+		btn_guardarMv.setSize(anchoBotonB,altoBotonB);
+		btn_guardarMv.setVisible(false);
+		
+		btn_borrar2 = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "B");
+		this.add(btn_borrar2);
+		btn_borrar2.setToolTipText("borrar2");
+		btn_borrar2.setLocation(btn_adicionar.getX()+btn_adicionar.getWidth(), btn_adicionar.getY());
+		btn_borrar2.setSize(anchoBotonB,altoBotonB);
+		
+		btn_insertar = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "I");
+		this.add(btn_insertar);
+		btn_insertar.setToolTipText("insertar");
+		btn_insertar.setLocation(btn_borrar2.getX()+btn_borrar2.getWidth()	, btn_borrar2.getY());
+		btn_insertar.setSize(anchoBotonB,altoBotonB);
+
+
+		btn_modificar = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "M");
+		this.add(btn_modificar);
+		btn_modificar.setToolTipText("Modificar");
+		btn_modificar.setLocation(btn_insertar.getX()+btn_insertar.getWidth(), btn_insertar.getY());
+		btn_modificar.setSize(anchoBotonB,altoBotonB);
+		
+		btn_cancelarMv = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "C");
+		this.add(btn_cancelarMv);
+		btn_cancelarMv.setToolTipText("Cancelar");
+		btn_cancelarMv.setLocation(btn_insertar.getX()+btn_insertar.getWidth(), btn_modificar.getY());
+		btn_cancelarMv.setSize(anchoBotonB,altoBotonB);
+		btn_cancelarMv.setVisible(false);
+		
+		btn_repetir = new Boton(NombreImagenes.imBGeneralMini1, NombreImagenes.imBGeneralMini2, "R");
+		this.add(btn_repetir);
+		btn_repetir.setToolTipText("Repetir");
+		btn_repetir.setLocation(btn_modificar.getX()+btn_modificar.getWidth()	, btn_cancelarMv.getY());
+		btn_repetir.setSize(anchoBotonB,altoBotonB);
 	}
     
     @Override
