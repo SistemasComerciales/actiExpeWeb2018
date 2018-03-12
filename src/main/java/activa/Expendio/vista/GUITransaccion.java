@@ -2212,21 +2212,18 @@ public class GUITransaccion extends ClaseGeneral {
         
         public static String asignarNumeroConsecutivo(Usuario usuario) {
             String ultimoNumero = Transaccion.traerUltimoNumerotransaccion(usuario);
+            System.out.println("1:  "+ ultimoNumero);
             if (ultimoNumero.equals("ERROR")) {
                 option.tipoMensaje(GUIJOption.mensajeAdvertencia, "141", "No se ha podido traer el último número de la base de datos.", "Inténtelo de nuevo.");
             } else {
-                ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(String.valueOf(Configuracion.codigoEstablecimiento - 1).length(), ultimoNumero, usuario);
+                ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(ultimoNumero, usuario);
+                System.out.println("2:  "+ ultimoNumero);
                 if (ultimoNumero.equalsIgnoreCase("")) {
                     option.tipoMensaje(GUIJOption.mensajeAdvertencia, "142", "No se ha podido convertir la numeración.", "Inténtelo de nuevo.");
                 } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
                     option.tipoMensaje(GUIJOption.mensajeAdvertencia, "143", "No hay cupo en la numeración actual.", "Inténtelo de nuevo.");
                 } else {
                     return ultimoNumero;
-//                    if (ultimoNumero.endsWith("000001")) {
-//                        txt_numero.setEnabled(true);
-//                    } else {
-//                        txt_numero.setEnabled(false);
-//                    }
                 }
             }
             return ultimoNumero;
@@ -2408,7 +2405,7 @@ public class GUITransaccion extends ClaseGeneral {
         private void accionGrabar(){
             String vacios = validarValidarVaciosGeneral();
             if (vacios.isEmpty()) {
-                PersistenciaTransaccion pTransaccion = new PersistenciaTransaccion();
+                PersistenciaTransaccionInt pTransaccion = Servicios.transaccionController.transaccionRepository;
                 setValoresTransaccion();
                 int cantidadItemsAntes = pTransaccion.getListaTransacciones().size();
                 pTransaccion.adicionar( transaccion );
@@ -2420,6 +2417,10 @@ public class GUITransaccion extends ClaseGeneral {
                 }else{
                     System.out.println("mal");
                 }
+                
+                System.out.println(cantidadItemsAntes);
+                System.out.println(cnatidadItemsDespues);
+                
             }else{
                 JOptionPane.showOptionDialog(frame, "Los siguientes campos no pueden estar vacios: \n\n "+vacios, "Advertencia",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,null,"aceptar");
                 txt_codigo.grabFocus();

@@ -188,7 +188,7 @@ public class Transaccion  {
 
         if (max == -1) {// no se encontro un interno en el establecimiento
             ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeInformacion, "Numeración actual.", "No se ha encontrado ningún numero.", " Se reiniciará la numeración.");
-            return  "000000000000000";
+            return  "0";
         } else {
             return String.valueOf(max);
         }
