@@ -6,6 +6,7 @@
 package activa.Expendio.modelo;
 
 import java.util.Date;
+import utils.Fecha;
 
 /**
  *
@@ -22,6 +23,8 @@ public class Consignacion {
     private long cajasEspeciales;
     private String observaciones;
     private boolean eliminado;
+    private String mensajeCampoObligatorio;
+    
     /**
      * @return the numeroTransaccion
      */
@@ -161,6 +164,61 @@ public class Consignacion {
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }
+    
+    
+    public String getFechaString(){
+        return Fecha.obtenerFechaString(fecha);
+    }
+    
+    /**
+     * Metodo encargado de validar los datos
+     * @return 
+     */
+    public boolean validarDatosObligatorios(){
+        setMensajeCampoObligatorio("");
+        if(numeroTransaccion.trim().isEmpty()){
+            setMensajeCampoObligatorio("El número de la transacción no puede ir vacio");
+            return false;
+        }
+        else if(fecha==null){
+            setMensajeCampoObligatorio("La fecha no puede ir vacia");
+            return false;
+        }
+        else if(interno==null){
+            setMensajeCampoObligatorio("Por favor seleccione un interno");
+            return false;
+        }
+        else if(concepto.trim().isEmpty()){
+            setMensajeCampoObligatorio("Por favor seleccione un concepto");
+            return false;
+        }
+        else if(numeroRecibo.trim().isEmpty()){
+            setMensajeCampoObligatorio("El número del recibo no puede ir vacio");
+            return false;
+        }
+        else if(valor == 0){
+            setMensajeCampoObligatorio("El valor no puede ir vacio");
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    /**
+     * @return the mensajeCampoObligatorio
+     */
+    public String getMensajeCampoObligatorio() {
+        return mensajeCampoObligatorio;
+    }
+
+    /**
+     * @param mensajeCampoObligatorio the mensajeCampoObligatorio to set
+     */
+    public void setMensajeCampoObligatorio(String mensajeCampoObligatorio) {
+        this.mensajeCampoObligatorio = mensajeCampoObligatorio;
+    }
+    
     
     
 }

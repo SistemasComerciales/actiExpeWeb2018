@@ -29,6 +29,7 @@ public class PersistenciaConsignacion implements PersistenciaConsignacionInt{
 //        crearMock();
     }
     
+    @Override
     public void crearMock(){
         Consignacion consignacion = new Consignacion();
         Interno interno = Servicios.internosController.internosRepository.getInternos().get(0);
@@ -37,8 +38,8 @@ public class PersistenciaConsignacion implements PersistenciaConsignacionInt{
         consignacion.setEliminado(false);
         consignacion.setFecha(new Date(2018, 4, 11));
         consignacion.setId(1);
-        consignacion.setNumeroRecibo("00000001");
-        consignacion.setNumeroTransaccion("00000001");
+        consignacion.setNumeroRecibo("0000000001");
+        consignacion.setNumeroTransaccion("0000000001");
         consignacion.setObservaciones("");
         consignacion.setValor(900000);
         interno.registrarIngreso(900000);
@@ -129,6 +130,40 @@ public class PersistenciaConsignacion implements PersistenciaConsignacionInt{
             }
         }
         return arreglo;
+    }
+
+    @Override
+    public String traerSiguienteNumeroTransaccion() {
+        if(consignaciones.isEmpty()){
+            return "0000000001";
+        }
+        else{
+            String ultimoNumero = consignaciones.get(consignaciones.size()-1).getNumeroTransaccion();
+            String ceros;
+//            String numeros;
+            int longitudCeros = 0;
+            for(int i=0; i<ultimoNumero.length(); i++){
+                if(!ultimoNumero.substring(i, i+1).equals("0")){
+                    longitudCeros = i;
+                    break;
+                }
+            }
+            ceros = ultimoNumero.substring(0,longitudCeros);
+//            numeros = ultimoNumero.substring(longitudCeros,ultimoNumero.length()-1);
+
+            System.out.println("ceros: "+ceros);
+            
+            long numero = Long.valueOf(ultimoNumero);
+            System.out.println("numero: "+numero);
+            numero++;
+            return ceros+numero;
+        }
+        
+    }
+
+    @Override
+    public long traerSiguienteId() {
+        return consignaciones.size()+1;
     }
     
 }

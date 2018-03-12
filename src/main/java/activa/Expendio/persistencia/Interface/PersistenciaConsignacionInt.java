@@ -33,4 +33,10 @@ public interface PersistenciaConsignacionInt {
     public Consignacion consultarPorNumero(String numero);
 
     public ArrayList<Consignacion> consultarPorFecha(Date fecha);
+    
+    public void crearMock();
+    
+    public String traerSiguienteNumeroTransaccion();
+    
+    public long traerSiguienteId();
 }
