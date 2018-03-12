@@ -33,6 +33,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -58,7 +60,7 @@ public class GUITransaccion extends ClaseGeneral {
     public CampoLabel lbl_nombreDocFuente;
     
     private CampoLabel lbl_documento , lbl_numero, lbl_fecha , lbl_nit, lbl_condiciones , lbl_nombre , lbl_nombreDin, lbl_direccion, lbl_direccionDin, lbl_ciudad , lbl_ciudadDin , lbl_telefono , lbl_telefonoDin ;
-    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete, txt_ControlExistenciaProducto;
+    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete;
     private CajaDeTextoConFormato txt_fecha;
     
         ////////////panel REGISTRO2 MVTRANSACCION///////////
@@ -67,7 +69,7 @@ public class GUITransaccion extends ClaseGeneral {
     private CajaDeTexto txt_cantidad , txt_ValorUnitario , txt_valorTotal;
 
     //////////////////PANEL BOTONES 2////////////////////
-    public CampoLabel lbl_adicionar , lbl_borrar , lbl_insertar  , lbl_modificar, lbl_repetir , lbl_cancelarMV , lbl_guardarMv , lbl_costoProducto ,lbl_costoProductoTotal, lbl_NombreExistencia, lbl_ResultadoExistencia;
+    public CampoLabel lbl_adicionar , lbl_borrar , lbl_insertar  , lbl_modificar, lbl_repetir , lbl_cancelarMV , lbl_guardarMv, lbl_NombreExistencia, lbl_ResultadoExistencia;
     public Boton       btn_adicionar ,btn_borrar2,	btn_insertar , btn_modificar , btn_repetir, btn_cancelarMv , btn_guardarMv;
     
     //////////////////PANEL BOTONES 1/////////////////////
@@ -144,6 +146,7 @@ public class GUITransaccion extends ClaseGeneral {
           cargarDatosProductos();
         accionBotones();
         accionCajaTexto();
+        accionTablas();
         
         
         ocultarPaneles();
@@ -281,9 +284,7 @@ public class GUITransaccion extends ClaseGeneral {
         this.add(txt_fecha);
  
         txt_idTercero = new CajaDeTexto("G");
-        txt_nitAntiguo = new CajaDeTexto("G");
-        txt_ControlExistenciaProducto = new CajaDeTexto("G");
-        
+        txt_nitAntiguo = new CajaDeTexto("G");        
         
         txt_nit = new CajaDeTexto("G",50);
         txt_nit.setBounds(posicionXTxt, lbl_nit.getY(), CargaImagenes.anchoBotonGeneral, 20);
@@ -1065,7 +1066,7 @@ public class GUITransaccion extends ClaseGeneral {
 
         PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
 
-        ArrayList<Interno> internos = persistencia.getNoEliminados();
+        ArrayList<Interno> internos = persistencia.getNoEliminadosYActivos();
 
         for (Interno interno : internos) {
             String[] datosFila = new String[dtmTablaTerceros.getColumnCount()];
@@ -1117,7 +1118,6 @@ public class GUITransaccion extends ClaseGeneral {
 		txt_ValorUnitario.setText("");
 		txt_valorTotal.setText("");
 		txt_descripcionItem.setText("");
-		lbl_costoProductoTotal.setText("");
 		tablaPrincipal.updateUI();
 	}
         
@@ -1136,6 +1136,42 @@ public class GUITransaccion extends ClaseGeneral {
 		txt_fecha.setEnabled(true);
 		
 	}
+        
+        	/**
+	 * limpia los campos de la transaccion general
+	 */
+	public void limpiarValoresTransaccionTemporal(){
+		limpiarValoresDocumentoFuente();
+		txt_fecha.setValue("");
+		txt_nit.setText("");
+		txt_nitAntiguo.setText("");
+		txt_idTercero.setText("");
+		lbl_nombreDin.setText("");
+		lbl_direccionDin.setText("");
+		lbl_ciudadDin.setText("");
+		lbl_telefonoDin.setText("");
+		txt_condiciones.setText("");
+		txt_numero.setText("");
+//		txt_numero.setEnabled(true);
+//		validarEnabletxtNumerFijo();
+		lbl_numeroItemsResultado.setText("");
+		lbl_numeroArticuloResultados.setText("");
+		
+		lbl_subtotalResultado.setText("");
+		lbl_totalResultados.setText("");
+		lbl_descuentoPorcentaje.setText("");
+		lbl_descuentoValor.setText("");
+		txt_observaciones.setText("");
+		lbl_ivaResultado.setText("");
+		lbl_retencionesResul.setText("");
+		lbl_grupoProductoResultado.setText("");
+		lbl_grupoContableResultado.setText("");
+		//lbl_creePorcentajeReten.setText("");
+		//lbl_creeValorReten.setText("");
+		
+		txt_idTransaccion.setText("");
+	}
+        
         
         /**
          * 
@@ -1218,6 +1254,19 @@ public class GUITransaccion extends ClaseGeneral {
         }
         
         /**
+         * metodo que contiene la accion del boton borrar
+         */
+        private void accionBotonBorrar(){
+            limpiarCamposRegistroMv(true);
+            limpiarValoresDocumentoFuente();
+            Tabla.eliminarFilasTabla(dtmTablaPrincipal);
+            limpiarValoresTransaccionTemporal();
+            ocultarPaneles();
+            txt_documento.grabFocus();
+            
+        }
+        
+        /**
          * metodo que contiene la accion de los botones
          */
         private void accionBotones(){
@@ -1225,6 +1274,13 @@ public class GUITransaccion extends ClaseGeneral {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     accionBotonSalir();
+                }
+            });
+            
+            btn_borrar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    accionBotonBorrar();
                 }
             });
         }
@@ -1572,6 +1628,8 @@ public class GUITransaccion extends ClaseGeneral {
                             txt_ValorUnitario.setText("");
                             limpiarCamposRegistroMv(false);
                     }
+                    
+                    
             }
 
             @Override
@@ -1628,13 +1686,442 @@ public class GUITransaccion extends ClaseGeneral {
 					}
 				}
 			}
-		});        
-                
+		}); 
+                        
+        txt_ValorUnitario.addKeyListener(new KeyListener() {
+
+                @Override
+                public void keyTyped(KeyEvent e) {
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+//                        validar.inicializarSiEstaSeleccionadoNumero(txt_ValorUnitario, e);
+                        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                                if (!btn_cancelar.isVisible()) {
+
+                                }else{
+                                        if(tablaPrincipal.getRowCount()>=1){
+                                                tablaPrincipal.grabFocus();
+                                                tablaPrincipal.getSelectionModel().setSelectionInterval(0, 0);
+                                        }
+                                }
+                        }else if(e.getKeyCode() == KeyEvent.VK_C){
+//                                String fecha = txt_fecha.getText();
+//                                if (fecha.replace(" ", "").replace("/", "").isEmpty()) {
+//                                        fecha = "";
+//                                }
+//                                String preCosto = traerCostoProducto(txt_idCodigo.getText(), fecha);
+//                                if (!preCosto.equals("") && !preCosto.equals("ERROR")) {
+//                                        txt_ValorUnitario.setText(preCosto);
+//                                }
+
+                        }if (e.getKeyCode() == KeyEvent.VK_N) {
+//                                txt_ValorUnitario.setText( Formatos.cambiarValorPesosANegativo(txt_ValorUnitario.getText().trim()));
+                        }else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                            btn_adicionar.grabFocus();
+                        }
+                        
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+//                        validar.teclasDireccion(e, null, null, ProximoFocoMv(), ProximoFocoMvIzquierda(), txt_ValorUnitario);
+                }
+        });
+         
+        txt_cantidad.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				txt_cantidad.setText(Formatos.formatearNumeroAgregaDecimalesString(txt_cantidad.getText().trim()));
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				ocultarPaneles();
+				txt_cantidad.setText(Formatos.quitarFormatoDecimalesString(txt_cantidad.getText().trim()));
+				calculoValorTotalJtextValorTotal();
+				
+				if (!txt_cantidad.getText().isEmpty()) {
+					txt_cantidad.setSelectionStart(0);
+					txt_cantidad.setSelectionEnd(txt_cantidad.getText().length());
+				}
+
+			}
+		});
+		
+		
+		txt_ValorUnitario.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				txt_ValorUnitario.setText(Formatos.formatearValorString(txt_ValorUnitario.getText().trim()));
+				calculoValorTotalJtextValorTotal();
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				ocultarPaneles();
+				txt_ValorUnitario.setText(Formatos.quitarFormatoValorString(txt_ValorUnitario.getText().trim()));		
+				calculoValorTotalJtextValorTotal();
+
+				if (!txt_ValorUnitario.getText().isEmpty()) {
+					txt_ValorUnitario.setSelectionStart(0);
+					txt_ValorUnitario.setSelectionEnd(txt_ValorUnitario.getText().length());
+				}
+			}
+		});
+        
+        
+        
         }
     
         
         private void accionTablas(){
-            
+            tabla_documentoFuente.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e){
+
+                    if(e.isMetaDown())
+                    {				
+                    int fila = tabla_documentoFuente.getSelectedRow();
+
+                    if(fila!=-1)
+                            {
+
+                                    txt_documento.setText((String)tabla_documentoFuente.getValueAt(fila, 1 ));
+                                    txt_idDocumentoFuente.setText((String)tabla_documentoFuente.getValueAt(fila, 0));
+                                    lbl_nombreDocFuente.setText((String)tabla_documentoFuente.getValueAt(fila, 2));
+                                    txt_numero.grabFocus();
+
+
+
+                            }
+                    }
+
+            }
+
+    });
+
+    tabla_documentoFuente.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                            int fila = tabla_documentoFuente.getSelectedRow();
+
+                            if(fila!=-1)
+                                    {
+                                            if (!txt_numero.isEnabled()) {
+                                                    txt_numero.grabFocus();
+                                            }else{
+                                                    txt_fecha.grabFocus();
+                                            }
+                                    }
+
+                    }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                            int fila = tabla_documentoFuente.getSelectedRow();						
+                            if(fila!=-1)
+                                    {
+                                            txt_documento.setText((String)tabla_documentoFuente.getValueAt(fila, 1 ));
+                                            txt_idDocumentoFuente.setText((String)tabla_documentoFuente.getValueAt(fila, 0));
+                                            lbl_nombreDocFuente.setText((String)tabla_documentoFuente.getValueAt(fila, 2));
+
+                                    }	
+                    }
+
+
+            }
+    });
+
+    tabla_documentoFuente.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+                    if(!txt_documento.getText().trim().isEmpty()){
+                            if(txt_documento.getText().trim().equalsIgnoreCase(txt_documentoAntiguo.getText().trim())){
+                                    //accionCambioDeTerceroDocFuenteEnRetnciones();
+                            }else{
+                            String valido = validarDocumentoFuente(txt_documento.getText());
+                            if(valido.equalsIgnoreCase("NOEXISTE")){
+                                    JOptionPane.showOptionDialog(frame, "Error, el documento fuente no existe o este usuario no tiene permiso para usarlo. Inténtelo de nuevo", "Error (5791)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                    txt_documento.setText("");
+                                    txt_idDocumentoFuente.setText("");
+                                    lbl_nombreDocFuente.setText("");
+                                    deshacerFiltroDocFuente();
+                                    limpiarValoresDocumentoFuente();
+                    }else if (valido.equalsIgnoreCase("VALIDO")){
+                                            asignarNumeroConsecutivo();
+                                            if(txt_numero.isEnabled()){
+                                                    txt_numero.grabFocus();
+                                            }else{
+                                                    txt_fecha.grabFocus();
+                                            }
+                            }
+                    }	
+            }else{
+                    limpiarValoresDocumentoFuente();
+                    txt_numero.setEnabled(true);
+            }
+
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+
+
+            }
+    });
+
+    tablaTerceros.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+
+                    if(e.isMetaDown())
+                    {				
+                    int fila = tablaTerceros.getSelectedRow();
+
+                    if(fila!=-1)
+                            {
+                                    txt_nit.setText((String)tablaTerceros.getValueAt(fila, 2 ));
+                                    txt_idTercero.setText((String)tablaTerceros.getValueAt(fila, 0));
+                                    lbl_nombreDin.setText((String)tablaTerceros.getValueAt(fila, 1));
+                                    txt_condiciones.grabFocus();
+                            }
+                    }	
+            }		
+    });
+    tablaTerceros.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
+
+                    int fila = tablaTerceros.getSelectedRow();
+
+                    if(fila!=-1)
+                            {
+                                    txt_nit.setText((String)tablaTerceros.getValueAt(fila, 2 ));
+                                    txt_idTercero.setText((String)tablaTerceros.getValueAt(fila, 0));
+                                    lbl_nombreDin.setText((String)tablaTerceros.getValueAt(fila, 1));
+                                    txt_nit.grabFocus();
+                            }
+                    }
+            }
+    });
+
+    tablaTerceros.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+                    if(!txt_nit.getText().trim().isEmpty()){
+                            if (txt_nit.getText().trim().equalsIgnoreCase(txt_nitAntiguo.getText().trim())) {
+
+                            }else{
+                                    String valido = validarTercero(txt_nit.getText().trim());				
+                                    if(valido.equalsIgnoreCase("NOEXISTE")){
+                                            JOptionPane.showOptionDialog(frame, "Error, el Tercero no existe. Inténtelo de nuevo", "Error (5798)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                            txt_nit.setText("");
+                                            txt_idTercero.setText("");
+                                            lbl_nombreDin.setText("");
+                                            lbl_direccionDin.setText("");
+                                            lbl_ciudadDin.setText("");
+                                            lbl_telefonoDin.setText("");
+                                            txt_fecha.grabFocus();
+                                    }else{
+                                    }
+                            }
+                    }else{
+                            txt_nitAntiguo.setText("");
+                    }
+
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+
+
+            }
+    });
+
+    tablaProducto.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                    if(e.isMetaDown())
+                    {				
+                            int fila = tablaProducto.getSelectedRow();				
+                            if(fila!=-1)
+                                    {				
+                                            txt_codigo.setText((String)tablaProducto.getValueAt(fila, 1 ));
+                                            txt_idCodigo.setText((String)tablaProducto.getValueAt(fila, 0));
+                                            txt_descripcion.setText((String)tablaProducto.getValueAt(fila, 2));
+                                            txt_empaque.setText((String)tablaProducto.getValueAt(fila, 3));
+                                            txt_bodega.grabFocus();
+                                    }
+                    }
+            }
+    });
+
+    tablaProducto.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
+
+                            int fila = tablaProducto.getSelectedRow();
+
+                            if(fila!=-1)
+                                    {
+
+                                            txt_codigo.setText((String)tablaProducto.getValueAt(fila, 1 ));
+                                            txt_idCodigo.setText((String)tablaProducto.getValueAt(fila, 0));
+                                            txt_descripcion.setText((String)tablaProducto.getValueAt(fila, 2));
+                                            txt_empaque.setText((String)tablaProducto.getValueAt(fila, 3));
+                                            //txt_codigo.grabFocus();
+                                    }
+
+                    }
+
+            }
+    });
+
+    tablaProducto.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+//				System.out.println("entrosssssdasdasd");
+                    if(!txt_codigo.getText().trim().isEmpty()){
+                            String valido = validarProducto(txt_codigo.getText().trim());				
+                            if(valido.equalsIgnoreCase("NOEXISTE")){
+                                    JOptionPane.showOptionDialog(frame, "Error, el Producto	 no existe. Inténtelo de nuevo", "Error (5803)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                    txt_idCodigo.setText("");
+                                    txt_codigo.setText("");
+                                    txt_descripcion.setText("");
+                                    txt_empaque.setText("");
+                                    txt_descripcionItem.setEnabled(false);
+                                    deshacerFiltroProducto();
+                                    txt_fecha.grabFocus();
+                    }else if(valido.equalsIgnoreCase("VALIDO")){
+                                    txt_descripcionItem.setEnabled(true);
+                            }else{
+                            }
+                    }
+
+            }
+            @Override
+            public void focusGained(FocusEvent e) {
+
+
+            }
+    });
+
+    tablaBodega.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+
+                    if(e.isMetaDown())
+                    {				
+                    int fila = tablaBodega.getSelectedRow();
+
+                    if(fila!=-1)
+                            {
+                                    txt_bodega.setText((String)tablaBodega.getValueAt(fila, 1 ));
+                                    txt_idBodega.setText((String)tablaBodega.getValueAt(fila, 0));
+                            }
+                    }
+
+            }
+    });
+
+    tablaBodega.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
+
+                            int fila = tablaBodega.getSelectedRow();
+
+                            if(fila!=-1)
+                                    {
+                                            txt_bodega.setText((String)tablaBodega.getValueAt(fila, 1 ));
+                                            txt_idBodega.setText((String)tablaBodega.getValueAt(fila, 0));
+
+                                    }
+
+                    }
+
+            }
+    });
+
+    tablaBodega.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                    if(!txt_bodega.getText().trim().isEmpty()){
+                            String valido = validarBodega(txt_bodega.getText().trim());				
+                            if(valido.equalsIgnoreCase("NOEXISTE")){
+                                    JOptionPane.showOptionDialog(frame, "Error, La bodega no existe. Inténtelo de nuevo", "Error (5811)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                    txt_idBodega.setText("");
+                                    txt_bodega.setText("");
+                                    deshacerFiltroBodega();
+                    }else if(valido.equalsIgnoreCase("ERROR2")) {
+                            JOptionPane.showOptionDialog(frame, "Error, ha ocurrido un error . Inténtelo de nuevo", "Error (5812)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                    txt_idBodega.setText("");
+                                    txt_bodega.setText("");
+                                    deshacerFiltroBodega();
+                            }else{
+
+                            }
+                    }				
+
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+
+
+            }
+    });
         }   
         
         private void deshacerFiltroBodega() {
@@ -1703,4 +2190,41 @@ public class GUITransaccion extends ClaseGeneral {
     public void asignarPermisos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    	/**
+	 * metodo calcula calcula y muestra el valor total formateado en moneda al campo valor toal
+	 */
+	public void calculoValorTotalJtextValorTotal(){
+		
+		if(!txt_cantidad.getText().replace(" ", "").trim().equalsIgnoreCase("")){
+			if(!txt_ValorUnitario.getText().replace(" ", "").trim().equalsIgnoreCase("")){				
+                            double cantidad = 0;
+                            if (!txt_cantidad.getText().replace(",", "").isEmpty()) {
+                                    cantidad = Double.parseDouble(txt_cantidad.getText().replace(",", ""));
+                            }
+                            double valorUnitario = 0;
+                            if (!txt_ValorUnitario.getText().replace("$", "").replace(",", "").replace(" ", "").isEmpty()) {
+                                    valorUnitario = Double.parseDouble(Formatos.quitarFormatoValorString(txt_ValorUnitario.getText().replace(" ", "")));
+                            }
+
+                            txt_valorTotal.setText(String.valueOf(calculoValorTotal(cantidad, valorUnitario, 0)));
+                            txt_valorTotal.setText(Formatos.formatearValorString(txt_valorTotal.getText().trim()));
+			}else{
+                           txt_valorTotal.setText(Formatos.formatearValorString("0"));
+                        }	
+		}else{
+                    txt_valorTotal.setText(Formatos.formatearValorString("0"));
+                }
+	}
+        
+        /**
+	 * metodo calcula el valor total dos parametros
+	 * @param cantidad
+	 * @param valorUnitario
+	 */
+	public double calculoValorTotal (double cantidad , double valorUnitario , double descuento){
+		double valorTotal = (cantidad * valorUnitario)-descuento;
+		return  Formatos.truncarDecimales(valorTotal,2);
+	}
+    
 }
