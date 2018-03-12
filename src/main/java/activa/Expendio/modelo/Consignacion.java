@@ -1,18 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package activa.Expendio.modelo;
 
+import java.sql.*;
 import java.util.Date;
-import utils.Fecha;
+import utils.*;
 
 /**
  *
  * @author Administrador
  */
 public class Consignacion {
+
     private long id;
     private String numeroTransaccion;
     private Date fecha;
@@ -24,7 +21,10 @@ public class Consignacion {
     private String observaciones;
     private boolean eliminado;
     private String mensajeCampoObligatorio;
-    
+    private Usuario usuario;
+    private Timestamp creacion;
+    private Timestamp modificacion;
+
     /**
      * @return the numeroTransaccion
      */
@@ -164,43 +164,61 @@ public class Consignacion {
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }
-    
-    
-    public String getFechaString(){
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Timestamp getCreacion() {
+        return creacion;
+    }
+
+    public void setCreacion(Timestamp creacion) {
+        this.creacion = creacion;
+    }
+
+    public Timestamp getModificacion() {
+        return modificacion;
+    }
+
+    public void setModificacion(Timestamp modificacion) {
+        this.modificacion = modificacion;
+    }
+
+    public String getFechaString() {
         return Fecha.obtenerFechaString(fecha);
     }
-    
+
     /**
      * Metodo encargado de validar los datos
-     * @return 
+     *
+     * @return
      */
-    public boolean validarDatosObligatorios(){
+    public boolean validarDatosObligatorios() {
         setMensajeCampoObligatorio("");
-        if(numeroTransaccion.trim().isEmpty()){
+        if (numeroTransaccion.trim().isEmpty()) {
             setMensajeCampoObligatorio("El número de la transacción no puede ir vacio");
             return false;
-        }
-        else if(fecha==null){
+        } else if (fecha == null) {
             setMensajeCampoObligatorio("La fecha no puede ir vacia");
             return false;
-        }
-        else if(interno==null){
+        } else if (interno == null) {
             setMensajeCampoObligatorio("Por favor seleccione un interno");
             return false;
-        }
-        else if(concepto.trim().isEmpty()){
+        } else if (concepto.trim().isEmpty()) {
             setMensajeCampoObligatorio("Por favor seleccione un concepto");
             return false;
-        }
-        else if(numeroRecibo.trim().isEmpty()){
+        } else if (numeroRecibo.trim().isEmpty()) {
             setMensajeCampoObligatorio("El número del recibo no puede ir vacio");
             return false;
-        }
-        else if(valor == 0){
+        } else if (valor == 0) {
             setMensajeCampoObligatorio("El valor no puede ir vacio");
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
@@ -218,7 +236,5 @@ public class Consignacion {
     public void setMensajeCampoObligatorio(String mensajeCampoObligatorio) {
         this.mensajeCampoObligatorio = mensajeCampoObligatorio;
     }
-    
-    
-    
+
 }
