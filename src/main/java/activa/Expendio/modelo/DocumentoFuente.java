@@ -23,7 +23,7 @@ public class DocumentoFuente {
     private boolean precioFijo;
     private boolean listaPrecio;
     private boolean costeoInventario;
-    private int idBodega;
+    private Bodega bodega;
     private Boolean estado;
     private Usuario usuario;
     private String accionUsuario;
@@ -127,12 +127,12 @@ public class DocumentoFuente {
         this.costeoInventario = costeoInventario;
     }
 
-    public int getIdBodega() {
-        return idBodega;
+    public Bodega getBodega() {
+        return bodega;
     }
 
-    public void setIdBodega(int idBodega) {
-        this.idBodega = idBodega;
+    public void setIdBodega(Bodega bodega) {
+        this.bodega = bodega;
     }
 
     public Boolean getEstado() {
@@ -199,6 +199,9 @@ public class DocumentoFuente {
         if (numera && (numero == null || (numero != null && numero.trim().isEmpty()))) {
             return "NUMERO";
         }
+//        if (bodega == null) {
+//            return "BODEGA";
+//        }
         if (estado == null) {
             return "ESTADO";
         }

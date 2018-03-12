@@ -24,6 +24,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import utils.CargaImagenes;
+import javax.swing.*;
+import utils.*;
 /**
  *
  * @author Administrador
@@ -36,7 +38,7 @@ public class GUIProducto extends GUIInterfazCatalogos{
     private CampoCombo<String> combo_controlExistencia, combo_afectaCupo, combo_controlSerial, combo_precio10Porciento, combo_estado, combo_eliminado;
     
     private static int columnaCodigo = 0;
-    private static int columnanombre = 1;
+    private static int columnaNombre = 1;
     private static int columnapresentacion = 2;
     private static int columnaGrupoProducto = 3;
     private static int columnaIdGrupoProducto = 4;
