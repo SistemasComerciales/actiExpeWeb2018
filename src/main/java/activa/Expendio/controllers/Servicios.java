@@ -34,5 +34,7 @@ public class Servicios {
         productosController = ac.getBean(ProductosController.class);
         documentosController = ac.getBean(DocumentosController.class);
         consignacionesController = ac.getBean(ConsignacionesController.class);
+        
+        consignacionesController.consignacionesRepository.crearMock();
     }
 }

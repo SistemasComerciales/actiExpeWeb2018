@@ -4,6 +4,7 @@ import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
 import activa.Expendio.vista.utils.*;
 import java.awt.event.*;
+import java.util.Date;
 import javax.swing.*;
 import utils.*;
 
@@ -35,6 +36,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     private Boton btn_registrar, btn_reporte, btn_otro, btn_borrar, btn_salir;
     
     
+    private Consignacion consignacion;
     private Interno interno;
 
     // Utilitarios
@@ -301,7 +303,24 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     }
 
     private void accionBotonRegistrar() {
-        //
+        consignacion.setId(Servicios.consignacionesController.consignacionesRepository.traerSiguienteId());
+        asignarPresentacionAAplicacion();
+        if(!consignacion.validarDatosObligatorios()){
+            option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", consignacion.getMensajeCampoObligatorio(), "");                
+        }
+        else{
+            if(Servicios.consignacionesController.consignacionesRepository.adicionar(consignacion)!=null){
+                option.tipoMensaje(GUIJOption.mensajeInformacion, "", "Se ha insertado correctamente!", "");
+                consignacion.getInterno().registrarIngreso(consignacion.getValor());
+                actualizarFrame();
+            }
+            else{
+                option.tipoMensaje(GUIJOption.mensajeError, "", "Ha ocurrido un error y no se ha podido registrar la consignacion", "");  
+            }
+            
+            
+        }
+        
     }
 
     private void accionBotonOtro() {
@@ -337,7 +356,13 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         btn_otro.setEnabled(false);
         btn_reporte.setEnabled(false);
         
-        seleccionarInterno();
+        consignacion = new Consignacion();
+        consignacion.setNumeroTransaccion(Servicios.consignacionesController.consignacionesRepository.traerSiguienteNumeroTransaccion());
+        consignacion.setFecha(new Date());
+        
+//        System.out.println("Fecha: "+consignacion.getFecha());
+        asignarAplicacionesAPresentacion();
+//        seleccionarInterno();
     }
 
     @Override
@@ -347,7 +372,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
 
     @Override
     public void asignarFoco() {
-        txt_numeroTransaccion.grabFocus();
+        txt_td.grabFocus();
     }
 
     @Override
@@ -359,11 +384,41 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
      * Metodo encargado de asignar a la parte visual el interno
      */
     private void seleccionarInterno(){
-        interno = Servicios.internosController.internosRepository.getInternos().get(0);
+        Interno interno = Servicios.internosController.internosRepository.getInternos().get(0);
+        consignacion.setInterno(interno);
         txt_td.setText(interno.getTd());
         txt_nombre.setText(interno.getPrimerApellido() + " "+ interno.getSegundoApellido() + " "+interno.getPrimerNombre() + " "+interno.getSegundoNombre());
-        txt_saldoActual.setText(Formatos.formatearValorDecimalesString(String.valueOf(interno.getSaldoMensualActualGastado()),DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        txt_saldoActual.setText(Formatos.formatearValorDecimalesString(String.valueOf(interno.getSaldoDisponible()),DatosGeneralesPrograma.cantidadDecimalesMoneda));
         txt_estado.setText(interno.getEstadoLetras());
+        
+        this.interno = interno;
     }
+    
+    
+    private void asignarAplicacionesAPresentacion(){
+        txt_numeroTransaccion.setText(consignacion.getNumeroTransaccion());
+        txt_fecha.setText(consignacion.getFechaString());
+        seleccionarInterno();
+    }
+    
+    /**
+     * Metodo encargado de asignar la presentacion a la aplicacion
+     */
+    private void asignarPresentacionAAplicacion(){
+        consignacion.setNumeroTransaccion(txt_numeroTransaccion.getText());
+        consignacion.setFecha(new Date(Fecha.anio(txt_fecha.getText()), Fecha.mes(txt_fecha.getText())-1, Fecha.dia(txt_fecha.getText())-1));
+        consignacion.setInterno(interno);
+        consignacion.setConcepto(combo_concepto.getSelectedItem().toString());
+        consignacion.setNumeroRecibo(txt_numeroRecibo.getText());
+        System.out.println("Valor Antes: "+txt_valor.getText());
+        consignacion.setValor(Valor.convertirValorStringALong(Formatos.quitarFormatoValorString(txt_valor.getText())));
+        System.out.println("Valor: "+consignacion.getValor());
+        
+        consignacion.setCajasEspeciales(Valor.convertirValorStringALong(txt_cajasEspeciales.getText()));
+        consignacion.setObservaciones(txt_observaciones.getText());
+    }
+    
+    
+    
 
 }

@@ -1,5 +1,6 @@
 package activa.Expendio.vista.utils;
 
+import activa.Expendio.modelo.DatosGeneralesPrograma;
 import utils.*;
 import java.awt.event.*;
 
@@ -72,7 +73,7 @@ public class CajaDeTexto extends JTextField {
             @Override
             public void focusLost(FocusEvent arg0) {
                 if (tipo.trim().equalsIgnoreCase(textoMoneda)) {
-                    setText(Formatos.formatearValorString(getText().trim()));
+                    setText(Formatos.formatearValorDecimalesString(getText().trim(),DatosGeneralesPrograma.cantidadDecimalesMoneda));
                 } else if (tipo.trim().equalsIgnoreCase(textoPorcentaje)) {
                     setText(Formatos.formatearPorcentajeString(getText().trim(), longitudDecimalPorcentaje));
                 } else if (tipo.trim().equalsIgnoreCase("T")) {
