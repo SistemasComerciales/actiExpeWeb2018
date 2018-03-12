@@ -307,6 +307,78 @@ public class ValidacionCampos {
     }
 
     /**
+     * metodo que maneja el cambio de posicio entre Componentes con las flechas
+     * de direccion del teclado
+     *
+     * @param e
+     * @param arriba
+     * @param abajo
+     * @param derecha
+     * @param izquierda
+     * @param principal
+     */
+    public static void teclasDireccion2(KeyEvent e, JComponent arriba, JComponent abajo, JComponent derecha,
+            JComponent izquierda, JComponent principal) {
+
+        if (arriba != null) {
+            if (e.getKeyCode() == (KeyEvent.VK_UP)) {
+                arriba.grabFocus();
+            }
+        }
+        if (abajo != null) {
+            if (e.getKeyCode() == (KeyEvent.VK_ENTER)) {
+                abajo.grabFocus();
+            }
+        }
+        if (derecha != null) {
+            if (e.getKeyCode() == (KeyEvent.VK_RIGHT)) {
+
+                if (principal instanceof JTextField) {
+                    JTextField princ = new JTextField();
+                    JTextField der = new JTextField();
+                    princ = (JTextField) principal;
+                    if (derecha instanceof JTextField) {
+                        der = (JTextField) derecha;
+                        if (princ.getCaretPosition() == princ.getText().trim().length()) {
+                            der.setCaretPosition(der.getText().trim().length());
+                            derecha = der;
+                            derecha.grabFocus();
+                        }
+                    } else {
+                        derecha.grabFocus();
+                    }
+                } else {
+                    derecha.grabFocus();
+                }
+
+            }
+        }
+        if (izquierda != null) {
+            if (e.getKeyCode() == (KeyEvent.VK_LEFT)) {
+
+                if (principal instanceof JTextField) {
+                    JTextField princ = new JTextField();
+                    JTextField izq = new JTextField();
+                    princ = (JTextField) principal;
+                    if (izquierda instanceof JTextField) {
+                        izq = (JTextField) izquierda;
+                        if (princ.getCaretPosition() == 0) {
+                            izq.setCaretPosition(izq.getText().trim().length());
+                            izquierda = izq;
+                            izquierda.grabFocus();
+                        }
+                    } else {
+                        izquierda.grabFocus();
+                    }
+                } else {
+                    izquierda.grabFocus();
+                }
+            }
+        }
+
+    }
+
+    /**
      * Convierte Sring a double, si no puede retorna 0
      *
      * @param valor
@@ -355,8 +427,29 @@ public class ValidacionCampos {
         principal.addKeyListener(new KeyAdapter() {
 
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyReleased(KeyEvent e) {
                 ValidacionCampos.teclasDireccion(e, arriba, abajo, derecha, izquierda, principal);
+            }
+        });
+    }
+
+    /**
+     * metodo que maneja el cambio de posicio entre Componentes con las flechas
+     * de direccion del teclado
+     *
+     * @param principal
+     * @param arriba
+     * @param abajo
+     * @param derecha
+     * @param izquierda
+     */
+    public static void asignarTeclasDireccion2(JComponent principal, JComponent arriba, JComponent abajo,
+            JComponent derecha, JComponent izquierda) {
+        principal.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                ValidacionCampos.teclasDireccion2(e, arriba, abajo, derecha, izquierda, principal);
             }
         });
     }
