@@ -5,18 +5,20 @@
  */
 package activa.Expendio.modelo;
 
+import activa.Expendio.controllers.Servicios;
 import activa.Expendio.persistencia.Interface.PersistenciaTransaccionInt;
+import activa.Expendio.vista.ClaseGeneral;
+import activa.Expendio.vista.GUIJOption;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrador
  */
-@Service
-public class Transaccion implements PersistenciaTransaccionInt{
+
+public class Transaccion  {
     private long id;
     private DocumentoFuente documento;
     private String numero;
@@ -170,57 +172,26 @@ public class Transaccion implements PersistenciaTransaccionInt{
     public void setId(long id) {
         this.id = id;
     }
+      public static String traerUltimoNumerotransaccion(Usuario usuario) {
+        PersistenciaTransaccionInt persistencia = Servicios.transaccionController.transaccionRepository;
 
-    @Override
-    public ArrayList<Transaccion> getListaTransacciones() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        ArrayList<Transaccion> transacciones = persistencia.getListaTransacciones();
 
-    @Override
-    public void setListaTransacciones(ArrayList<Transaccion> listaTransacciones) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        // Obtener el TD maximo.
+        long max = -1;
+        for (Transaccion transaccion : transacciones) {
+            long numero = Long.parseLong(transaccion.getNumero());
+            if (numero > max) {
+                max = numero;
+            }
+        }
 
-    @Override
-    public Transaccion adicionar(Transaccion transaccion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (max == -1) {// no se encontro un interno en el establecimiento
+            ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeInformacion, "Numeración actual.", "No se ha encontrado ningún numero.", " Se reiniciará la numeración.");
+            return  "000000000000000";
+        } else {
+            return String.valueOf(max);
+        }
     }
-
-    @Override
-    public Transaccion modificar(Transaccion transaccion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean validarExiste(Transaccion transaccion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Transaccion colsultarPorId(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Transaccion colsultarPorCodigo(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Transaccion adicionar(TransaccionItem transaccionItem, Transaccion transaccion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Transaccion modificar(TransaccionItem transaccionItem, Transaccion transaccion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean validarExisteItem(Transaccion transaccion, TransaccionItem transaccionItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
     
 }

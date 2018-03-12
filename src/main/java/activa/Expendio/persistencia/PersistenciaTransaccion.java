@@ -8,13 +8,16 @@ package activa.Expendio.persistencia;
 import activa.Expendio.modelo.Producto;
 import activa.Expendio.modelo.Transaccion;
 import activa.Expendio.modelo.TransaccionItem;
+import activa.Expendio.persistencia.Interface.PersistenciaTransaccionInt;
 import java.util.ArrayList;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Usuario
  */
-public class PersistenciaTransaccion {
+@Service
+public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
     private ArrayList<Transaccion> listaTransacciones;
     
     public PersistenciaTransaccion(){
@@ -24,6 +27,7 @@ public class PersistenciaTransaccion {
     /**
      * @return the listaTransacciones
      */
+    @Override
     public ArrayList<Transaccion> getListaTransacciones() {
         return listaTransacciones;
     }
@@ -31,6 +35,7 @@ public class PersistenciaTransaccion {
     /**
      * @param listaTransacciones the listaTransacciones to set
      */
+    @Override
     public void setListaTransacciones(ArrayList<Transaccion> listaTransacciones) {
         this.listaTransacciones = listaTransacciones;
     }
@@ -40,6 +45,7 @@ public class PersistenciaTransaccion {
      * @param transaccion
      * @return transaccion
      */
+    @Override
     public Transaccion adicionar(Transaccion transaccion){
         transaccion.setId(listaTransacciones.size()+1);
         listaTransacciones.add(transaccion);
@@ -51,6 +57,7 @@ public class PersistenciaTransaccion {
      * @param transaccion
      * @return transaccion
      */
+    @Override
     public Transaccion modificar(Transaccion transaccion){
         Long id = transaccion.getId();
         for (int i = 0; i <= listaTransacciones.size(); i++) {
@@ -68,6 +75,7 @@ public class PersistenciaTransaccion {
      * @param transaccion
      * @return true: existe , false: no existe
      */
+    @Override
     public boolean validarExiste(Transaccion transaccion){
         for (int i = 0; i < listaTransacciones.size(); i++) {
             if (transaccion.getNumero().equals(listaTransacciones.get(i).getNumero())) {
@@ -82,6 +90,7 @@ public class PersistenciaTransaccion {
      * @param id
      * @return null si no hay conincidencia o la transaccion encontrada
      */
+    @Override
     public Transaccion colsultarPorId(String id){
         for (int i = 0; i < listaTransacciones.size() ; i++) {
             if (id.equals( listaTransacciones.get(i).getId() ) ) {
@@ -96,6 +105,7 @@ public class PersistenciaTransaccion {
      * @param codigo
      * @return null si no hay conincidencia o la transaccion encontrada
      */
+    @Override
     public Transaccion colsultarPorCodigo(String codigo){
         for (int i = 0; i < listaTransacciones.size() ; i++) {
             if (codigo.equals( listaTransacciones.get(i).getNumero() ) ) {
