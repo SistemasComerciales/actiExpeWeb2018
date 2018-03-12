@@ -8,6 +8,7 @@ import javax.swing.*;
 import utils.*;
 import activa.Expendio.controllers.*;
 import activa.Expendio.persistencia.Interface.*;
+import activa.Expendio.vista.tablas.*;
 import java.awt.event.*;
 import java.util.*;
 
@@ -27,6 +28,7 @@ public class GUIProducto extends GUIInterfazCatalogos {
     private CajaTextoArea txt_observaciones;
     private JScrollPane scroll_observaciones;
     private CampoCombo<String> combo_estado;
+    private GUITablaGrupos tablaGrupos;
 
     // Utilitarios
     private static String nombreClase = "Productos";
@@ -70,7 +72,7 @@ public class GUIProducto extends GUIInterfazCatalogos {
         panel_informacion.setOpaque(false);
         this.add(panel_informacion);
 
-        int posicionX = panel_informacion.getWidth() / 9;
+        int posicionX = panel_informacion.getWidth() / 30;
         int posicionY = panel_informacion.getHeight() / 10;
         int var = 5;
         int labelWidth = CargaImagenes.ANCHO_PANTALLA / 18, labelHeight = CargaImagenes.ALTO_PANTALLA / 30;
@@ -171,6 +173,13 @@ public class GUIProducto extends GUIInterfazCatalogos {
         combo_estado.setLocation(lbl_estado.getX() + lbl_estado.getWidth() + var * 2, lbl_estado.getY());
         combo_estado.setSize(txt_grupo.getWidth(), txt_grupo.getHeight());
         panel_informacion.add(combo_estado);
+
+        int posX = txt_observaciones.getX() + txt_observaciones.getWidth() + var * 2;
+        int posY = txt_observaciones.getY();
+        int anchoPanel = this.getWidth() / 100 * 37;
+        int altoPanel = this.getHeight() / 100 * 25;
+        tablaGrupos = new GUITablaGrupos(posX, posY, anchoPanel, altoPanel);
+        panel_informacion.add(tablaGrupos);
     }
 
     @Override
@@ -356,8 +365,83 @@ public class GUIProducto extends GUIInterfazCatalogos {
         ValidacionCampos.asignarTeclasDireccion(chk_controlSerial, chk_afectaCupo, chk_precio10PorCiento, null, null);
         ValidacionCampos.asignarTeclasDireccion(chk_precio10PorCiento, chk_controlSerial, txt_observaciones, null, null);
         ValidacionCampos.asignarTeclasDireccion(txt_observaciones, chk_precio10PorCiento, txt_grupo, null, null);
-        ValidacionCampos.asignarTeclasDireccion(txt_grupo, txt_observaciones, combo_estado, null, null);
+
+        txt_grupo.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                String dato = txt_grupo.getText().trim();
+                if (dato.isEmpty()) {
+                    inicializarGrupo();
+                } else if (!tablaGrupos.tabla.isRowSelected(tablaGrupos.tabla.getSelectedRow())) {
+                    GrupoProducto grupo = Servicios.gruposController.gruposRepository.consultarPorCodigo(dato);
+                    if (grupo == null) {
+                        option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", "El grupo no existe.", "Por favor inténtelo de nuevo.");
+                        inicializarGrupo();
+                        txt_grupo.grabFocus();
+                    } else {
+                        seleccionarGrupo(grupo);
+                    }
+                }
+            }
+        });
+        txt_grupo.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN) {
+                    ValidacionCampos.teclasDireccion(e, txt_observaciones, combo_estado, null, null, txt_grupo);
+                } else {
+                    tablaGrupos.aplicarFiltro(txt_grupo);
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    tablaGrupos.grabFocus();
+                }
+            }
+        });
+        realizarAccionesTablaGrupos();
+
         ValidacionCampos.asignarTeclasDireccion(combo_estado, txt_grupo, btn_agregar, null, null);
+    }
+
+    private void realizarAccionesTablaGrupos() {
+        tablaGrupos.tabla.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.isMetaDown()) {
+                    seleccionarDatosGrupo();
+                    combo_estado.grabFocus();
+                }
+            }
+        });
+        tablaGrupos.tabla.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == (KeyEvent.VK_ENTER)) {
+                    seleccionarDatosGrupo();
+                    combo_estado.grabFocus();
+                }
+            }
+        });
+    }
+
+    private void seleccionarDatosGrupo() {
+        int fila = tablaGrupos.tabla.getSelectedRow();
+        if (fila != -1) {
+            txt_grupo.setText(tablaGrupos.tabla.getValueAt(fila, GUITablaGrupos.columnaCodigo).toString());
+            idGrupo = Long.parseLong(tablaGrupos.tabla.getValueAt(fila, GUITablaGrupos.columnaId).toString());
+        }
+    }
+
+    private void seleccionarGrupo(GrupoProducto grupo) {
+        txt_grupo.setText(grupo.getCodigo());
+        idGrupo = grupo.getId();
     }
 
     @Override
@@ -752,12 +836,18 @@ public class GUIProducto extends GUIInterfazCatalogos {
         chk_controlSerial.setSelected(false);
         chk_precio10PorCiento.setSelected(false);
 
-        idGrupo = null;
-        txt_grupo.setText("");
+        inicializarGrupo();
 
         txt_observaciones.setText("");
 
         combo_estado.setSelectedIndex(0);// Estado activo por defecto
+
+        tablaGrupos.deshacerFiltro();
+    }
+
+    private void inicializarGrupo() {
+        idGrupo = null;
+        txt_grupo.setText("");
     }
 
     @Override
@@ -773,6 +863,8 @@ public class GUIProducto extends GUIInterfazCatalogos {
         if (tablaGeneral.getRowCount() >= 1) {
             tablaGeneral.getSelectionModel().setSelectionInterval(0, 0);
         }
+
+        tablaGrupos.cargarDatosBasicos(usuario);
     }
 
     @Override
