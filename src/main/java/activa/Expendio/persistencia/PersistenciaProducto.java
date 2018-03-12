@@ -40,6 +40,7 @@ public class PersistenciaProducto implements PersistenciaProductoInt {
         producto.setObservaciones("");
         producto.setPrecio10Porciento(false);
         producto.setPresentacion("RECARGA");
+        producto.setId(1L);
         productos.add(producto);
         
     }

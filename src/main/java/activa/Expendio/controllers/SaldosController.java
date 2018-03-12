@@ -10,6 +10,7 @@ import activa.Expendio.modelo.ConfirmacionRecarga;
 import activa.Expendio.modelo.EstadoInterno;
 import activa.Expendio.modelo.Interno;
 import activa.Expendio.modelo.RecargaTelefono;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import utils.Fecha;
 
 /**
  *
@@ -83,9 +85,29 @@ public class SaldosController {
                 return new ResponseEntity<>(CR, HttpStatus.NOT_ACCEPTABLE);
             }
             else{
+                String fecha = recarga.getFecha();
+                Date fechaF = null;
+                if(fecha==null){
+                    fechaF = new Date();
+                }
+                else if(fecha.length()==19){
+                    try{
+                        int anio = Integer.valueOf(fecha.substring(0, 4));
+                        int mes = Integer.valueOf(fecha.substring(5, 7));
+                        int dia = Integer.valueOf(fecha.substring(8, 10));
+                        fechaF = new Date(anio, --mes, dia);
+                    }catch(Exception e){
+                        fechaF = new Date();
+                    }
+                }
+                else{
+                    fechaF = new Date();
+                }
+                
+                String numero = Servicios.transaccionController.transaccionRepository.insertarTransaccion(recarga.getTd(), fechaF, recarga.getValor(), recarga.getExtension(), null);
                 interno.registrarGasto(recarga.getValor());
                 ConfirmacionRecarga CR = new ConfirmacionRecarga();
-                CR.setNumeroRecibo("00002581");
+                CR.setNumeroRecibo(numero);
                 CR.setExpendioAsignado("001");
                 CR.setStatus(202);
                 CR.setMensaje("Ok");

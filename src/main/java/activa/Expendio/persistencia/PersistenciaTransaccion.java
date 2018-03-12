@@ -201,7 +201,7 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
         public String insertarTransaccion(String td,  Date fecha, double valorUni, String condicion, Usuario usuario){
             String numero = GUITransaccion.asignarNumeroConsecutivo(usuario);
             Transaccion transaccion = new Transaccion();
-            transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorId("RI"));
+            transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorCodigo("RI"));
             transaccion.setNumero(numero);
             transaccion.setFecha(fecha);
             transaccion.setCreacion(new Timestamp(System.currentTimeMillis()));
@@ -210,7 +210,7 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
             ArrayList<TransaccionItem> items = new ArrayList<>();
             TransaccionItem item = new TransaccionItem();
             item.setCantidad(1);
-            item.setProducto(Servicios.productosController.productosRepository.consultarPorId("RE"));
+            item.setProducto(Servicios.productosController.productosRepository.consultarPorCodigo("RE"));
             item.setValorUnitario(valorUni);
             transaccion.setListItem(items);
             listaTransacciones.add(transaccion);

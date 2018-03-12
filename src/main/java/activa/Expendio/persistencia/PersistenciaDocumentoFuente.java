@@ -38,6 +38,7 @@ public class PersistenciaDocumentoFuente implements PersistenciaDocFuenteInt {
         docFuente.setNombre("RECARGA IVR");
         docFuente.setNumera(true);
         docFuente.setNumero("");
+        docFuente.setId(1L);
         listaDocumentoFuente.add(docFuente);
     }
     
