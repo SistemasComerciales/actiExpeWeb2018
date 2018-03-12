@@ -131,7 +131,7 @@ public class DocumentoFuente {
         return bodega;
     }
 
-    public void setIdBodega(Bodega bodega) {
+    public void setBodega(Bodega bodega) {
         this.bodega = bodega;
     }
 
