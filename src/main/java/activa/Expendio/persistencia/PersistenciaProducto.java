@@ -2,6 +2,7 @@ package activa.Expendio.persistencia;
 
 import activa.Expendio.modelo.*;
 import activa.Expendio.persistencia.Interface.*;
+import java.sql.Timestamp;
 import java.util.*;
 import org.springframework.stereotype.*;
 
@@ -16,8 +17,33 @@ public class PersistenciaProducto implements PersistenciaProductoInt {
 
     public PersistenciaProducto() {
         productos = new ArrayList<>();
+        crearMock();
     }
 
+    /**
+     * metd que quema productos
+     */
+    public void crearMock(){
+        Producto producto = new Producto();
+        producto.setAccionUsuario("I");
+        producto.setAfectaCupo(true);
+        producto.setCodigo("RE");
+        producto.setCodigoBarras("");
+        producto.setControlExistencia(false);
+        producto.setControlSerial(false);
+        producto.setCreacion(new Timestamp(System.currentTimeMillis()));
+        producto.setEliminado(false);
+        producto.setEstado(true);
+        producto.setGrupo(null);
+        producto.setModificacion(new Timestamp(System.currentTimeMillis()));
+        producto.setNombre("RECARGA");
+        producto.setObservaciones("");
+        producto.setPrecio10Porciento(false);
+        producto.setPresentacion("RECARGA");
+        productos.add(producto);
+        
+    }
+    
     /**
      * Traer todos los productos
      *

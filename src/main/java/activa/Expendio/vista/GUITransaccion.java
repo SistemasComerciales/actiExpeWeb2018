@@ -1420,7 +1420,7 @@ public class GUITransaccion extends ClaseGeneral {
                                                     deshacerFiltroDocFuente();
                                                     txt_documento.grabFocus();
                                             }else if (valido.equalsIgnoreCase("VALIDO")){				
-                                                        asignarNumeroConsecutivo();
+                                                        txt_numero.setText(  asignarNumeroConsecutivo(usuario) ) ;
                                                         if(txt_numero.isEnabled()){
                                                                 txt_numero.grabFocus();
                                                         }else{
@@ -1920,7 +1920,7 @@ public class GUITransaccion extends ClaseGeneral {
                                     deshacerFiltroDocFuente();
                                     limpiarValoresDocumentoFuente();
                     }else if (valido.equalsIgnoreCase("VALIDO")){
-                                            asignarNumeroConsecutivo();
+                                            txt_numero.setText( asignarNumeroConsecutivo(usuario) );
                                             if(txt_numero.isEnabled()){
                                                     txt_numero.grabFocus();
                                             }else{
@@ -2210,7 +2210,7 @@ public class GUITransaccion extends ClaseGeneral {
            panel_producto.setVisible(false);
         }
         
-        private final void asignarNumeroConsecutivo() {
+        public static String asignarNumeroConsecutivo(Usuario usuario) {
             String ultimoNumero = Transaccion.traerUltimoNumerotransaccion(usuario);
             if (ultimoNumero.equals("ERROR")) {
                 option.tipoMensaje(GUIJOption.mensajeAdvertencia, "141", "No se ha podido traer el último número de la base de datos.", "Inténtelo de nuevo.");
@@ -2221,7 +2221,7 @@ public class GUITransaccion extends ClaseGeneral {
                 } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
                     option.tipoMensaje(GUIJOption.mensajeAdvertencia, "143", "No hay cupo en la numeración actual.", "Inténtelo de nuevo.");
                 } else {
-                    txt_numero.setText(ultimoNumero);
+                    return ultimoNumero;
 //                    if (ultimoNumero.endsWith("000001")) {
 //                        txt_numero.setEnabled(true);
 //                    } else {
@@ -2229,6 +2229,7 @@ public class GUITransaccion extends ClaseGeneral {
 //                    }
                 }
             }
+            return ultimoNumero;
         }
         
     @Override
@@ -2479,5 +2480,5 @@ public class GUITransaccion extends ClaseGeneral {
 		txt_ValorUnitario.setEnabled(false);
 
 	}
-        
+ 
 }

@@ -5,12 +5,17 @@
  */
 package activa.Expendio.persistencia;
 
+import activa.Expendio.controllers.Servicios;
 import activa.Expendio.modelo.Bodega;
 import activa.Expendio.modelo.Producto;
 import activa.Expendio.modelo.Transaccion;
 import activa.Expendio.modelo.TransaccionItem;
+import activa.Expendio.modelo.Usuario;
 import activa.Expendio.persistencia.Interface.PersistenciaTransaccionInt;
+import activa.Expendio.vista.GUITransaccion;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,6 +30,7 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
         listaTransacciones = new ArrayList<>();
     }
 
+    
     /**
      * @return the listaTransacciones
      */
@@ -184,4 +190,30 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
         return transaccion.getListItem();
     }
     
+            /**
+         * metodo que inserta una transaccion 
+         * @param td
+         * @param CodDocumentoFuente
+         * @param fecha
+         * @param codProduco
+         * @param valorUni 
+         */
+        public void insertarTransaccion(String td,  Date fecha, double valorUni, String condicion, Usuario usuario){
+            String numero = GUITransaccion.asignarNumeroConsecutivo(usuario);
+            Transaccion transaccion = new Transaccion();
+            transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorId("RI"));
+            transaccion.setNumero(numero);
+            transaccion.setFecha(fecha);
+            transaccion.setCreacion(new Timestamp(System.currentTimeMillis()));
+            transaccion.setModificacion(new Timestamp(System.currentTimeMillis()));
+            transaccion.setCondicion(condicion);
+            ArrayList<TransaccionItem> items = new ArrayList<>();
+            TransaccionItem item = new TransaccionItem();
+            item.setCantidad(1);
+            item.setProducto(Servicios.productosController.productosRepository.consultarPorId("RE"));
+            item.setValorUnitario(valorUni);
+            transaccion.setListItem(items);
+            listaTransacciones.add(transaccion);
+        }    
+        
 }

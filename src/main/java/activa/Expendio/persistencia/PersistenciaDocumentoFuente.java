@@ -2,6 +2,7 @@ package activa.Expendio.persistencia;
 
 import activa.Expendio.modelo.*;
 import activa.Expendio.persistencia.Interface.*;
+import java.sql.Timestamp;
 import java.util.*;
 import org.springframework.stereotype.*;
 
@@ -16,8 +17,30 @@ public class PersistenciaDocumentoFuente implements PersistenciaDocFuenteInt {
 
     public PersistenciaDocumentoFuente() {
         listaDocumentoFuente = new ArrayList<>();
+        crearMock();
     }
 
+    
+    public void crearMock(){
+        DocumentoFuente docFuente = new DocumentoFuente();
+        docFuente.setAccion("S");
+        docFuente.setAccionUsuario("I");
+        docFuente.setAplica("C");
+        docFuente.setCodigo("RI");
+        docFuente.setControlExistencia(false);
+        docFuente.setCosteoInventario(false);
+        docFuente.setCreacion(new Timestamp(System.currentTimeMillis()));
+        docFuente.setDocBase(false);
+        docFuente.setEliminado(false);
+        docFuente.setEstado(true);
+        docFuente.setListaPrecio(false);
+        docFuente.setModificacion(new Timestamp(System.currentTimeMillis()));
+        docFuente.setNombre("RECARGA IVR");
+        docFuente.setNumera(true);
+        docFuente.setNumero("");
+        listaDocumentoFuente.add(docFuente);
+    }
+    
     /**
      * @return the listaDocumentoFuente
      */
