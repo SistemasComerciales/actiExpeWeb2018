@@ -193,13 +193,15 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
             /**
          * metodo que inserta una transaccion 
          * @param td
-         * @param CodDocumentoFuente
          * @param fecha
-         * @param codProduco
+     * @param condicion
+     * @param usuario
          * @param valorUni 
+     * @return  
          */
+    @Override
         public String insertarTransaccion(String td,  Date fecha, double valorUni, String condicion, Usuario usuario){
-            String numero = GUITransaccion.asignarNumeroConsecutivo(usuario);
+            String numero = GUITransaccion.asignarNumeroConsecutivo(usuario, true);
             Transaccion transaccion = new Transaccion();
             transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorCodigo("RI"));
             transaccion.setNumero(numero);

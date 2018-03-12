@@ -1420,7 +1420,7 @@ public class GUITransaccion extends ClaseGeneral {
                                                     deshacerFiltroDocFuente();
                                                     txt_documento.grabFocus();
                                             }else if (valido.equalsIgnoreCase("VALIDO")){				
-                                                        txt_numero.setText(  asignarNumeroConsecutivo(usuario) ) ;
+                                                        txt_numero.setText(  asignarNumeroConsecutivo(usuario, false) ) ;
                                                         if(txt_numero.isEnabled()){
                                                                 txt_numero.grabFocus();
                                                         }else{
@@ -1920,7 +1920,7 @@ public class GUITransaccion extends ClaseGeneral {
                                     deshacerFiltroDocFuente();
                                     limpiarValoresDocumentoFuente();
                     }else if (valido.equalsIgnoreCase("VALIDO")){
-                                            txt_numero.setText( asignarNumeroConsecutivo(usuario) );
+                                            txt_numero.setText( asignarNumeroConsecutivo(usuario, false) );
                                             if(txt_numero.isEnabled()){
                                                     txt_numero.grabFocus();
                                             }else{
@@ -2210,18 +2210,24 @@ public class GUITransaccion extends ClaseGeneral {
            panel_producto.setVisible(false);
         }
         
-        public static String asignarNumeroConsecutivo(Usuario usuario) {
+        public static String asignarNumeroConsecutivo(Usuario usuario, boolean esPorVRi) {
             String ultimoNumero = Transaccion.traerUltimoNumerotransaccion(usuario);
             System.out.println("1:  "+ ultimoNumero);
             if (ultimoNumero.equals("ERROR")) {
-                option.tipoMensaje(GUIJOption.mensajeAdvertencia, "141", "No se ha podido traer el último número de la base de datos.", "Inténtelo de nuevo.");
+                if (!esPorVRi) {
+                    option.tipoMensaje(GUIJOption.mensajeAdvertencia, "141", "No se ha podido traer el último número de la base de datos.", "Inténtelo de nuevo.");
+                }          
             } else {
                 ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(ultimoNumero, usuario);
                 System.out.println("2:  "+ ultimoNumero);
                 if (ultimoNumero.equalsIgnoreCase("")) {
-                    option.tipoMensaje(GUIJOption.mensajeAdvertencia, "142", "No se ha podido convertir la numeración.", "Inténtelo de nuevo.");
+                    if (!esPorVRi) {
+                        option.tipoMensaje(GUIJOption.mensajeAdvertencia, "142", "No se ha podido convertir la numeración.", "Inténtelo de nuevo.");
+                    }
                 } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
-                    option.tipoMensaje(GUIJOption.mensajeAdvertencia, "143", "No hay cupo en la numeración actual.", "Inténtelo de nuevo.");
+                     if (!esPorVRi) {   
+                        option.tipoMensaje(GUIJOption.mensajeAdvertencia, "143", "No hay cupo en la numeración actual.", "Inténtelo de nuevo.");
+                     }    
                 } else {
                     return ultimoNumero;
                 }
