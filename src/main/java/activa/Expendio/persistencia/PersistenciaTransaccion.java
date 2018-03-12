@@ -5,6 +5,7 @@
  */
 package activa.Expendio.persistencia;
 
+import activa.Expendio.modelo.Bodega;
 import activa.Expendio.modelo.Producto;
 import activa.Expendio.modelo.Transaccion;
 import activa.Expendio.modelo.TransaccionItem;
@@ -178,5 +179,9 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
         return false;
     }
     
+    @Override
+        public ArrayList<TransaccionItem> consultarTodoItems(Transaccion transaccion) {
+        return transaccion.getListItem();
+    }
     
 }

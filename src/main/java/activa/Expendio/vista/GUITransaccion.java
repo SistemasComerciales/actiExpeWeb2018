@@ -13,11 +13,14 @@ import activa.Expendio.modelo.DocumentoFuente;
 import activa.Expendio.modelo.Interno;
 import activa.Expendio.modelo.Producto;
 import activa.Expendio.modelo.Transaccion;
+import activa.Expendio.modelo.TransaccionItem;
 import activa.Expendio.modelo.Usuario;
 import activa.Expendio.persistencia.Interface.PersistenciaBodegaInt;
 import activa.Expendio.persistencia.Interface.PersistenciaDocFuenteInt;
 import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
 import activa.Expendio.persistencia.Interface.PersistenciaProductoInt;
+import activa.Expendio.persistencia.Interface.PersistenciaTransaccionInt;
+import activa.Expendio.persistencia.PersistenciaTransaccion;
 import static activa.Expendio.vista.ClaseGeneral.option;
 import activa.Expendio.vista.utils.Boton;
 import activa.Expendio.vista.utils.CajaDeTexto;
@@ -35,7 +38,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -50,6 +55,7 @@ import utils.Imagenes;
 import utils.NombreImagenes;
 import utils.NumeroConsecutivo;
 import utils.ValidacionCampos;
+import utils.Valor;
 
 /**
  *
@@ -127,6 +133,7 @@ public class GUITransaccion extends ClaseGeneral {
     public static int columnaVtotal =6;
     public static int columnaidBodega =7;
   
+    Transaccion transaccion;
     
     public GUITransaccion(Usuario usuario ){
         super(usuario);
@@ -160,6 +167,8 @@ public class GUITransaccion extends ClaseGeneral {
     protected void prepareElementos() {
         this.setTitle("Transacciones");
         Imagenes.fondoInternalFrame(NombreImagenes.imFondoG, this.getWidth(), this.getHeight(), this);
+        transaccion = new Transaccion();
+        transaccion.setListItem(new ArrayList<>());
     }
     
     /**
@@ -1101,6 +1110,40 @@ public class GUITransaccion extends ClaseGeneral {
         }
     }
         
+    private void cargarDatosPrincipal() {
+        deshacerFiltroPrincipal();
+        Tabla.eliminarFilasTabla(dtmTablaPrincipal);
+
+        PersistenciaTransaccionInt persistencia = Servicios.transaccionController.transaccionRepository;
+
+        ArrayList<TransaccionItem> items = persistencia.consultarTodoItems(transaccion);
+
+        for (TransaccionItem item : items) {
+            System.out.println("ENtro");
+            String[] datosFila = new String[dtmTablaPrincipal.getColumnCount()];
+
+            datosFila[0] = String.valueOf(item.getProducto().getCodigo());
+
+            datosFila[1] = item.getProducto().getNombre();
+            datosFila[2] = item.getProducto().getPresentacion();
+            String codigoBodega = "";
+            if (item.getBodega() != null ) {
+                codigoBodega = item.getBodega().getCodigo();
+            }
+            datosFila[3] = codigoBodega;
+            datosFila[4] = Formatos.formatearNumeroAgregaDecimalesString(String.valueOf(item.getCantidad()) );
+            datosFila[5] = Formatos.formatearValorString( String.valueOf(item.getValorUnitario()) );
+            datosFila[6] = Formatos.formatearValorString( String.valueOf(item.getValorUnitario()) );
+            long idBodega = 0;
+            if (item.getBodega() != null ) {
+                idBodega = item.getBodega().getId();
+            }
+            datosFila[7] = String.valueOf( idBodega ) ;
+            
+            dtmTablaPrincipal.addRow(datosFila);
+        }
+    }    
+        
         	/**
 	 * metodo que limpia los campos del registro MV
 	 */
@@ -1247,8 +1290,8 @@ public class GUITransaccion extends ClaseGeneral {
             if (producto == null ) {
                 return "NOEXISTE";
             }else{
-                txt_bodega.setText(producto.getCodigo());
-                txt_idBodega.setText(producto.getId().toString());
+                txt_codigo.setText(producto.getCodigo());
+                txt_idCodigo.setText(producto.getId().toString());
                 return "VALIDO";
             }
         }
@@ -1281,6 +1324,13 @@ public class GUITransaccion extends ClaseGeneral {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     accionBotonBorrar();
+                }
+            });
+            
+            btn_adicionar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    accionAdicionarItem();
                 }
             });
         }
@@ -1371,7 +1421,7 @@ public class GUITransaccion extends ClaseGeneral {
                                                                 txt_fecha.grabFocus();
 
                                                         }
-//                                                                accionLblTotalYSubtotal();
+                                                                calcularValorTotalTabla();
                                                     }
                                                 }
                                             }
@@ -2140,6 +2190,10 @@ public class GUITransaccion extends ClaseGeneral {
             Filtro.deshacerFiltro(trsFiltroTerceros, dtmTablaTerceros, tablaTerceros);
         }
         
+        private void deshacerFiltroPrincipal() {
+            Filtro.deshacerFiltro(trsFiltrotablaPrincipal, dtmTablaPrincipal, tablaPrincipal);
+        }
+        
         /**
          * 
          */
@@ -2226,5 +2280,202 @@ public class GUITransaccion extends ClaseGeneral {
 		double valorTotal = (cantidad * valorUnitario)-descuento;
 		return  Formatos.truncarDecimales(valorTotal,2);
 	}
-    
+        
+        /**
+         * 
+         */
+        private void calcularValorTotalTabla(){
+            double total =0.0;
+            for (int i = 0; i < tablaPrincipal.getRowCount(); i++) {
+                total = total + Double.parseDouble(Formatos.quitarFormatoValorString(tablaPrincipal.getValueAt(i, columnaVtotal).toString()));
+            }
+            lbl_totalResultados.setText(Formatos.formatearValorString(String.valueOf( total ) ));
+        }
+        
+        /**
+         * metodo que adiciona unitem
+         */
+        private void accionAdicionarItem(){
+            String vacios = validarObligatoriosMv();
+            if (vacios.isEmpty()) {
+                PersistenciaTransaccion pTransaccion = new PersistenciaTransaccion();
+                TransaccionItem item = setValoresItemTransaccion();
+                int cantidadItemsAntes = transaccion.getListItem().size();
+                pTransaccion.adicionar(item, transaccion);
+                int cnatidadItemsDespues = transaccion.getListItem().size();
+                
+                if (cantidadItemsAntes < cnatidadItemsDespues) {
+                    cargarDatosPrincipal();
+                    calcularValorTotalTabla();
+                    limpiarCamposRegistroMv(true);
+                    System.out.println("Bien");
+                }else{
+                    System.out.println("mal");
+                }
+                
+            }else{
+                JOptionPane.showOptionDialog(frame, "Los siguientes campos no pueden estar vacios: \n\n "+vacios, "Advertencia",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,null,"aceptar");
+                txt_codigo.grabFocus();
+            }
+        }
+        
+        private TransaccionItem setValoresItemTransaccion(){
+            TransaccionItem item  = new TransaccionItem();
+            item.setBodega(Servicios.bodegasController.bodegasRepository.consultarPorId(txt_idBodega.getText()));
+            item.setCantidad(Double.parseDouble( Formatos.quitarFormatoDecimalesString(txt_cantidad.getText() ) ));
+            item.setDescripcionItem(txt_descripcionItem.getText().trim());
+            item.setProducto(Servicios.productosController.productosRepository.consultarPorId(txt_idCodigo.getText()));
+            String valUni = "";
+            if (txt_ValorUnitario.getText().trim().isEmpty()) {
+                valUni = "0";
+            }else{
+                valUni =  txt_ValorUnitario.getText();
+            }
+                    
+            item.setValorUnitario( Double.parseDouble( Formatos.quitarFormatoValorString(valUni ) ));
+            
+            return item;
+        }
+        
+        private String validarObligatoriosMv(){
+            String vacios ="";
+            	if (txt_codigo.getText().trim().isEmpty()) {
+			vacios = vacios + "- Código \n";
+		}
+		
+		if (txt_cantidad.getText().trim().isEmpty()) {
+			vacios = vacios + "- Cantidad \n";
+		}else{
+			if (Double.parseDouble(txt_cantidad.getText().replace(",", "").trim())<=0.00) {
+				vacios = vacios + "- Cantidad diferente a 0\n";
+			}
+		}
+                return vacios;
+        }
+        
+        /**
+         * metodo que valida vacios en 
+         */
+        public String validarValidarVaciosGeneral(){
+            String vacios = "";
+            if (txt_documento.getText().trim().isEmpty()) {
+                    vacios = vacios + "- Documento \n";
+            }
+            if (txt_fecha.getText().replace("/", "").replace(" ", "").trim().isEmpty()) {
+                    vacios = vacios + "- Fecha \n";
+            }
+            if (txt_nit.getText().trim().isEmpty()) {
+                    vacios = vacios + "- Tercero \n";
+            }
+            if (tablaPrincipal.getRowCount()< 1  ) {
+                    vacios = vacios + "- items  \n";
+            }
+            return vacios;
+        }
+        
+        /**
+         * metodo que graba la transaccion
+         */
+        private void acionBotonGrabar(){
+            String vacios = validarValidarVaciosGeneral();
+            if (vacios.isEmpty()) {
+                
+            }else{
+               JOptionPane.showOptionDialog(frame, "Los siguientes campos no pueden estar vacios: \n\n "+vacios, "Advertencia",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,null,"aceptar");
+                txt_codigo.grabFocus();
+            }
+        }
+        
+        private Transaccion setValoresTransaccion(){
+            transaccion.setCondicion(txt_condiciones.getText());
+            transaccion.setCreacion(new Timestamp(System.currentTimeMillis()));
+            transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorId(txt_idDocumentoFuente.getText()));
+            transaccion.setFecha(new Date(txt_fecha.getText()));
+            transaccion.setInterno(Servicios.internosController.internosRepository.consultarPorTd(txt_nit.getText()));
+            transaccion.setModificacion(new Timestamp(System.currentTimeMillis()));
+            transaccion.setNumero(txt_numero.getText());
+            transaccion.setUsuario(usuario);
+            return transaccion;
+        }
+        
+        private void accionGrabar(){
+            String vacios = validarValidarVaciosGeneral();
+            if (vacios.isEmpty()) {
+                PersistenciaTransaccion pTransaccion = new PersistenciaTransaccion();
+                setValoresTransaccion();
+                int cantidadItemsAntes = pTransaccion.getListaTransacciones().size();
+                pTransaccion.adicionar( transaccion );
+                int cnatidadItemsDespues = pTransaccion.getListaTransacciones().size();
+                
+                if (cantidadItemsAntes < cnatidadItemsDespues) {
+                    bloquearCamposGrabar();
+                    System.out.println("Bien");
+                }else{
+                    System.out.println("mal");
+                }
+            }else{
+                JOptionPane.showOptionDialog(frame, "Los siguientes campos no pueden estar vacios: \n\n "+vacios, "Advertencia",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE,null,null,"aceptar");
+                txt_codigo.grabFocus();
+            }
+        }
+        
+        /**
+         * 
+         * @return 
+         */
+        private void accionBotonOtro(){
+            
+        }
+        
+        	/**
+	 * bloquea los campos  al grabar el documento
+	 */
+	public void bloquearCamposGrabar(){
+		btn_otros.setEnabled(true);
+		btn_adicionar.setEnabled(false);
+		btn_borrar.setEnabled(false);
+		btn_borrar2.setEnabled(false);
+		btn_cancelar.setEnabled(false);
+		btn_cancelarMv.setEnabled(false);
+		btn_grabar.setEnabled(false);
+		btn_guardarMv.setEnabled(false);
+		btn_imprimir.setEnabled(true);
+		btn_insertar.setEnabled(false);
+		btn_modificar.setEnabled(false);
+		btn_plantilla.setEnabled(false);
+		btn_repetir.setEnabled(false);
+		
+		txt_accionSobreInventario.setEnabled(false);
+
+		txt_bodega.setEnabled(false);
+		txt_cantidad.setEnabled(false);
+		txt_codigo.setEnabled(false);
+		txt_condiciones.setEnabled(false);
+		txt_condiciones.setEnabled(false);
+		txt_descripcion.setEnabled(false);
+		txt_descripcionItem.setEnabled(false);
+		txt_documento.setEnabled(false);
+		txt_documentoAntiguo.setEnabled(false);
+		txt_documentoCierre.setEnabled(false);
+		txt_empaque.setEnabled(false);
+		txt_fecha.setEnabled(false);
+		txt_idBodega.setEnabled(false);
+		txt_idBodegaDocFuente.setEnabled(false);
+		txt_idCodigo.setEnabled(false);
+		txt_idDocumentoFuente.setEnabled(false);
+		txt_idTercero.setEnabled(false);
+		txt_idTransaccion.setEnabled(false);
+		txt_llevaBodegaDocFuente.setEnabled(false);
+		txt_nit.setEnabled(false);
+		txt_nitAntiguo.setEnabled(false);
+		txt_numeracion.setEnabled(false);
+		txt_numero.setEnabled(false);
+		txt_numeroFijo.setEnabled(false);
+		txt_observaciones.setEnabled(false);
+		txt_TipoClienteDocFuente.setEnabled(false);
+		txt_valorTotal.setEnabled(false);
+		txt_ValorUnitario.setEnabled(false);
+
+	}
+        
 }
