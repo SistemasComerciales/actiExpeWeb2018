@@ -32,13 +32,12 @@ public class GUIMenu extends ClaseGeneral {
 
     //Panel de Transacciones
     private JPanel panel_trasaccionesPagos;
-    private Boton btn_transPagosRegistrar, btn_transPagosModificar, btn_transPagosConsultar, btn_transPagosConsignaciones;
+    private Boton btn_transPagosRegistrar, btn_transPagosModificar, btn_transPagosConsultar;
 
     //Panel de Consignaciones
     private JPanel panel_trasaccionesConsig;
-    private Boton btn_transConsigRegistrar,  btn_transConsigConsultar;
+    private Boton btn_transConsigRegistrar, btn_transConsigConsultar;
 
-    
     // Panel Boton Reportes
     private JPanel panel_BotonReportes;
 
@@ -68,7 +67,6 @@ public class GUIMenu extends ClaseGeneral {
         prepareMostrarPanelTransaccionPagos();
         prepareMostrarPanelTransaccionConsignaciones();
         prepareMostrarPanelReporte();
-        
 
         definaAccionesBotonesPrincipales();
         accionBotonesPanelCatalogo();
@@ -79,7 +77,9 @@ public class GUIMenu extends ClaseGeneral {
         accionBotonesPanelReporte();
         accionBotonesPanelTransaccionConsignaciones();
 
-        inicializar();
+        actualizarFrame();
+        asignarFoco();
+        asignarPermisos();
     }
 
     /**
@@ -689,7 +689,7 @@ public class GUIMenu extends ClaseGeneral {
         btn_transaPagos = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Transacciones");
         btn_transaPagos.textoParaMenuPrimerNivel();
         panel_BotonTransacciones.add(btn_transaPagos);
-        
+
         btn_transaConsignaciones = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Consignaciones");
         btn_transaConsignaciones.textoParaMenuPrimerNivel();
         panel_BotonTransacciones.add(btn_transaConsignaciones);
@@ -785,8 +785,7 @@ public class GUIMenu extends ClaseGeneral {
             public void mouseClicked(MouseEvent arg0) {
             }
         });
-        
-        
+
         btn_transaConsignaciones.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -794,7 +793,7 @@ public class GUIMenu extends ClaseGeneral {
                     Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_transaConsignaciones);
                     panel_trasaccionesConsig.setVisible(false);
                 } else {
-                    
+
                     estadoInicialPanelTransaccion();
                     ocultarPanelesNivel2();
                     Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_transaConsignaciones);
@@ -870,8 +869,6 @@ public class GUIMenu extends ClaseGeneral {
             public void mouseClicked(MouseEvent arg0) {
             }
         });
-        
-        
 
 //        btn_transaGenerarMoras.addActionListener(new ActionListener() {
 //            @Override
@@ -911,15 +908,11 @@ public class GUIMenu extends ClaseGeneral {
 
         btn_transPagosModificar = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Modificar");
         btn_transPagosModificar.textoParaMenuSegundoNivel();
-        panel_trasaccionesPagos.add(btn_transPagosModificar);
+//        panel_trasaccionesPagos.add(btn_transPagosModificar);
 
         btn_transPagosConsultar = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Consultar");
         btn_transPagosConsultar.textoParaMenuSegundoNivel();
         panel_trasaccionesPagos.add(btn_transPagosConsultar);
-
-        btn_transPagosConsignaciones = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Registrar Consignación");
-        btn_transPagosConsignaciones.textoParaMenuSegundoNivel();
-//        panel_trasaccionesPagos.add(btn_transPagosConsignaciones);
 
         this.add(panel_trasaccionesPagos);
         panel_trasaccionesPagos.setVisible(false);
@@ -980,9 +973,9 @@ public class GUIMenu extends ClaseGeneral {
         btn_transPagosConsultar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                Configuracion.setFrameAnterior(frame);
-//                new GUITransaccion(usuario);
-//                frame.setVisible(false);
+                Configuracion.setFrameAnterior(frame);
+                new GUITransaccionConsultarSeleccionar(usuario);
+                frame.setVisible(false);
             }
         });
         btn_transPagosConsultar.addKeyListener(new KeyListener() {
@@ -1000,10 +993,8 @@ public class GUIMenu extends ClaseGeneral {
             }
         });
 
-
     }
-    
-    
+
     /**
      * Metodo encargado de crear el panel de transacciones de pagos
      */
@@ -1024,7 +1015,7 @@ public class GUIMenu extends ClaseGeneral {
         panel_trasaccionesConsig.setVisible(false);
         panel_trasaccionesConsig.setSize(CargaImagenes.anchoBotonSegundoNivelMenu, panel_trasaccionesConsig.getComponentCount() * CargaImagenes.altoBotonSegundoNivelMenu + (CargaImagenes.altoBotonSegundoNivelMenu));
     }
-    
+
     private void accionBotonesPanelTransaccionConsignaciones() {
         btn_transConsigRegistrar.addActionListener(new ActionListener() {
             @Override
@@ -1048,7 +1039,7 @@ public class GUIMenu extends ClaseGeneral {
             public void keyPressed(KeyEvent e) {
             }
         });
-        
+
         btn_transConsigConsultar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -101,7 +101,7 @@ public abstract class ClaseGeneral extends JFrame {
 
         ClaseGeneral anterior = (ClaseGeneral) Configuracion.getFrameAnterior();
         anterior.setVisible(true);
-        anterior.inicializar();
+        anterior.actualizarFrame();
         frame.setVisible(false);
 
         frame.setCursor(null);
