@@ -7,8 +7,8 @@ package activa.Expendio.vista;
 
 import activa.Expendio.controllers.Servicios;
 import activa.Expendio.modelo.Bodega;
-import activa.Expendio.modelo.Configuracion;
 import activa.Expendio.modelo.DatosBaseDatos;
+import activa.Expendio.modelo.DatosGeneralesPrograma;
 import activa.Expendio.modelo.DocumentoFuente;
 import activa.Expendio.modelo.Interno;
 import activa.Expendio.modelo.Producto;
@@ -65,8 +65,8 @@ public class GUITransaccion extends ClaseGeneral {
     
     public CampoLabel lbl_nombreDocFuente;
     
-    private CampoLabel lbl_documento , lbl_numero, lbl_fecha , lbl_nit, lbl_condiciones , lbl_nombre , lbl_nombreDin, lbl_direccion, lbl_direccionDin, lbl_ciudad , lbl_ciudadDin , lbl_telefono , lbl_telefonoDin ;
-    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete;
+    private CampoLabel lbl_documento , lbl_numero, lbl_fecha , lbl_nit, lbl_condiciones , lbl_nombre , lbl_nombreDin, lbl_cupoDiario, lbl_cupoDiarioDin, lbl_ciudad , lbl_ciudadDin , lbl_cupoMensual , lbl_cupoMensualDin,  lbl_cupoTotal , lbl_cupoTotalDin ;
+    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete;
     private CajaDeTextoConFormato txt_fecha;
     
         ////////////panel REGISTRO2 MVTRANSACCION///////////
@@ -206,7 +206,7 @@ public class GUITransaccion extends ClaseGeneral {
         this.add(lbl_fecha);
 
 
-        lbl_nit = new CampoLabel("NIT/c.c:  ", "E");
+        lbl_nit = new CampoLabel("TD:  ", "E");
         lbl_nit.alinearIzquierda();
         lbl_nit.setBounds(posicionXLbl, lbl_fecha.getY()+lbl_fecha.getHeight()+5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/2);
         this.add(lbl_nit);
@@ -229,40 +229,46 @@ public class GUITransaccion extends ClaseGeneral {
         lbl_nombreDin.setBounds(lbl_nombre.getX()+lbl_nombre.getWidth(), lbl_nombre.getY(), CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
         this.add(lbl_nombreDin);
 
-
-        lbl_direccion = new CampoLabel("Direccion:  ", "E");
-        lbl_direccion.alinearIzquierda();
-        lbl_direccion.setBounds(lbl_nombre.getX(), lbl_nombre.getY()+lbl_nombre.getHeight()+5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/2);
-        this.add(lbl_direccion);
-
-
-        lbl_direccionDin = new CampoLabel("", "V");
-        lbl_direccionDin.alinearIzquierda();
-        lbl_direccionDin.setBounds(lbl_nombreDin.getX(), lbl_nombre.getY()+lbl_nombre.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
-        this.add(lbl_direccionDin);
-
-
         lbl_ciudad = new CampoLabel("Ciudad:  ", "E");
         lbl_ciudad.alinearIzquierda();
-        lbl_ciudad.setBounds(lbl_nombre.getX(), lbl_direccion.getY()+lbl_direccion.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        lbl_ciudad.setBounds(lbl_nombre.getX(), lbl_nombre.getY()+lbl_nombre.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
         this.add(lbl_ciudad);
-
 
         lbl_ciudadDin = new CampoLabel("", "V");
         lbl_ciudadDin.alinearIzquierda();
-        lbl_ciudadDin.setBounds(lbl_direccionDin.getX(), lbl_direccion.getY()+lbl_direccion.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        lbl_ciudadDin.setBounds(lbl_nombreDin.getX(), lbl_nombre.getY()+lbl_nombre.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
         this.add(lbl_ciudadDin);
 
+        lbl_cupoDiario = new CampoLabel("C. Diario:  ", "E");
+        lbl_cupoDiario.alinearIzquierda();
+        lbl_cupoDiario.setBounds(lbl_nombre.getX(), lbl_ciudad.getY()+lbl_ciudad.getHeight()+5, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/2);
+        this.add(lbl_cupoDiario);
 
-        lbl_telefono = new CampoLabel("Teléfono:  ", "E");
-        lbl_telefono.alinearIzquierda();
-        lbl_telefono.setBounds(lbl_nombre.getX(), lbl_ciudad.getY()+lbl_ciudad.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
-        this.add(lbl_telefono);
+        lbl_cupoDiarioDin = new CampoLabel("", "V");
+        lbl_cupoDiarioDin.alinearIzquierda();
+        lbl_cupoDiarioDin.setBounds(lbl_nombreDin.getX(), lbl_ciudad.getY()+lbl_ciudad.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        this.add(lbl_cupoDiarioDin);
 
-        lbl_telefonoDin = new CampoLabel("", "V");
-        lbl_telefonoDin.alinearIzquierda();
-        lbl_telefonoDin.setBounds(lbl_ciudadDin.getX(), lbl_ciudad.getY()+lbl_ciudad.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
-        this.add(lbl_telefonoDin);
+
+        lbl_cupoMensual = new CampoLabel("C. Mensual:  ", "E");
+        lbl_cupoMensual.alinearIzquierda();
+        lbl_cupoMensual.setBounds(lbl_nombre.getX(), lbl_cupoDiario.getY()+lbl_cupoDiario.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        this.add(lbl_cupoMensual);
+
+        lbl_cupoMensualDin = new CampoLabel("", "V");
+        lbl_cupoMensualDin.alinearIzquierda();
+        lbl_cupoMensualDin.setBounds(lbl_cupoDiarioDin.getX(), lbl_cupoDiario.getY()+lbl_cupoDiario.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        this.add(lbl_cupoMensualDin);
+        
+        lbl_cupoTotal = new CampoLabel("C. Total:  ", "E");
+        lbl_cupoTotal.alinearIzquierda();
+        lbl_cupoTotal.setBounds(lbl_nombre.getX(), lbl_cupoMensual.getY()+lbl_cupoMensual.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        this.add(lbl_cupoTotal);
+
+        lbl_cupoTotalDin = new CampoLabel("", "V");
+        lbl_cupoTotalDin.alinearIzquierda();
+        lbl_cupoTotalDin.setBounds(lbl_cupoMensualDin.getX(), lbl_cupoMensual.getY()+lbl_cupoMensual.getHeight()+5, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/2);
+        this.add(lbl_cupoTotalDin);
 
 
 
@@ -488,12 +494,12 @@ public class GUITransaccion extends ClaseGeneral {
 		int posicionXBtn = CargaImagenes.ANCHO_PANTALLA/100;
 		int posicionYBtn = CargaImagenes.ALTO_PANTALLA/100*63;
 		
-		int posicionXLbl = CargaImagenes.ANCHO_PANTALLA/100;
-		int posicionYLbl = CargaImagenes.ALTO_PANTALLA/100*67;
+		int posicionXLbl = CargaImagenes.ANCHO_PANTALLA/150;
+		int posicionYLbl = CargaImagenes.ALTO_PANTALLA/100*68;
 		
 		lbl_adicionar = new CampoLabel("Adicionar", "E");
-		lbl_adicionar.alinearDerecha();
-		lbl_adicionar.setBounds(posicionXLbl, posicionYLbl, CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_adicionar.alinearIzquierda();
+		lbl_adicionar.setBounds(posicionXLbl, posicionYLbl, CargaImagenes.anchoBotonGeneral*2/3, CargaImagenes.altoBotonGeneral/5*2);
 		this.add(lbl_adicionar);
 		
 		lbl_guardarMv = new CampoLabel("Guardar", "E");
@@ -504,7 +510,7 @@ public class GUITransaccion extends ClaseGeneral {
 		
 		lbl_borrar = new CampoLabel("Borrar", "E");
 		lbl_borrar.alinearCentro();
-		lbl_borrar.setBounds(lbl_adicionar.getX()+lbl_adicionar.getWidth(),lbl_adicionar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_borrar.setBounds(lbl_adicionar.getX()+lbl_adicionar.getWidth()-13,lbl_adicionar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
 		this.add(lbl_borrar);
 
 		lbl_insertar = new CampoLabel("Insertar", "E");
@@ -514,7 +520,7 @@ public class GUITransaccion extends ClaseGeneral {
 		
 		lbl_modificar = new CampoLabel("Modificar", "E");
 		lbl_modificar.alinearIzquierda();
-		lbl_modificar.setBounds(lbl_insertar.getX()+lbl_insertar.getWidth(), lbl_insertar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_modificar.setBounds(lbl_insertar.getX()+lbl_insertar.getWidth(), lbl_insertar.getY(), CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
 		this.add(lbl_modificar);
 		
 		lbl_cancelarMV = new CampoLabel("Cancelar", "E");
@@ -722,10 +728,10 @@ public class GUITransaccion extends ClaseGeneral {
 		txt_observaciones.setBounds(lbl_grupoProductoResultado.getX(), lbl_observaciones.getY(), CargaImagenes.anchoBotonGeneral/5*7, 20);
 		this.add(txt_observaciones);
 		
-		btn_grabar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Registrar");
+		btn_grabar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Expendio");
 		btn_grabar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
 		this.add(btn_grabar);
-		btn_grabar.setToolTipText("grabar");
+		btn_grabar.setToolTipText("Expendio");
 		btn_grabar.setLocation(posicionXbtn, posicionYbtn);
 		btn_grabar.setSize(anchoBotonA,altoBotonA);
 		
@@ -735,7 +741,7 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_borrar.setToolTipText("borrar");
 		btn_borrar.setLocation(btn_grabar.getX()+btn_grabar.getWidth()+5, btn_grabar.getY());
 		btn_borrar.setSize(anchoBotonA,altoBotonA);
-//		btn_borrar.setVisible(false);
+		btn_borrar.setVisible(false);
 		
 		btn_buscar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2,  "Buscar");
 		btn_buscar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
@@ -743,6 +749,7 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_buscar.setToolTipText("buscar");
 		btn_buscar.setLocation(btn_borrar.getX()+btn_borrar.getWidth()+5, btn_borrar.getY());
 		btn_buscar.setSize(anchoBotonA,altoBotonA);
+                btn_buscar.setVisible(false);
 		
 		btn_cancelar = new Boton(NombreImagenes.imBGeneralRojo, NombreImagenes.imBGeneral2, "Cancelar");
 		btn_cancelar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
@@ -758,7 +765,7 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_plantilla.setToolTipText("plantilla");
 		btn_plantilla.setLocation(btn_cancelar.getX()+btn_cancelar.getWidth(), btn_cancelar.getY());
 		btn_plantilla.setSize(anchoBotonA,altoBotonA);
-//		btn_plantilla.setVisible(false);
+		btn_plantilla.setVisible(false);
 		
 		btn_otros = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Otro");
 		btn_otros.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
@@ -767,7 +774,8 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_otros.setLocation(btn_grabar.getX(), btn_grabar.getY()+btn_grabar.getHeight()+5);
 		btn_otros.setSize(anchoBotonA,altoBotonA);
 		btn_otros.setEnabled(false);
-		
+		btn_otros.setVisible(false);
+                
 		btn_imprimir = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2,  "Reporte");
 		btn_imprimir.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
 		this.add(btn_imprimir);
@@ -775,6 +783,7 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_imprimir.setLocation(btn_borrar.getX(), btn_borrar.getY()+btn_borrar.getHeight()+5);
 		btn_imprimir.setSize(anchoBotonA,altoBotonA);
 		btn_imprimir.setEnabled(false);
+                btn_imprimir.setVisible(false);
 		
 		btn_inicial = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Inicial");
 		btn_inicial.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
@@ -782,12 +791,14 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_inicial.setToolTipText("inicial");
 		btn_inicial.setLocation(btn_buscar.getX(), btn_buscar.getY()+btn_buscar.getHeight()+5);
 		btn_inicial.setSize(anchoBotonA,altoBotonA);
-		
+		btn_inicial.setVisible(false);
+                
 		btn_salir = new Boton(NombreImagenes.imBGeneralRojo, NombreImagenes.imBGeneral2, "Salir");
 		btn_salir.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
 		this.add(btn_salir);
 		btn_salir.setToolTipText("Salir");
-		btn_salir.setLocation(btn_plantilla.getX(), btn_plantilla.getY()+btn_plantilla.getHeight()+5);
+//		btn_salir.setLocation(btn_plantilla.getX(), btn_plantilla.getY()+btn_plantilla.getHeight()+5);  
+                btn_salir.setLocation(btn_borrar.getX(), btn_borrar.getY());
 		btn_salir.setSize(anchoBotonA,altoBotonA);
 
 	}
@@ -1081,7 +1092,7 @@ public class GUITransaccion extends ClaseGeneral {
             String[] datosFila = new String[dtmTablaTerceros.getColumnCount()];
 
             datosFila[0] = String.valueOf(interno.getId());
-            datosFila[1] = interno.getPrimerApellido() + interno.getSegundoApellido() + interno.getPrimerNombre() + interno.getSegundoNombre() ;
+            datosFila[1] = interno.getNombresCompletos() ;
             datosFila[2] = interno.getTd();
             datosFila[3] = interno.getNui();
             dtmTablaTerceros.addRow(datosFila);
@@ -1133,7 +1144,7 @@ public class GUITransaccion extends ClaseGeneral {
             datosFila[3] = codigoBodega;
             datosFila[4] = Formatos.formatearNumeroAgregaDecimalesString(String.valueOf(item.getCantidad()) );
             datosFila[5] = Formatos.formatearValorString( String.valueOf(item.getValorUnitario()) );
-            datosFila[6] = Formatos.formatearValorString( String.valueOf(item.getValorUnitario()) );
+            datosFila[6] = Formatos.formatearValorString( String.valueOf(item.getValorUnitario()*item.getCantidad()) );
             long idBodega = 0;
             if (item.getBodega() != null ) {
                 idBodega = item.getBodega().getId();
@@ -1190,9 +1201,10 @@ public class GUITransaccion extends ClaseGeneral {
 		txt_nitAntiguo.setText("");
 		txt_idTercero.setText("");
 		lbl_nombreDin.setText("");
-		lbl_direccionDin.setText("");
+		lbl_cupoDiarioDin.setText("");
+                lbl_cupoMensualDin.setText("");
 		lbl_ciudadDin.setText("");
-		lbl_telefonoDin.setText("");
+		lbl_cupoTotalDin.setText("");
 		txt_condiciones.setText("");
 		txt_numero.setText("");
 //		txt_numero.setEnabled(true);
@@ -1272,8 +1284,9 @@ public class GUITransaccion extends ClaseGeneral {
                 txt_idTercero.setText(interno.getId().toString());
                 lbl_nombreDin.setText(interno.getPrimerApellido() +" "+ interno.getSegundoApellido() +" "+interno.getPrimerNombre() + " " + interno.getSegundoNombre() );
                 lbl_ciudadDin.setText(interno.getNacionalidad());
-                lbl_direccionDin.setText(Formatos.quitarFormatoValorString( interno.getSaldoDiarioActualGastado() +"" ) );
-                lbl_telefonoDin.setText(Formatos.quitarFormatoValorString( interno.getSaldoMensualActualGastado() +"" ) );
+                lbl_cupoDiarioDin.setText(Formatos.formatearValorDecimalesString(interno.traerSaldoDiarioDisponibleValidado()+"" ,DatosGeneralesPrograma.cantidadDecimalesMoneda) );
+                lbl_cupoMensualDin.setText(Formatos.formatearValorDecimalesString( interno.traerSaldoMensualDisponibleValidado() +"",DatosGeneralesPrograma.cantidadDecimalesMoneda ) );
+                lbl_cupoTotalDin.setText(Formatos.formatearValorDecimalesString( interno.getSaldoDisponible()+ "" ,DatosGeneralesPrograma.cantidadDecimalesMoneda) );
                 return "VALIDO";
             }
         }
@@ -1469,9 +1482,11 @@ public class GUITransaccion extends ClaseGeneral {
 						txt_nit.setText("");
 						txt_idTercero.setText("");
 						lbl_nombreDin.setText("");
-						lbl_direccionDin.setText("");
+						lbl_cupoDiarioDin.setText("");
 						lbl_ciudadDin.setText("");
-						lbl_telefonoDin.setText("");
+  						lbl_cupoDiarioDin.setText("");
+						lbl_cupoMensualDin.setText("");
+                                                lbl_cupoTotalDin.setText("");
 						JOptionPane.showOptionDialog(frame, "Error, el Tercero no existe. Inténtelo de nuevo", "Error (5840)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
 						txt_nit.grabFocus(); 
 					}
@@ -1482,10 +1497,10 @@ public class GUITransaccion extends ClaseGeneral {
 					limpiarCamposRegistroMv(true);
 					txt_idTercero.setText("");
 					lbl_nombreDin.setText("");
-					lbl_direccionDin.setText("");
+					lbl_cupoDiarioDin.setText("");
+					lbl_cupoMensualDin.setText("");
+                                        lbl_cupoTotalDin.setText("");
 					lbl_ciudadDin.setText("");
-					lbl_telefonoDin.setText("");
-					txt_listaPrecioTercero.setText("");
 				}				
 			}
 			
@@ -1509,9 +1524,10 @@ public class GUITransaccion extends ClaseGeneral {
                                                 txt_nit.setText("");
                                                 txt_idTercero.setText("");
                                                 lbl_nombreDin.setText("");
-                                                lbl_direccionDin.setText("");
                                                 lbl_ciudadDin.setText("");
-                                                lbl_telefonoDin.setText("");
+                                                lbl_cupoDiarioDin.setText("");
+                                                lbl_cupoMensualDin.setText("");
+                                                lbl_cupoTotalDin.setText("");
                                                 txt_fecha.grabFocus();
                                                 deshacerFiltroTercero();
                                             }else if(valido.equalsIgnoreCase("ERROR2")) {
@@ -1519,9 +1535,9 @@ public class GUITransaccion extends ClaseGeneral {
                                                 txt_nit.setText("");
                                                 txt_idTercero.setText("");
                                                 lbl_nombreDin.setText("");
-                                                lbl_direccionDin.setText("");
-                                                lbl_ciudadDin.setText("");
-                                                lbl_telefonoDin.setText("");
+                                                lbl_cupoDiarioDin.setText("");
+                                                lbl_cupoMensualDin.setText("");
+                                                lbl_cupoTotalDin.setText("");                                                                                                lbl_ciudadDin.setText("");
                                                 deshacerFiltroTercero();
                                                         txt_fecha.grabFocus();
                                             }else{
@@ -2003,9 +2019,10 @@ public class GUITransaccion extends ClaseGeneral {
                                             txt_nit.setText("");
                                             txt_idTercero.setText("");
                                             lbl_nombreDin.setText("");
-                                            lbl_direccionDin.setText("");
+                                            lbl_cupoDiarioDin.setText("");
+                                            lbl_cupoMensualDin.setText("");
+                                            lbl_cupoTotalDin.setText("");
                                             lbl_ciudadDin.setText("");
-                                            lbl_telefonoDin.setText("");
                                             txt_fecha.grabFocus();
                                     }else{
                                     }
@@ -2415,6 +2432,8 @@ public class GUITransaccion extends ClaseGeneral {
                 setValoresTransaccion();
                 int cantidadItemsAntes = pTransaccion.getListaTransacciones().size();
                 pTransaccion.adicionar( transaccion );
+                Interno interno = Servicios.internosController.internosRepository.consultarPorTd(txt_nit.getText());  
+                interno.registrarGasto(Valor.convertirValorStringALong(Formatos.quitarFormatoDecimalesString(lbl_totalResultados.getText())));
                 int cnatidadItemsDespues = pTransaccion.getListaTransacciones().size();
                 
                 if (cantidadItemsAntes < cnatidadItemsDespues) {
