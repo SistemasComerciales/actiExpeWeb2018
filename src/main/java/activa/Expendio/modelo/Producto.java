@@ -175,12 +175,12 @@ public class Producto {
         if (presentacion == null || (presentacion != null && presentacion.trim().isEmpty())) {
             return "PRESENTACION";
         }
-        if (grupo == null) {
-            return "GRUPO";
-        }
         if (codigoBarras == null || (codigoBarras != null && codigoBarras.trim().isEmpty())) {
             return "CODIGOBARRAS";
         }
+//        if (grupo == null) {
+//            return "GRUPO";
+//        }
 //        if (observaciones == null || (observaciones != null && observaciones.trim().isEmpty())) {
 //            return "OBSERVACIONES";
 //        }
