@@ -1,4 +1,4 @@
-package utils;
+package activa.Expendio.vista.utils;
 
 import javax.swing.table.*;
 

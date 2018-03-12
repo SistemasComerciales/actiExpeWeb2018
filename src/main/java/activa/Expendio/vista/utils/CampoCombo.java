@@ -1,6 +1,7 @@
-package utils;
+package activa.Expendio.vista.utils;
 
 import javax.swing.*;
+import utils.*;
 
 public class CampoCombo<T> extends JComboBox<T> {
 

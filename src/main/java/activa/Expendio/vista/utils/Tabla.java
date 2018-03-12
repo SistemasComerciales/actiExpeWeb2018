@@ -1,9 +1,10 @@
-package utils;
+package activa.Expendio.vista.utils;
 
 import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
+import utils.*;
 
 public class Tabla {
 

@@ -1,10 +1,11 @@
-package utils;
+package activa.Expendio.vista.utils;
 
 import activa.Expendio.modelo.*;
 import java.text.*;
 
 import javax.swing.*;
 import javax.swing.text.*;
+import utils.*;
 
 public class CajaDeTextoConFormatoNumerico extends JFormattedTextField {
 
