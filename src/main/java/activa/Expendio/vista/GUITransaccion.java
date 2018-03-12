@@ -5,7 +5,6 @@
  */
 package activa.Expendio.vista;
 
-import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
 import activa.Expendio.vista.utils.Boton;
 import activa.Expendio.vista.utils.CajaDeTexto;
@@ -14,13 +13,10 @@ import activa.Expendio.vista.utils.CampoLabel;
 import activa.Expendio.vista.utils.Tabla;
 import activa.Expendio.vista.utils.TablaNoEditable;
 import java.awt.Dimension;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+  import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import utils.CargaImagenes;
@@ -48,7 +44,14 @@ public class GUITransaccion extends ClaseGeneral {
     public CampoLabel lbl_adicionar , lbl_borrar , lbl_insertar  , lbl_modificar, lbl_repetir , lbl_cancelarMV , lbl_guardarMv , lbl_costoProducto ,lbl_costoProductoTotal, lbl_NombreExistencia, lbl_ResultadoExistencia;
     public Boton       btn_adicionar ,btn_borrar2,	btn_insertar , btn_modificar , btn_repetir, btn_cancelarMv , btn_guardarMv;
     
-    ///////////////////PANEL PREPARA TABLA PRINCIPAL///////////////////////
+    //////////////////PANEL BOTONES 1/////////////////////
+    private CampoLabel lbl_subtotal, lbl_descuento, lbl_retenciones, lbl_iva, lbl_total, lbl_subtotalResultado,	lbl_totalResultados,lbl_descripcionItem, lbl_observaciones,  lbl_grupoProducto, lbl_grupoContable, lbl_grupoContableResultado , lbl_grupoProductoResultado, lbl_numeroItems , lbl_numeroItemsResultado, lbl_numeroArticulos , lbl_numeroArticuloResultados, lbl_ivaResultado, lbl_retencionesResul;
+    public CajaDeTexto 	txt_descripcionItem;
+    public Boton btn_salir, btn_otros, btn_plantilla, btn_grabar, btn_borrar, btn_imprimir , btn_inicial , btn_buscar , btn_cancelar;
+    private CampoLabel lbl_descuentoPorcentaje , lbl_descuentoValor;
+    public CajaDeTexto txt_observaciones;
+    
+///////////////////PANEL PREPARA TABLA PRINCIPAL///////////////////////
     public JPanel panel_tablaPrincipal;
     public DefaultTableModel dtmTablaPrincipal;
     public JTable tablaPrincipal;
@@ -72,6 +75,8 @@ public class GUITransaccion extends ClaseGeneral {
         prepareElementosInfo();
         preparaElementosTablaPrincipal();
         prepararElementosRegistro2();
+        preparaElementosBotones();
+        preparaElementosBotones2();
         super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, "".toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
 
     }  
@@ -293,7 +298,7 @@ public class GUITransaccion extends ClaseGeneral {
                 txt_bodega.setBounds(txt_empaque.getX()+txt_empaque.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaBodega).getMaxWidth(), 20);
 		this.add(txt_bodega);
 	
-		txt_cantidad = new CajaDeTexto("D", 20);
+		txt_cantidad = new CajaDeTexto("N", 20);
 		txt_cantidad.setBounds(txt_bodega.getX()+txt_bodega.getWidth(), posicionYTxt, tablaPrincipal.getColumnModel().getColumn(columnaCantidad).getMaxWidth(), 20);
 		this.add(txt_cantidad);
 
@@ -424,24 +429,25 @@ public class GUITransaccion extends ClaseGeneral {
 
 		lbl_insertar = new CampoLabel("Insertar", "E");
 		lbl_insertar.alinearIzquierda();
-		lbl_insertar.setBounds(lbl_borrar.getX()+lbl_borrar.getWidth(), lbl_borrar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_insertar.setBounds(lbl_borrar.getX()+lbl_borrar.getWidth()+10, lbl_borrar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
 		this.add(lbl_insertar);
 		
 		lbl_modificar = new CampoLabel("Modificar", "E");
 		lbl_modificar.alinearIzquierda();
-		lbl_modificar.setBounds(lbl_insertar.getX()+lbl_insertar.getWidth()-5, lbl_insertar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_modificar.setBounds(lbl_insertar.getX()+lbl_insertar.getWidth(), lbl_insertar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
 		this.add(lbl_modificar);
 		
 		lbl_cancelarMV = new CampoLabel("Cancelar", "E");
 		lbl_cancelarMV.alinearIzquierda();
-		lbl_cancelarMV.setBounds(lbl_insertar.getX()+lbl_insertar.getWidth()-5, lbl_modificar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_cancelarMV.setBounds(lbl_insertar.getX()+lbl_insertar.getWidth(), lbl_modificar.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
 		lbl_cancelarMV.setVisible(false);
 		this.add(lbl_cancelarMV);
 		
 		lbl_repetir = new CampoLabel("Repetir", "E");
 		lbl_repetir.alinearIzquierda();
-		lbl_repetir.setBounds(lbl_modificar.getX()+lbl_modificar.getWidth()-5, lbl_cancelarMV.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
+		lbl_repetir.setBounds(lbl_modificar.getX()+lbl_modificar.getWidth(), lbl_cancelarMV.getY(), CargaImagenes.anchoBotonGeneral/2, CargaImagenes.altoBotonGeneral/5*2);
 		this.add(lbl_repetir);
+                lbl_repetir.setVisible(false);
 		
 
 		
@@ -461,34 +467,249 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_borrar2 = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "B");
 		this.add(btn_borrar2);
 		btn_borrar2.setToolTipText("borrar2");
-		btn_borrar2.setLocation(btn_adicionar.getX()+btn_adicionar.getWidth(), btn_adicionar.getY());
+		btn_borrar2.setLocation(btn_adicionar.getX()+btn_adicionar.getWidth()+10, btn_adicionar.getY());
 		btn_borrar2.setSize(anchoBotonB,altoBotonB);
 		
 		btn_insertar = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "I");
 		this.add(btn_insertar);
 		btn_insertar.setToolTipText("insertar");
-		btn_insertar.setLocation(btn_borrar2.getX()+btn_borrar2.getWidth()	, btn_borrar2.getY());
+		btn_insertar.setLocation(btn_borrar2.getX()+btn_borrar2.getWidth()+10, btn_borrar2.getY());
 		btn_insertar.setSize(anchoBotonB,altoBotonB);
 
 
 		btn_modificar = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "M");
 		this.add(btn_modificar);
 		btn_modificar.setToolTipText("Modificar");
-		btn_modificar.setLocation(btn_insertar.getX()+btn_insertar.getWidth(), btn_insertar.getY());
+		btn_modificar.setLocation(btn_insertar.getX()+btn_insertar.getWidth()+10, btn_insertar.getY());
 		btn_modificar.setSize(anchoBotonB,altoBotonB);
 		
 		btn_cancelarMv = new Boton(NombreImagenes.imBGeneralMini1,NombreImagenes.imBGeneralMini2 , "C");
 		this.add(btn_cancelarMv);
 		btn_cancelarMv.setToolTipText("Cancelar");
-		btn_cancelarMv.setLocation(btn_insertar.getX()+btn_insertar.getWidth(), btn_modificar.getY());
+		btn_cancelarMv.setLocation(btn_insertar.getX()+btn_insertar.getWidth()+10, btn_modificar.getY());
 		btn_cancelarMv.setSize(anchoBotonB,altoBotonB);
 		btn_cancelarMv.setVisible(false);
 		
 		btn_repetir = new Boton(NombreImagenes.imBGeneralMini1, NombreImagenes.imBGeneralMini2, "R");
 		this.add(btn_repetir);
 		btn_repetir.setToolTipText("Repetir");
-		btn_repetir.setLocation(btn_modificar.getX()+btn_modificar.getWidth()	, btn_cancelarMv.getY());
+		btn_repetir.setLocation(btn_modificar.getX()+btn_modificar.getWidth()+10	, btn_cancelarMv.getY());
 		btn_repetir.setSize(anchoBotonB,altoBotonB);
+                btn_repetir.setVisible(false);
+                
+	}
+        
+        /**
+         * metod que prepara los objetos del total
+	 */
+	public void preparaElementosBotones() {
+
+
+		int posicionXLbl=CargaImagenes.ANCHO_PANTALLA/100*53;
+		int posicionYLbl=CargaImagenes.ALTO_PANTALLA/100*65;
+		int anchoBotonA = CargaImagenes.anchoBotonGeneral;
+		int altoBotonA =  CargaImagenes.altoBotonGeneral;
+		int posicionXbtn =CargaImagenes.ANCHO_PANTALLA/100*57;
+		int posicionYbtn =CargaImagenes.ALTO_PANTALLA/100*87;
+				
+		 
+		lbl_descripcionItem = new CampoLabel("Descripciòn de Item: ", "E");
+		lbl_descripcionItem.alinearIzquierda();
+		lbl_descripcionItem.setBounds(posicionXLbl, posicionYLbl, CargaImagenes.anchoBotonGeneral*2, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_descripcionItem);
+
+		lbl_observaciones = new CampoLabel("Observaciones: ", "E");
+		lbl_observaciones.alinearIzquierda();
+		lbl_observaciones.setBounds(posicionXLbl, lbl_descripcionItem.getY()+lbl_descripcionItem.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_observaciones);
+		
+		lbl_grupoProducto = new CampoLabel("Grupo Producto:  ", "E");
+		lbl_grupoProducto.alinearIzquierda();
+		lbl_grupoProducto.setBounds(posicionXLbl,lbl_observaciones.getY()+lbl_observaciones.getHeight()*2, CargaImagenes.anchoBotonGeneral*3/2, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_grupoProducto);
+                lbl_grupoProducto.setVisible(false);
+                
+		
+		lbl_grupoProductoResultado = new CampoLabel("", "V");
+		lbl_grupoProductoResultado.alinearIzquierda();
+		lbl_grupoProductoResultado.setBounds(lbl_grupoProducto.getX()+lbl_grupoProducto.getWidth(), lbl_grupoProducto.getY(), CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_grupoProductoResultado);
+		
+		lbl_numeroItems = new CampoLabel("Numero Items:  ", "E");
+		lbl_numeroItems.alinearIzquierda();;
+		lbl_numeroItems.setBounds(posicionXLbl, lbl_grupoProducto.getY()+lbl_grupoProducto.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_numeroItems);
+                lbl_numeroItems.setVisible(false);
+		
+		lbl_numeroItemsResultado = new CampoLabel("", "V");
+		lbl_numeroItemsResultado.alinearIzquierda();
+		lbl_numeroItemsResultado.setBounds(lbl_grupoProductoResultado.getX(), lbl_numeroItems.getY(), CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_numeroItemsResultado);
+		
+		lbl_numeroArticulos = new CampoLabel("Numero de Articulos:  ", "E");
+		lbl_numeroArticulos.alinearIzquierda();
+		lbl_numeroArticulos.setBounds(posicionXLbl, lbl_numeroItems.getY()+lbl_numeroItems.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_numeroArticulos);
+                lbl_numeroArticulos.setVisible(false);
+		
+		
+		lbl_numeroArticuloResultados = new CampoLabel("", "V");
+		lbl_numeroArticuloResultados.alinearIzquierda();
+		lbl_numeroArticuloResultados.setBounds(lbl_grupoProductoResultado.getX(), lbl_numeroArticulos.getY(), CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_numeroArticuloResultados);
+		
+		lbl_grupoContable = new CampoLabel("Grupo Contable:  ", "E");
+		lbl_grupoContable.alinearIzquierda();
+		lbl_grupoContable.setBounds(posicionXLbl, lbl_numeroArticulos.getY()+lbl_numeroArticulos.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_grupoContable);
+                lbl_grupoContable.setVisible(false);
+		
+		lbl_grupoContableResultado = new CampoLabel("", "V");
+		lbl_grupoContableResultado.alinearIzquierda();
+		lbl_grupoContableResultado.setBounds(lbl_grupoProductoResultado.getX(), lbl_grupoContable.getY(), CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_grupoContableResultado);
+
+		lbl_descuento = new CampoLabel("Descuento:", "E");
+		lbl_descuento.alinearIzquierda();
+		lbl_descuento.setBounds(lbl_descripcionItem.getX()*3/2+lbl_descripcionItem.getWidth()/3, posicionYLbl, 555, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_descuento);
+                lbl_descuento.setVisible(false);
+		
+		lbl_subtotal = new CampoLabel("Subtotal:", "E");
+		lbl_subtotal.alinearIzquierda();
+		lbl_subtotal.setBounds(lbl_descuento.getX(), lbl_descuento.getY()+lbl_descuento.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_subtotal);	
+                lbl_subtotal.setVisible(false);
+		
+		lbl_iva = new CampoLabel("I.V.A.:", "E");
+		lbl_iva.alinearIzquierda();
+		lbl_iva.setBounds(lbl_subtotal.getX(), lbl_subtotal.getY()+lbl_subtotal.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_iva);
+                lbl_iva.setVisible(false);
+		
+		lbl_retenciones = new CampoLabel("Retenciones:", "E");
+		lbl_retenciones.alinearIzquierda();
+		lbl_retenciones.setBounds(lbl_iva.getX(), lbl_iva.getY()+lbl_iva.getHeight()+6, CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_retenciones);
+                lbl_retenciones.setVisible(false);
+		
+		lbl_total = new CampoLabel("Total:", "E");
+		lbl_total.alinearIzquierda();
+		lbl_total.setBounds(lbl_retenciones.getX(), lbl_retenciones.getY()+lbl_retenciones.getHeight()+6 , CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral/5*2);
+		this.add(lbl_total);
+		
+		lbl_descuentoPorcentaje = new CampoLabel("", "V");
+		lbl_descuentoPorcentaje.setBounds(lbl_descuento.getX()+CargaImagenes.anchoBotonGeneral/4	, lbl_descuento.getY(), CargaImagenes.anchoBotonGeneral/5*4 	, 20);
+		lbl_descuentoPorcentaje.alinearIzquierda();
+		this.add(lbl_descuentoPorcentaje);
+
+		lbl_descuentoValor = new CampoLabel("", "V");
+		lbl_descuentoValor.setBounds(lbl_descuento.getX()+lbl_descuento.getWidth()/5, lbl_descuento.getY(), CargaImagenes.anchoBotonGeneral/5*4, 20);
+		lbl_descuentoValor.alinearDerecha();
+		this.add(lbl_descuentoValor);
+		
+		lbl_subtotalResultado = new CampoLabel("", "V");
+		lbl_subtotalResultado.alinearIzquierda();
+		lbl_subtotalResultado.setBounds(lbl_descuentoValor.getX(), lbl_subtotal.getY(), CargaImagenes.anchoBotonGeneral/5*4, 20);
+		this.add(lbl_subtotalResultado);
+		
+
+
+		lbl_ivaResultado = new CampoLabel("", "V");
+		lbl_ivaResultado.setBounds(lbl_subtotalResultado.getX(), lbl_iva.getY(), CargaImagenes.anchoBotonGeneral/5*4, 20);
+		lbl_ivaResultado.alinearIzquierda();
+		this.add(lbl_ivaResultado);
+		
+
+		
+		lbl_retencionesResul = new CampoLabel("", "V");
+		lbl_retencionesResul.setBounds(lbl_ivaResultado.getX(), lbl_retenciones.getY(), CargaImagenes.anchoBotonGeneral/5*4, 20);
+		lbl_retencionesResul.alinearDerecha();
+		this.add(lbl_retencionesResul);
+		
+		lbl_totalResultados = new CampoLabel("", "V");
+		lbl_totalResultados.alinearDerecha();
+		lbl_totalResultados.setBounds(lbl_retencionesResul.getX(), lbl_total.getY(), CargaImagenes.anchoBotonGeneral/5*4,20);
+		this.add(lbl_totalResultados);
+		
+		txt_descripcionItem = new CajaDeTexto("G", 500);
+		txt_descripcionItem.setBounds(lbl_grupoProductoResultado.getX(), lbl_descripcionItem.getY(), CargaImagenes.anchoBotonGeneral/5*7, 20);
+		this.add(txt_descripcionItem);
+		txt_descripcionItem.setEnabled(false);
+
+		
+		txt_observaciones = new CajaDeTexto("G", 500);
+		txt_observaciones.setBounds(lbl_grupoProductoResultado.getX(), lbl_observaciones.getY(), CargaImagenes.anchoBotonGeneral/5*7, 20);
+		this.add(txt_observaciones);
+		
+		btn_grabar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Registrar");
+		btn_grabar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_grabar);
+		btn_grabar.setToolTipText("grabar");
+		btn_grabar.setLocation(posicionXbtn, posicionYbtn);
+		btn_grabar.setSize(anchoBotonA,altoBotonA);
+		
+		btn_borrar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Borrar");
+		btn_borrar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_borrar);
+		btn_borrar.setToolTipText("borrar");
+		btn_borrar.setLocation(btn_grabar.getX()+btn_grabar.getWidth()+5, btn_grabar.getY());
+		btn_borrar.setSize(anchoBotonA,altoBotonA);
+//		btn_borrar.setVisible(false);
+		
+		btn_buscar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2,  "Buscar");
+		btn_buscar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_buscar);
+		btn_buscar.setToolTipText("buscar");
+		btn_buscar.setLocation(btn_borrar.getX()+btn_borrar.getWidth()+5, btn_borrar.getY());
+		btn_buscar.setSize(anchoBotonA,altoBotonA);
+		
+		btn_cancelar = new Boton(NombreImagenes.imBGeneralRojo, NombreImagenes.imBGeneral2, "Cancelar");
+		btn_cancelar.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_cancelar);
+		btn_cancelar.setToolTipText("cancelar");
+		btn_cancelar.setLocation(btn_borrar.getX()+btn_borrar.getWidth()+5, btn_buscar.getY());
+		btn_cancelar.setSize(anchoBotonA,altoBotonA);
+		btn_cancelar.setVisible(false);
+		
+		btn_plantilla = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Plantilla");
+		btn_plantilla.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_plantilla);
+		btn_plantilla.setToolTipText("plantilla");
+		btn_plantilla.setLocation(btn_cancelar.getX()+btn_cancelar.getWidth(), btn_cancelar.getY());
+		btn_plantilla.setSize(anchoBotonA,altoBotonA);
+//		btn_plantilla.setVisible(false);
+		
+		btn_otros = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Otro");
+		btn_otros.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_otros);
+		btn_otros.setToolTipText("Otro");
+		btn_otros.setLocation(btn_grabar.getX(), btn_grabar.getY()+btn_grabar.getHeight()+5);
+		btn_otros.setSize(anchoBotonA,altoBotonA);
+		btn_otros.setEnabled(false);
+		
+		btn_imprimir = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2,  "Reporte");
+		btn_imprimir.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_imprimir);
+		btn_imprimir.setToolTipText("imprimir");
+		btn_imprimir.setLocation(btn_borrar.getX(), btn_borrar.getY()+btn_borrar.getHeight()+5);
+		btn_imprimir.setSize(anchoBotonA,altoBotonA);
+		btn_imprimir.setEnabled(false);
+		
+		btn_inicial = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Inicial");
+		btn_inicial.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_inicial);
+		btn_inicial.setToolTipText("inicial");
+		btn_inicial.setLocation(btn_buscar.getX(), btn_buscar.getY()+btn_buscar.getHeight()+5);
+		btn_inicial.setSize(anchoBotonA,altoBotonA);
+		
+		btn_salir = new Boton(NombreImagenes.imBGeneralRojo, NombreImagenes.imBGeneral2, "Salir");
+		btn_salir.cambiarTamanoTexto(CargaImagenes.anchoBotonGeneral / 6f);
+		this.add(btn_salir);
+		btn_salir.setToolTipText("Salir");
+		btn_salir.setLocation(btn_plantilla.getX(), btn_plantilla.getY()+btn_plantilla.getHeight()+5);
+		btn_salir.setSize(anchoBotonA,altoBotonA);
+
 	}
     
     @Override
