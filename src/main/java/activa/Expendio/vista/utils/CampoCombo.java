@@ -38,7 +38,7 @@ public class CampoCombo<T> extends JComboBox<T> {
 
     public static String setValueCombo(CampoCombo<String> campo, String valor) {
         String resp = valor;
-        if (!resp.trim().isEmpty()) {
+        if (resp != null && !resp.trim().isEmpty()) {
             campo.setSelectedItem(resp);
         }
         return resp;
