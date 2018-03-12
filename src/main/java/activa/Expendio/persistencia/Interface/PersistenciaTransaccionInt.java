@@ -35,5 +35,6 @@ public interface PersistenciaTransaccionInt {
     
     public boolean validarExisteItem(Transaccion transaccion, TransaccionItem transaccionItem);
     
+    public ArrayList<TransaccionItem> consultarTodoItems(Transaccion transaccion);
     
 }
