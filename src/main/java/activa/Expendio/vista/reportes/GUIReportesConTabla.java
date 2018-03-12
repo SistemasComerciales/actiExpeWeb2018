@@ -6,6 +6,7 @@ import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
+import utils.*;
 
 public abstract class GUIReportesConTabla extends GUIReportes {
 
@@ -42,10 +43,10 @@ public abstract class GUIReportesConTabla extends GUIReportes {
     protected abstract void cambiarTamanoColumnas();
 
     protected void prepareElementosTabla() {// XXX Panel de tabla
-        int anchoPanel = 7 * ANCHO_PANTALLA / 8;
-        int altoPanel = ALTO_PANTALLA / 2;
-        int margenSuperior = panel_botones.getY() + panel_botones.getHeight();//ALTO_PANTALLA / 100 * 43;
-        int margenIzquierda = (ANCHO_PANTALLA - anchoPanel) / 2;
+        int anchoPanel = 7 * CargaImagenes.ANCHO_PANTALLA / 8;
+        int altoPanel = CargaImagenes.ALTO_PANTALLA / 2;
+        int margenSuperior = panel_botones.getY() + panel_botones.getHeight();//CargaImagenes.ALTO_PANTALLA / 100 * 43;
+        int margenIzquierda = (CargaImagenes.ANCHO_PANTALLA - anchoPanel) / 2;
 
         panel_tablaGeneral = new JPanel();
         panel_tablaGeneral.setOpaque(false);

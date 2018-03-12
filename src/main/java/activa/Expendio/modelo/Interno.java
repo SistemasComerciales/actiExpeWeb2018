@@ -34,9 +34,9 @@ public class Interno {
     private Timestamp creacion;
     private Timestamp modificacion;
     private String rutaImagen;
-    private long saldoDiarioActualGastado;
-    private long saldoMensualActualGastado;
-    private long saldoDisponible;
+    private double saldoDiarioActualGastado;
+    private double saldoMensualActualGastado;
+    private double saldoDisponible;
 
     public Long getId() {
         return id;
@@ -328,45 +328,45 @@ public class Interno {
         }
     }
 
-
-
-    
-    
     /**
      * Metodo envargado de registrar un gasto
-     * @param valor 
+     *
+     * @param valor
      */
-    public void registrarGasto(long valor){
+    public void registrarGasto(long valor) {
         this.setSaldoDiarioActualGastado(this.getSaldoDiarioActualGastado() + valor);
         this.setSaldoMensualActualGastado(this.getSaldoMensualActualGastado() + valor);
         this.setSaldoDisponible(this.getSaldoDisponible() - valor);
     }
+
     /**
      * Metodo encargado de registrar un ingreso al interno
-     * @param valor 
+     *
+     * @param valor
      */
-    public void registrarIngreso(long valor){
+    public void registrarIngreso(double valor) {
         this.setSaldoDisponible(this.getSaldoDisponible() + valor);
     }
-    
+
     /**
      * Metodo encargado de validar el saldo a gastar
+     *
      * @param valor
      * @return boolean <br>
      * <b>true</b>: Si cumple las condiciones<br>
      * <b>false</b>: Si no cumplea las condiciones<br>
      */
-    public boolean validarSaldoAGastar(long valor){
-        long valorDiarioValidar = this.getSaldoDiarioActualGastado() + valor;
-        if(valorDiarioValidar>Saldos.saldoDiarioMaximo){
+    public boolean validarSaldoAGastar(double valor) {
+        double valorDiarioValidar = this.getSaldoDiarioActualGastado() + valor;
+        if (valorDiarioValidar > Saldos.saldoDiarioMaximo) {
             return false;
         }
-        long valorMensualValidar = this.getSaldoMensualActualGastado() + valor;
-        if(valorMensualValidar>Saldos.saldoMensualMaximo){
+        double valorMensualValidar = this.getSaldoMensualActualGastado() + valor;
+        if (valorMensualValidar > Saldos.saldoMensualMaximo) {
             return false;
         }
-        long valorDisponibleValidar = this.getSaldoDisponible() - valor;
-        if(valorDisponibleValidar<0){
+        double valorDisponibleValidar = this.getSaldoDisponible() - valor;
+        if (valorDisponibleValidar < 0) {
             return false;
         }
         return true;
@@ -375,83 +375,83 @@ public class Interno {
     /**
      * @return the saldoDiarioActualGastado
      */
-    public long getSaldoDiarioActualGastado() {
+    public double getSaldoDiarioActualGastado() {
         return saldoDiarioActualGastado;
     }
 
     /**
      * @param saldoDiarioActualGastado the saldoDiarioActualGastado to set
      */
-    public void setSaldoDiarioActualGastado(long saldoDiarioActualGastado) {
+    public void setSaldoDiarioActualGastado(double saldoDiarioActualGastado) {
         this.saldoDiarioActualGastado = saldoDiarioActualGastado;
     }
 
     /**
      * @return the saldoMensualActualGastado
      */
-    public long getSaldoMensualActualGastado() {
+    public double getSaldoMensualActualGastado() {
         return saldoMensualActualGastado;
     }
 
     /**
      * @param saldoMensualActualGastado the saldoMensualActualGastado to set
      */
-    public void setSaldoMensualActualGastado(long saldoMensualActualGastado) {
+    public void setSaldoMensualActualGastado(double saldoMensualActualGastado) {
         this.saldoMensualActualGastado = saldoMensualActualGastado;
     }
 
     /**
      * @return the saldoDisponible
      */
-    public long getSaldoDisponible() {
+    public double getSaldoDisponible() {
         return saldoDisponible;
     }
 
     /**
      * @param saldoDisponible the saldoDisponible to set
      */
-    public void setSaldoDisponible(long saldoDisponible) {
+    public void setSaldoDisponible(double saldoDisponible) {
         this.saldoDisponible = saldoDisponible;
     }
-    
-    public String getEstadoLetras(){
-        if(this.estado){
+
+    public String getEstadoLetras() {
+        if (this.estado) {
             return "ACTIVO";
-        }
-        else{
+        } else {
             return "INACTIVO";
         }
     }
-    
-    public String getNombresCompletos(){
-        return primerApellido + " " + segundoApellido + " " + primerNombre + " "+segundoNombre;
+
+    public String getNombresCompletos() {
+        return primerApellido + " " + segundoApellido + " " + primerNombre + " " + segundoNombre;
     }
-    
-    
+
     /**
-     * Metodo encargado de traer el saldo disponible, validando que no exceda el saldo disponible del interno
-     * @return 
+     * Metodo encargado de traer el saldo disponible, validando que no exceda el
+     * saldo disponible del interno
+     *
+     * @return
      */
-    public long traerSaldoDiarioDisponibleValidado(){
-        long saldoDiarioDisponible = Saldos.saldoDiarioMaximo - saldoDiarioActualGastado;
-        if(saldoDisponible<saldoDiarioDisponible){
+    public double traerSaldoDiarioDisponibleValidado() {
+        double saldoDiarioDisponible = Saldos.saldoDiarioMaximo - saldoDiarioActualGastado;
+        if (saldoDisponible < saldoDiarioDisponible) {
             return saldoDisponible;
-        }
-        else{
+        } else {
             return saldoDiarioDisponible;
         }
     }
-    
+
     /**
-     * Metodo encargado de traer el saldo disponible, validando que no exceda el saldo disponible del interno
-     * @return 
+     * Metodo encargado de traer el saldo disponible, validando que no exceda el
+     * saldo disponible del interno
+     *
+     * @return
      */
-    public long traerSaldoMensualDisponibleValidado(){
-        long saldoMensualDisponible = Saldos.saldoMensualMaximo - saldoMensualActualGastado;
-        if(saldoDisponible<saldoMensualDisponible){
+    public double traerSaldoMensualDisponibleValidado() {
+        double saldoMensualDisponible = Saldos.saldoMensualMaximo - saldoMensualActualGastado;
+        if (saldoDisponible < saldoMensualDisponible) {
             return saldoDisponible;
-        }
-        else{
+        } else {
             return saldoMensualDisponible;
         }
     }

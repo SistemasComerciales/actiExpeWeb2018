@@ -1,9 +1,8 @@
 package activa.Expendio.vista;
 
-import activa.Expendio.ExpendioApplication;
-import activa.Expendio.modelo.Configuracion;
-import activa.Expendio.modelo.Establecimiento;
-import activa.Expendio.modelo.Usuario;
+import activa.Expendio.*;
+import activa.Expendio.modelo.*;
+import activa.Expendio.vista.reportes.*;
 import activa.Expendio.vista.utils.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -40,6 +39,11 @@ public class GUIMenu extends ClaseGeneral {
 
     // Panel Boton Reportes
     private JPanel panel_BotonReportes;
+    private Boton btn_reportesConsultar;
+
+    //Panel Reportes Consultar
+    private JPanel panel_reportesConsultar;
+    private Boton btn_repConsDetalleMovimientos;
 
     // Panel Boton Configuracion
     private JPanel panel_BotonConfiguracion;
@@ -67,6 +71,7 @@ public class GUIMenu extends ClaseGeneral {
         prepareMostrarPanelTransaccionPagos();
         prepareMostrarPanelTransaccionConsignaciones();
         prepareMostrarPanelReporte();
+        prepareMostrarPanelReportesConsultar();
 
         definaAccionesBotonesPrincipales();
         accionBotonesPanelCatalogo();
@@ -74,8 +79,9 @@ public class GUIMenu extends ClaseGeneral {
         accionBotonesPanelConfiguracionUsuarios();
         accionBotonesPanelTransaccion();
         accionBotonesPanelTransaccionPagos();
-        accionBotonesPanelReporte();
         accionBotonesPanelTransaccionConsignaciones();
+        accionBotonesPanelReporte();
+        accionBotonesPanelReportesConsultar();
 
         actualizarFrame();
         asignarFoco();
@@ -1073,9 +1079,10 @@ public class GUIMenu extends ClaseGeneral {
         panel_BotonReportes.setLocation(this.getWidth() / 14, (this.getHeight() / 4));
         panel_BotonReportes.setOpaque(false);
 
-//        btn_reportesListadoAlumnos = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, Imagenes, "Listado de Alumnos");
-//        btn_reportesListadoAlumnos.textoParaMenuPrimerNivel();
-//        panel_BotonReportes.add(btn_reportesListadoAlumnos);
+        btn_reportesConsultar = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Consultar");
+        btn_reportesConsultar.textoParaMenuPrimerNivel();
+        panel_BotonReportes.add(btn_reportesConsultar);
+
         this.add(panel_BotonReportes);
         panel_BotonReportes.setVisible(false);
         panel_BotonReportes.setSize(anchoBotonesPanel1, panel_BotonReportes.getComponentCount() * altoBotonesPanel1);
@@ -1085,88 +1092,127 @@ public class GUIMenu extends ClaseGeneral {
      * Metodo encargado de dar acciones a los botones del panel de reportes
      */
     private void accionBotonesPanelReporte() {
-//        btn_reportesListadoAlumnos.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (panel_reportesListadoAlumnos.isVisible()) {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesListadoAlumnos);
-//                    panel_reportesListadoAlumnos.setVisible(false);
-//                } else {
-//                    estadoInicialPanelReporte();
-//                    ocultarPanelesNivel2();
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_reportesListadoAlumnos);
-//                    panel_reportesListadoAlumnos.setLocation(panel_BotonReportes.getX() + panel_BotonReportes.getWidth() + anchoBotonesPanel1 / 14, panel_BotonReportes.getY() + btn_reportesListadoAlumnos.getY());
-//                    panel_reportesListadoAlumnos.setVisible(true);
-//                }
-//            }
-//        });
-//        btn_reportesListadoAlumnos.addKeyListener(new KeyListener() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-//            }
-//
-//            @Override
-//            public void keyReleased(KeyEvent e) {
-//                accionesKeyListenerConClick(btn_reportesListadoAlumnos, btn_reportes, panel_BotonReportes, panel_botonesPrincipales, e, panel_reportesListadoAlumnos);
-//                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-//                    if (!panel_reportesListadoAlumnos.isVisible()) {
-//                        btn_reportesListadoAlumnos.doClick();
-//                        panel_reportesListadoAlumnos.getComponent(0).requestFocus();
-//                        ((JButton) panel_reportesListadoAlumnos.getComponent(0)).grabFocus();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//            }
-//        });
-//        btn_reportesListadoAlumnos.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                if (!panel_reportesListadoAlumnos.isVisible()) {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesListadoAlumnos);
-//                } else {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_reportesListadoAlumnos);
-//                }
-//            }
-//
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//                if (!panel_reportesListadoAlumnos.isVisible()) {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu2, btn_reportesListadoAlumnos);
-//                }
-//            }
-//        });
-//        btn_reportesListadoAlumnos.addMouseListener(new MouseListener() {
-//            @Override
-//            public void mouseReleased(MouseEvent arg0) {
-//            }
-//
-//            @Override
-//            public void mousePressed(MouseEvent arg0) {
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent arg0) {
-//                if (!panel_reportesListadoAlumnos.isVisible()) {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesListadoAlumnos);
-//                } else {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_reportesListadoAlumnos);
-//                }
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent arg0) {
-//                if (!panel_reportesListadoAlumnos.isVisible()) {
-//                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu2, btn_reportesListadoAlumnos);
-//                }
-//            }
-//
-//            @Override
-//            public void mouseClicked(MouseEvent arg0) {
-//            }
-//        });
+        btn_reportesConsultar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (panel_reportesConsultar.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesConsultar);
+                    panel_reportesConsultar.setVisible(false);
+                } else {
+                    estadoInicialPanelReporte();
+                    ocultarPanelesNivel2();
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_reportesConsultar);
+                    panel_reportesConsultar.setLocation(panel_BotonReportes.getX() + panel_BotonReportes.getWidth() + anchoBotonesPanel1 / 14, panel_BotonReportes.getY() + btn_reportesConsultar.getY());
+                    panel_reportesConsultar.setVisible(true);
+                }
+            }
+        });
+        btn_reportesConsultar.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                accionesKeyListenerConClick(btn_reportesConsultar, btn_reportes, panel_BotonReportes, panel_botonesPrincipales, e, panel_reportesConsultar);
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    if (!panel_reportesConsultar.isVisible()) {
+                        btn_reportesConsultar.doClick();
+                        panel_reportesConsultar.getComponent(0).requestFocus();
+                        ((JButton) panel_reportesConsultar.getComponent(0)).grabFocus();
+                    }
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+        });
+        btn_reportesConsultar.addFocusListener(new FocusListener() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (!panel_reportesConsultar.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesConsultar);
+                } else {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_reportesConsultar);
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (!panel_reportesConsultar.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu2, btn_reportesConsultar);
+                }
+            }
+        });
+        btn_reportesConsultar.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent arg0) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent arg0) {
+                if (!panel_reportesConsultar.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesConsultar);
+                } else {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu3, btn_reportesConsultar);
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent arg0) {
+                if (!panel_reportesConsultar.isVisible()) {
+                    Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu2, btn_reportesConsultar);
+                }
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+            }
+        });
+    }
+
+    private void prepareMostrarPanelReportesConsultar() {
+        panel_reportesConsultar = new JPanel();
+        panel_reportesConsultar.setLayout(new GridLayout(0, 1));
+        panel_reportesConsultar.setOpaque(false);
+
+        btn_repConsDetalleMovimientos = new Boton(NombreImagenes.imBPorDefectoMenu, NombreImagenes.imBPorDefectoMenu2, "Detalle de Movimientos");
+        btn_repConsDetalleMovimientos.textoParaMenuSegundoNivel();
+        panel_reportesConsultar.add(btn_repConsDetalleMovimientos);
+
+        this.add(panel_reportesConsultar);
+        panel_reportesConsultar.setVisible(false);
+        panel_reportesConsultar.setSize(CargaImagenes.anchoBotonSegundoNivelMenu, panel_reportesConsultar.getComponentCount() * CargaImagenes.altoBotonSegundoNivelMenu + (CargaImagenes.altoBotonSegundoNivelMenu));
+    }
+
+    private void accionBotonesPanelReportesConsultar() {
+        btn_repConsDetalleMovimientos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Configuracion.setFrameAnterior(frame);
+                new GUIReporteMovimientosInterno(usuario);
+                frame.setVisible(false);
+            }
+        });
+        btn_repConsDetalleMovimientos.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                accionesKeyLIstenerConFoco(btn_repConsDetalleMovimientos, btn_reportesConsultar, panel_BotonReportes, panel_reportesConsultar, e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+        });
     }
 
     /**
@@ -1537,10 +1583,10 @@ public class GUIMenu extends ClaseGeneral {
             panel_trasaccionesConsig.setVisible(false);
 //            estadoInicialPanelTransaccionesPagos();
         }
-//        if (panel_reportesListadoAlumnos.isVisible()) {
-//            panel_reportesListadoAlumnos.setVisible(false);
-////            estadoInicialPanelReporteListadoAlumnos();
-//        }
+        if (panel_reportesConsultar.isVisible()) {
+            panel_reportesConsultar.setVisible(false);
+//            estadoInicialPanelReporteConsultar();
+        }
         if (panel_configuracionUsuarios.isVisible()) {
             panel_configuracionUsuarios.setVisible(false);
 //            estadoInicialPanelConfiguracionUsuarios();
@@ -1616,7 +1662,7 @@ public class GUIMenu extends ClaseGeneral {
      * configuración
      */
     private void estadoInicialPanelReporte() {
-//        Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesListadoAlumnos);
+        Imagenes.imagenBoton(NombreImagenes.imBPorDefectoMenu, btn_reportesConsultar);
     }
 
     /**

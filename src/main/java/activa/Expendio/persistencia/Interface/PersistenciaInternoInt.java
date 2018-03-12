@@ -37,5 +37,7 @@ public interface PersistenciaInternoInt {
     
     public Interno consultarPorNui(String Nui);
     
+    public Interno consultarPorId(Long id);
+    
 
 }

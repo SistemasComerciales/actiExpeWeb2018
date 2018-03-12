@@ -10,45 +10,44 @@ package activa.Expendio.modelo;
  * @author Administrador
  */
 public class EstadoInterno {
-    
-    private long saldoDiarioDisponible;
-    private long saldoMensualDisponible;
+
+    private double saldoDiarioDisponible;
+    private double saldoMensualDisponible;
     private String td;
     private boolean estadoInterno;
 
-    
-    public EstadoInterno(long saldoDiarioDisponible, long saldoMensualDisponible, String td, boolean estadoInterno){
+    public EstadoInterno(double saldoDiarioDisponible, double saldoMensualDisponible, String td, boolean estadoInterno) {
         this.saldoDiarioDisponible = saldoDiarioDisponible;
         this.saldoMensualDisponible = saldoMensualDisponible;
         this.td = td;
         this.estadoInterno = estadoInterno;
     }
-    
+
     /**
      * @return the saldoDiarioDisponible
      */
-    public long getSaldoDiarioDisponible() {
+    public double getSaldoDiarioDisponible() {
         return saldoDiarioDisponible;
     }
 
     /**
      * @param saldoDiarioDisponible the saldoDiarioDisponible to set
      */
-    public void setSaldoDiarioDisponible(int saldoDiarioDisponible) {
+    public void setSaldoDiarioDisponible(double saldoDiarioDisponible) {
         this.saldoDiarioDisponible = saldoDiarioDisponible;
     }
 
     /**
      * @return the saldoMensualDisponible
      */
-    public long getSaldoMensualDisponible() {
+    public double getSaldoMensualDisponible() {
         return saldoMensualDisponible;
     }
 
     /**
      * @param saldoMensualDisponible the saldoMensualDisponible to set
      */
-    public void setsaldoMensualDisponible(int saldoMensualDisponible) {
+    public void setsaldoMensualDisponible(double saldoMensualDisponible) {
         this.saldoMensualDisponible = saldoMensualDisponible;
     }
 
@@ -79,8 +78,5 @@ public class EstadoInterno {
     public void setEstadoInterno(boolean estadoInterno) {
         this.estadoInterno = estadoInterno;
     }
-    
-    
-    
-    
+
 }

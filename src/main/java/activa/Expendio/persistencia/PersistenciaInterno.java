@@ -20,10 +20,10 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
     public PersistenciaInterno() {
         internos = new ArrayList<>();
         crearMock();
-        
+
     }
-    
-    public void crearMock(){
+
+    public void crearMock() {
         Interno interno = new Interno();
         interno.setAccionUsuario(DatosBaseDatos.accionUsuarioInsertar);
         interno.setDelito("ROBO");
@@ -43,7 +43,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
         interno.setSituacionJuridica("IMPUTADO");
         interno.setTd("302131");
         internos.add(interno);
-        
+
         Interno interno2 = new Interno();
         interno2.setAccionUsuario(DatosBaseDatos.accionUsuarioInsertar);
         interno2.setDelito("HOMICIDIO");
@@ -63,9 +63,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
         interno2.setSituacionJuridica("IMPUTADO");
         interno2.setTd("40963");
         internos.add(interno2);
-        
-        
-        
+
     }
 
     /**
@@ -267,7 +265,7 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
                 }
             }
         }
-        return null;       
+        return null;
     }
 
     @Override
@@ -275,6 +273,18 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
         for (int i = 0; i < internos.size(); i++) {
             if (!internos.get(i).isEliminado()) {
                 if (Nui.equals(internos.get(i).getNui())) {
+                    return internos.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Interno consultarPorId(Long id) {
+        for (int i = 0; i < internos.size(); i++) {
+            if (!internos.get(i).isEliminado()) {
+                if (id.equals(internos.get(i).getId())) {
                     return internos.get(i);
                 }
             }

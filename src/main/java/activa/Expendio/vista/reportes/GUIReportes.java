@@ -1,5 +1,6 @@
 package activa.Expendio.vista.reportes;
 
+import activa.Expendio.controllers.reportes.*;
 import activa.Expendio.modelo.*;
 import activa.Expendio.vista.*;
 import activa.Expendio.vista.utils.*;
@@ -18,10 +19,8 @@ public abstract class GUIReportes extends ClaseGeneral {
     protected JPanel panel_botones;
     protected Boton btn_salir;
 
-    // Utilitarios
-    protected int ANCHO_PANTALLA, ALTO_PANTALLA;
+    protected ReportesFinder reportFinder;
 
-//    protected ReportesFinder reportFinder;
     public GUIReportes(Usuario usuario) {
         super(usuario);
 
@@ -33,7 +32,7 @@ public abstract class GUIReportes extends ClaseGeneral {
         definaAccionesInformacion();
         definaAccionesBotones();
 
-        super.tituloFrame(0, ALTO_PANTALLA / 100 * 2, getNombreClase().toUpperCase(), ANCHO_PANTALLA, 50);
+        super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, getNombreClase().toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
     }
 
     /**
@@ -98,8 +97,8 @@ public abstract class GUIReportes extends ClaseGeneral {
      */
     protected void prepareElementosPanelInformacion() {// XXX Panel de Informacion
         panel_informacion = new JPanel();
-        panel_informacion.setLocation(ANCHO_PANTALLA / 45, ALTO_PANTALLA / 7 - (ALTO_PANTALLA / 7));
-        panel_informacion.setSize(ANCHO_PANTALLA, 4 * (ALTO_PANTALLA / 12) + (ALTO_PANTALLA / 10));
+        panel_informacion.setLocation(CargaImagenes.ANCHO_PANTALLA / 45, CargaImagenes.ALTO_PANTALLA / 7 - (CargaImagenes.ALTO_PANTALLA / 7));
+        panel_informacion.setSize(CargaImagenes.ANCHO_PANTALLA, 4 * (CargaImagenes.ALTO_PANTALLA / 12) + (CargaImagenes.ALTO_PANTALLA / 10));
         panel_informacion.setLayout(null);
         panel_informacion.setOpaque(false);
         this.add(panel_informacion);
@@ -113,9 +112,9 @@ public abstract class GUIReportes extends ClaseGeneral {
     protected void prepareElementosPanelBotones() {// XXX Panel de botones
         panel_botones = new JPanel();
 
-        int filas = (4 * (ALTO_PANTALLA / 18)) / 6;
-        panel_botones.setLocation(3 * ANCHO_PANTALLA / 12, 10 * filas);
-        panel_botones.setSize(5 * ANCHO_PANTALLA / 10, (ALTO_PANTALLA / 6) / 3);
+        int filas = (4 * (CargaImagenes.ALTO_PANTALLA / 18)) / 6;
+        panel_botones.setLocation(3 * CargaImagenes.ANCHO_PANTALLA / 12, 10 * filas);
+        panel_botones.setSize(5 * CargaImagenes.ANCHO_PANTALLA / 10, (CargaImagenes.ALTO_PANTALLA / 6) / 3);
 
         panel_botones.setLayout(new GridLayout(1, 0));
         panel_botones.setOpaque(false);
@@ -195,7 +194,7 @@ public abstract class GUIReportes extends ClaseGeneral {
 
     @Override
     public final void actualizarFrame() {
-//        reportFinder = new ReportesFinder(usuario);
+        reportFinder = new ReportesFinder(usuario);
 
         inicializarCampos();
         otrasInicializaciones();

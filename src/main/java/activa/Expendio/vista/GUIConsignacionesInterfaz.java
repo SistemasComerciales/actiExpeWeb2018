@@ -445,15 +445,16 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
      */
     private void asignarPresentacionAAplicacion() {
         consignacion.setNumeroTransaccion(txt_numeroTransaccion.getText());
-        consignacion.setFecha(new Date(Fecha.anio(txt_fecha.getText()), Fecha.mes(txt_fecha.getText()) - 1, Fecha.dia(txt_fecha.getText()) - 1));
+//        consignacion.setFecha(new Date(Fecha.anio(txt_fecha.getText()), Fecha.mes(txt_fecha.getText()) - 1, Fecha.dia(txt_fecha.getText()) - 1));
+        consignacion.setFecha(Fecha.getDate(txt_fecha.getText()));
         consignacion.setInterno(interno);
         consignacion.setConcepto(combo_concepto.getSelectedItem().toString());
         consignacion.setNumeroRecibo(txt_numeroRecibo.getText());
 //        System.out.println("Valor Antes: "+txt_valor.getText());
-        consignacion.setValor(Valor.convertirValorStringALong(Formatos.quitarFormatoValorString(txt_valor.getText())));
+        consignacion.setValor(Valor.convertirValorStringDouble(Formatos.quitarFormatoValorString(txt_valor.getText())));
 //        System.out.println("Valor: "+consignacion.getValor());
 
-        consignacion.setCajasEspeciales(Valor.convertirValorStringALong(txt_cajasEspeciales.getText()));
+        consignacion.setCajasEspeciales(Valor.convertirValorStringDouble(Formatos.quitarFormatoValorString(txt_cajasEspeciales.getText())));
         consignacion.setObservaciones(txt_observaciones.getText());
     }
 

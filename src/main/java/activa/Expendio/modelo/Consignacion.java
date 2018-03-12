@@ -16,8 +16,8 @@ public class Consignacion {
     private Interno interno;
     private String concepto;
     private String numeroRecibo;
-    private long valor;
-    private long cajasEspeciales;
+    private double valor;
+    private double cajasEspeciales;
     private String observaciones;
     private boolean eliminado;
     private String mensajeCampoObligatorio;
@@ -98,28 +98,28 @@ public class Consignacion {
     /**
      * @return the valor
      */
-    public long getValor() {
+    public double getValor() {
         return valor;
     }
 
     /**
      * @param valor the valor to set
      */
-    public void setValor(long valor) {
+    public void setValor(double valor) {
         this.valor = valor;
     }
 
     /**
      * @return the cajasEspeciales
      */
-    public long getCajasEspeciales() {
+    public double getCajasEspeciales() {
         return cajasEspeciales;
     }
 
     /**
      * @param cajasEspeciales the cajasEspeciales to set
      */
-    public void setCajasEspeciales(long cajasEspeciales) {
+    public void setCajasEspeciales(double cajasEspeciales) {
         this.cajasEspeciales = cajasEspeciales;
     }
 
