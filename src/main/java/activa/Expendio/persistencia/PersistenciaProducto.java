@@ -43,6 +43,25 @@ public class PersistenciaProducto implements PersistenciaProductoInt {
         producto.setId(1L);
         productos.add(producto);
         
+        Producto producto2 = new Producto();
+        producto2.setAccionUsuario("I");
+        producto2.setAfectaCupo(true);
+        producto2.setCodigo("T03");
+        producto2.setCodigoBarras("");
+        producto2.setControlExistencia(false);
+        producto2.setControlSerial(false);
+        producto2.setCreacion(new Timestamp(System.currentTimeMillis()));
+        producto2.setEliminado(false);
+        producto2.setEstado(true);
+        producto2.setGrupo(null);
+        producto2.setModificacion(new Timestamp(System.currentTimeMillis()));
+        producto2.setNombre("TARJETA RECARGA 3000");
+        producto2.setObservaciones("");
+        producto2.setPrecio10Porciento(false);
+        producto2.setPresentacion("RECARGA");
+        producto2.setId(1L);
+        productos.add(producto2);
+        
     }
     
     /**

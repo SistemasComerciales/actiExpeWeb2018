@@ -40,6 +40,25 @@ public class PersistenciaDocumentoFuente implements PersistenciaDocFuenteInt {
         docFuente.setNumero("");
         docFuente.setId(1L);
         listaDocumentoFuente.add(docFuente);
+        
+        DocumentoFuente docFuente2 = new DocumentoFuente();
+        docFuente2.setAccion("S");
+        docFuente2.setAccionUsuario("I");
+        docFuente2.setAplica("C");
+        docFuente2.setCodigo("PV");
+        docFuente2.setControlExistencia(false);
+        docFuente2.setCosteoInventario(false);
+        docFuente2.setCreacion(new Timestamp(System.currentTimeMillis()));
+        docFuente2.setDocBase(false);
+        docFuente2.setEliminado(false);
+        docFuente2.setEstado(true);
+        docFuente2.setListaPrecio(false);
+        docFuente2.setModificacion(new Timestamp(System.currentTimeMillis()));
+        docFuente2.setNombre("PUNTO DE VENTA EXPENDIO");
+        docFuente2.setNumera(true);
+        docFuente2.setNumero("");
+        docFuente2.setId(2L);
+        listaDocumentoFuente.add(docFuente2);
     }
     
     /**
