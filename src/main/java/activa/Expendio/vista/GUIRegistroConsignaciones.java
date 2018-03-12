@@ -2,11 +2,8 @@ package activa.Expendio.vista;
 
 import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
-import activa.Expendio.persistencia.Interface.*;
 import activa.Expendio.vista.utils.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
 import utils.*;
 
@@ -36,6 +33,9 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     // Botones
     private JPanel panel_botones;
     private Boton btn_registrar, btn_reporte, btn_otro, btn_borrar, btn_salir;
+    
+    
+    private Interno interno;
 
     // Utilitarios
     private static final String nombreClase = "Registro de Consignaciones y Traslados";
@@ -159,7 +159,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         lbl_concepto.alinearIzquierda();
         this.add(lbl_concepto);
 
-        combo_concepto = new CampoCombo<String>();
+        combo_concepto = new CampoCombo<String>(Concepto.CONCEPTOS);
         combo_concepto.setLocation(lbl_concepto.getX() + lbl_concepto.getWidth() + var, lbl_concepto.getY());
         combo_concepto.setSize(txt_nombre.getWidth(), txt_nombre.getHeight());
         this.add(combo_concepto);
@@ -336,6 +336,8 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
 
         btn_otro.setEnabled(false);
         btn_reporte.setEnabled(false);
+        
+        seleccionarInterno();
     }
 
     @Override
@@ -351,6 +353,17 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     @Override
     public void asignarPermisos() {
         //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     * Metodo encargado de asignar a la parte visual el interno
+     */
+    private void seleccionarInterno(){
+        interno = Servicios.internosController.internosRepository.getInternos().get(0);
+        txt_td.setText(interno.getTd());
+        txt_nombre.setText(interno.getPrimerApellido() + " "+ interno.getSegundoApellido() + " "+interno.getPrimerNombre() + " "+interno.getSegundoNombre());
+        txt_saldoActual.setText(Formatos.formatearValorDecimalesString(String.valueOf(interno.getSaldoMensualActualGastado()),DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        txt_estado.setText(interno.getEstadoLetras());
     }
 
 }

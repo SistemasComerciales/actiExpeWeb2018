@@ -19,6 +19,30 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
      */
     public PersistenciaInterno() {
         internos = new ArrayList<>();
+        crearMock();
+        
+    }
+    
+    public void crearMock(){
+        Interno interno = new Interno();
+        interno.setAccionUsuario(DatosBaseDatos.accionUsuarioInsertar);
+        interno.setDelito("ROBO");
+        interno.setEliminado(false);
+        interno.setEstado(true);
+        interno.setFechaIngreso(new Date(1181500200));
+        interno.setId(1L);
+        interno.setNacionalidad("COLOMBIA");
+        interno.setNui("10205556");
+        interno.setPrimerApellido("PRIETO");
+        interno.setPrimerNombre("ALEJANDRO");
+        interno.setSaldoDiarioActualGastado(0);
+        interno.setSaldoDisponible(0);
+        interno.setSaldoMensualActualGastado(0);
+        interno.setSegundoApellido("GUEVARA");
+        interno.setSegundoNombre("PABLO");
+        interno.setSituacionJuridica("IMPUTADO");
+        interno.setTd("302131");
+        internos.add(interno);
     }
 
     /**

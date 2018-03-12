@@ -328,49 +328,25 @@ public class Interno {
         }
     }
 
-    /**
-     * @return the saldoDiarioActualGastado
-     */
-    public long getSaldoDiarioActualGastado() {
-        return saldoDiarioActualGastado;
-    }
 
-    /**
-     * @param saldoDiarioActualGastado the saldoDiarioActual to set
-     */
-    public void setSaldoDiarioActual(long saldoDiarioActualGastado) {
-        this.saldoDiarioActualGastado = saldoDiarioActualGastado;
-    }
 
-    /**
-     * @return the saldoMensualActualDisponible
-     */
-    public long getSaldoMensualActualDisponible() {
-        return saldoMensualActualGastado;
-    }
-
-    /**
-     * @param saldoMensualActualDisponible the saldoMensualActual to set
-     */
-    public void setSaldoMensualActualDisponible(long saldoMensualActualDisponible) {
-        this.saldoMensualActualGastado= saldoMensualActualDisponible;
-    }
-
+    
+    
     /**
      * Metodo envargado de registrar un gasto
      * @param valor 
      */
     public void registrarGasto(long valor){
-        this.saldoDiarioActualGastado = this.saldoDiarioActualGastado + valor;
-        this.saldoMensualActualGastado = this.saldoMensualActualGastado + valor;
-        this.saldoDisponible = this.saldoDisponible - valor;
+        this.setSaldoDiarioActualGastado(this.getSaldoDiarioActualGastado() + valor);
+        this.setSaldoMensualActualGastado(this.getSaldoMensualActualGastado() + valor);
+        this.setSaldoDisponible(this.getSaldoDisponible() - valor);
     }
     /**
      * Metodo encargado de registrar un ingreso al interno
      * @param valor 
      */
     public void registrarIngreso(long valor){
-        this.saldoDisponible = this.saldoDisponible + valor;
+        this.setSaldoDisponible(this.getSaldoDisponible() + valor);
     }
     
     /**
@@ -381,19 +357,70 @@ public class Interno {
      * <b>false</b>: Si no cumplea las condiciones<br>
      */
     public boolean validarSaldoAGastar(long valor){
-        long valorDiarioValidar = this.saldoDiarioActualGastado + valor;
+        long valorDiarioValidar = this.getSaldoDiarioActualGastado() + valor;
         if(valorDiarioValidar>Saldos.saldoDiarioMaximo){
             return false;
         }
-        long valorMensualValidar = this.saldoMensualActualGastado + valor;
+        long valorMensualValidar = this.getSaldoMensualActualGastado() + valor;
         if(valorMensualValidar>Saldos.saldoMensualMaximo){
             return false;
         }
-        long valorDisponibleValidar = this.saldoDisponible - valor;
+        long valorDisponibleValidar = this.getSaldoDisponible() - valor;
         if(valorDisponibleValidar<0){
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the saldoDiarioActualGastado
+     */
+    public long getSaldoDiarioActualGastado() {
+        return saldoDiarioActualGastado;
+    }
+
+    /**
+     * @param saldoDiarioActualGastado the saldoDiarioActualGastado to set
+     */
+    public void setSaldoDiarioActualGastado(long saldoDiarioActualGastado) {
+        this.saldoDiarioActualGastado = saldoDiarioActualGastado;
+    }
+
+    /**
+     * @return the saldoMensualActualGastado
+     */
+    public long getSaldoMensualActualGastado() {
+        return saldoMensualActualGastado;
+    }
+
+    /**
+     * @param saldoMensualActualGastado the saldoMensualActualGastado to set
+     */
+    public void setSaldoMensualActualGastado(long saldoMensualActualGastado) {
+        this.saldoMensualActualGastado = saldoMensualActualGastado;
+    }
+
+    /**
+     * @return the saldoDisponible
+     */
+    public long getSaldoDisponible() {
+        return saldoDisponible;
+    }
+
+    /**
+     * @param saldoDisponible the saldoDisponible to set
+     */
+    public void setSaldoDisponible(long saldoDisponible) {
+        this.saldoDisponible = saldoDisponible;
+    }
+    
+    public String getEstadoLetras(){
+        if(this.estado){
+            return "ACTIVO";
+        }
+        else{
+            return "INACTIVO";
+        }
     }
     
 }
