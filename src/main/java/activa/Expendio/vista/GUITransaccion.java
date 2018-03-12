@@ -5,7 +5,9 @@
  */
 package activa.Expendio.vista;
 
+import activa.Expendio.modelo.Configuracion;
 import activa.Expendio.modelo.Usuario;
+import static activa.Expendio.vista.ClaseGeneral.cursorEspera;
 import activa.Expendio.vista.utils.Boton;
 import activa.Expendio.vista.utils.CajaDeTexto;
 import activa.Expendio.vista.utils.CajaDeTextoConFormato;
@@ -13,10 +15,12 @@ import activa.Expendio.vista.utils.CampoLabel;
 import activa.Expendio.vista.utils.Tabla;
 import activa.Expendio.vista.utils.TablaNoEditable;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-  import javax.swing.ListSelectionModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import utils.CargaImagenes;
@@ -77,6 +81,7 @@ public class GUITransaccion extends ClaseGeneral {
         prepararElementosRegistro2();
         preparaElementosBotones();
         preparaElementosBotones2();
+        accionBotones();
         super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, "".toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
 
     }  
@@ -712,6 +717,18 @@ public class GUITransaccion extends ClaseGeneral {
 
 	}
     
+        /**
+         * metodo que contiene la accion de los botones
+         */
+        private void accionBotones(){
+            btn_salir.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    accionBotonSalir();
+                }
+            });
+        }
+        
     @Override
     public void actualizarFrame() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -724,7 +741,7 @@ public class GUITransaccion extends ClaseGeneral {
 
     @Override
     public void asignarFoco() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        txt_codigo.grabFocus();
     }
 
     @Override
