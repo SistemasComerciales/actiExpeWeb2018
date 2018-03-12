@@ -32,6 +32,8 @@ public interface PersistenciaProductoInt {
     
     public Producto consultarPorCodigo(String codigo);
     
+    public Producto consultarPorNombre(String nombre);
+    
     public Producto consultarPorId(String id);
 
     public boolean existeID(Producto producto);

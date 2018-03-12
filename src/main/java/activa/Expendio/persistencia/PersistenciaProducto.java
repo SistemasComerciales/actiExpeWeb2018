@@ -185,4 +185,16 @@ public class PersistenciaProducto implements PersistenciaProductoInt {
         }
         return false;
     }
+
+    @Override
+    public Producto consultarPorNombre(String nombre) {
+        for (int i = 0; i < productos.size(); i++) {
+            if (!productos.get(i).isEliminado()) {
+                if (nombre.equals(productos.get(i).getNombre())) {
+                    return productos.get(i);
+                }
+            }
+        }
+        return null;
+    }
 }

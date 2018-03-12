@@ -180,4 +180,16 @@ public class PersistenciaBodega implements PersistenciaBodegaInt {
         return false;
     }
 
+    @Override
+    public Bodega consultarPorNombre(String nombre) {
+        for (int i = 0; i < bodegas.size(); i++) {
+            if (!bodegas.get(i).isEliminado()) {
+                if (nombre.equals(bodegas.get(i).getNombre())) {
+                    return bodegas.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
 }

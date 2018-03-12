@@ -234,4 +234,28 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
         }
         return false;
     }
+
+    @Override
+    public Interno consultarPorTd(String TD) {
+        for (int i = 0; i < internos.size(); i++) {
+            if (!internos.get(i).isEliminado()) {
+                if (TD.equals(internos.get(i).getTd())) {
+                    return internos.get(i);
+                }
+            }
+        }
+        return null;       
+    }
+
+    @Override
+    public Interno consultarPorNui(String Nui) {
+        for (int i = 0; i < internos.size(); i++) {
+            if (!internos.get(i).isEliminado()) {
+                if (Nui.equals(internos.get(i).getNui())) {
+                    return internos.get(i);
+                }
+            }
+        }
+        return null;
+    }
 }

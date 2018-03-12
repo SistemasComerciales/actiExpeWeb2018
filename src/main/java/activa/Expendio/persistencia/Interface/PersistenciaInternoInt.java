@@ -32,5 +32,9 @@ public interface PersistenciaInternoInt {
     public boolean existeTD(Interno interno);
 
     public boolean existeID(Interno interno);
+    
+    public Interno consultarPorTd(String TD);
+    
+    public Interno consultarPorNui(String Nui);
 
 }

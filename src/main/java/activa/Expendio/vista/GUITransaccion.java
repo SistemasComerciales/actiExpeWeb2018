@@ -5,18 +5,34 @@
  */
 package activa.Expendio.vista;
 
-import activa.Expendio.modelo.Configuracion;
+import activa.Expendio.controllers.Servicios;
+import activa.Expendio.modelo.Bodega;
+import activa.Expendio.modelo.DatosBaseDatos;
+import activa.Expendio.modelo.DocumentoFuente;
+import activa.Expendio.modelo.Interno;
+import activa.Expendio.modelo.Producto;
 import activa.Expendio.modelo.Usuario;
-import static activa.Expendio.vista.ClaseGeneral.cursorEspera;
+import activa.Expendio.persistencia.Interface.PersistenciaBodegaInt;
+import activa.Expendio.persistencia.Interface.PersistenciaDocFuenteInt;
+import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
+import activa.Expendio.persistencia.Interface.PersistenciaProductoInt;
+import activa.Expendio.persistencia.PersistenciaInterno;
 import activa.Expendio.vista.utils.Boton;
 import activa.Expendio.vista.utils.CajaDeTexto;
 import activa.Expendio.vista.utils.CajaDeTextoConFormato;
 import activa.Expendio.vista.utils.CampoLabel;
 import activa.Expendio.vista.utils.Tabla;
+import activa.Expendio.vista.utils.Tabla.MiRender;
 import activa.Expendio.vista.utils.TablaNoEditable;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,8 +40,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import utils.CargaImagenes;
+import utils.Filtro;
+import utils.Formatos;
 import utils.Imagenes;
 import utils.NombreImagenes;
+import utils.ValidacionCampos;
 
 /**
  *
@@ -35,8 +54,8 @@ public class GUITransaccion extends ClaseGeneral {
     
     public CampoLabel lbl_nombreDocFuente;
     
-    private CampoLabel lbl_documento , lbl_numero, lbl_fecha , lbl_nit, lbl_condiciones , lbl_nombre , lbl_nombreDin, lbl_direccion, lbl_direccionDin, lbl_ciudad , lbl_ciudadDin , lbl_telefono , lbl_telefonoDin , lbl_numDocumentoTercero;
-    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo, txt_idTipoRegimen ,txt_nombreTipoRegimen , txt_codigoTipoRegimen , txt_asumeReteIvaTipoRegimen,  txt_condiciones, txt_numDocumento,  txt_idVendedor, txt_vendedor, txt_llevaVendedor, txt_TipoClienteDocFuente , txt_descuentoDocFuente , txt_TipoDescuentoDOcFuente, txt_aplicaRetenciones, txt_aplicaIvaDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete, txt_ControlExistenciaProducto;
+    private CampoLabel lbl_documento , lbl_numero, lbl_fecha , lbl_nit, lbl_condiciones , lbl_nombre , lbl_nombreDin, lbl_direccion, lbl_direccionDin, lbl_ciudad , lbl_ciudadDin , lbl_telefono , lbl_telefonoDin ;
+    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo, txt_idTipoRegimen ,txt_nombreTipoRegimen , txt_codigoTipoRegimen , txt_asumeReteIvaTipoRegimen,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete, txt_ControlExistenciaProducto;
     private CajaDeTextoConFormato txt_fecha;
     
         ////////////panel REGISTRO2 MVTRANSACCION///////////
@@ -62,6 +81,37 @@ public class GUITransaccion extends ClaseGeneral {
     public JScrollPane scrollpanePrincipal;
     public String DatosTablaPrincipal[];
     public TableRowSorter<DefaultTableModel> trsFiltrotablaPrincipal;
+
+///////////////////PANEL PREPARA DOCUMENTO FUENTE///////////////////////
+        private JPanel panel_documentofuente;
+        private DefaultTableModel dtm_documentoFuente;
+        public JTable tabla_documentoFuente;
+        private JScrollPane scroll_documentoFuente;
+        private String datosDocumentoFuente[];
+        private TableRowSorter<DefaultTableModel> trsFiltro_DocumentoFuente;
+///////////////////PANEL PREPARA TERCEROS///////////////////////
+        private JPanel panelTablaTerceros;
+        private DefaultTableModel dtmTablaTerceros;
+        public JTable tablaTerceros;
+        private JScrollPane scrollPaneTablaTerceros;
+        private String datosTablaTerceros[];
+        private TableRowSorter<DefaultTableModel> trsFiltroTerceros;
+///////////////////PANEL PREPARA PRODUCTO///////////////////////
+        private JPanel panel_producto;
+        private DefaultTableModel dtmTablaProducto;
+        public JTable tablaProducto;
+        private JScrollPane scrollpaneProducto;
+        private String datosTablaProducto[];
+        private TableRowSorter<DefaultTableModel> trsFiltroProducto;
+///////////////////PANEL PREPARA BODEGA///////////////////////
+        private JPanel panel_bodega;
+        private DefaultTableModel dtmTablaBodega;
+        public JTable tablaBodega;
+        private JScrollPane scrollpaneBodega;
+        private String datosTablaBodega[];
+        private TableRowSorter<DefaultTableModel> trsFiltroBodega;
+        
+        
     
     public static int columnaCodigo =0;
     public static int columnaDescripcion =1;
@@ -81,7 +131,19 @@ public class GUITransaccion extends ClaseGeneral {
         prepararElementosRegistro2();
         preparaElementosBotones();
         preparaElementosBotones2();
+        preparaElementosDocumentosFuente();
+        prepareElementosTablaTerceros();
+        prepareElementosTablaProducto();
+          preparaElementosTablaBodega();
+          cargarBodegas();
+          cargarDatosDocFuente();
+          cargarTerceros();
+          cargarDatosProductos();
         accionBotones();
+        accionCajaTexto();
+        
+        
+        ocultarPaneles();
         super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, "".toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
 
     }  
@@ -716,7 +778,442 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_salir.setSize(anchoBotonA,altoBotonA);
 
 	}
+        
+        /**
+	 *  metodo que prepara la tabla de documentos fuente  
+	 */
+	public void preparaElementosDocumentosFuente() {
+
+		panel_documentofuente = new JPanel();
+		panel_documentofuente.setBounds(CargaImagenes.ANCHO_PANTALLA/40, (CargaImagenes.ALTO_PANTALLA/25)*17 , CargaImagenes.ANCHO_PANTALLA/ 2 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
+		panel_documentofuente.setLayout(null);
+		panel_documentofuente.setBorder(null);
+		panel_documentofuente.setOpaque(false);
+		this.add(panel_documentofuente);
+
+		
+
+		dtm_documentoFuente = new TablaNoEditable();
+		tabla_documentoFuente = new JTable(dtm_documentoFuente);
+		dtm_documentoFuente.addColumn("Id documento fuente");
+		dtm_documentoFuente.addColumn("Codigo");
+		dtm_documentoFuente.addColumn("Nombre");
+		dtm_documentoFuente.addColumn("Acción");
+		dtm_documentoFuente.addColumn("Aplica");
+
+
+		tabla_documentoFuente.setPreferredScrollableViewportSize(new Dimension(CargaImagenes.ANCHO_PANTALLA - 80,(CargaImagenes.ALTO_PANTALLA - (CargaImagenes.ALTO_PANTALLA / 6) - (CargaImagenes.ALTO_PANTALLA / 4)) - 80));
+		scroll_documentoFuente = new JScrollPane(tabla_documentoFuente);
+		panel_documentofuente.add(scroll_documentoFuente);
+		scroll_documentoFuente.setSize(panel_documentofuente.getWidth(), panel_documentofuente.getHeight());
+		scroll_documentoFuente.setLocation(0, 0);
+		tabla_documentoFuente.getTableHeader().setReorderingAllowed(false);
+
+		tabla_documentoFuente.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabla_documentoFuente.setDefaultRenderer(Object.class,new MiRender());
+		tabla_documentoFuente.setShowHorizontalLines(false);
+		tabla_documentoFuente.setBorder(null);
+		tabla_documentoFuente.setOpaque(false);
+		scroll_documentoFuente.setOpaque(false);
+		scroll_documentoFuente.getViewport().setOpaque(false);
+		scroll_documentoFuente.setBorder(null);
+                
+            tabla_documentoFuente.getColumnModel().getColumn(0).setMaxWidth(0);
+            tabla_documentoFuente.getColumnModel().getColumn(0).setMinWidth(0);
+            tabla_documentoFuente.getColumnModel().getColumn(0).setPreferredWidth(0);
+		
+	}
+        
+        	/**
+	 */
+	public void prepareElementosTablaTerceros(){
+
+		panelTablaTerceros=new JPanel();
+		panelTablaTerceros.setBorder(null);
+		panelTablaTerceros.setLayout(null);
+		panelTablaTerceros.setOpaque(false);
+		panelTablaTerceros.setBounds(CargaImagenes.ANCHO_PANTALLA/40,(CargaImagenes.ALTO_PANTALLA/25)*17, CargaImagenes.ANCHO_PANTALLA/ 2 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
+		this.add(panelTablaTerceros);
+		
+		dtmTablaTerceros= new TablaNoEditable();
+		tablaTerceros = new JTable(dtmTablaTerceros);
+		dtmTablaTerceros.addColumn("idTerceros");
+		dtmTablaTerceros.addColumn("Nombre");
+		dtmTablaTerceros.addColumn("TD");
+		dtmTablaTerceros.addColumn("NUI");
+		
+		
+		tablaTerceros.setPreferredScrollableViewportSize(new Dimension( CargaImagenes.ANCHO_PANTALLA - 80,(CargaImagenes.ALTO_PANTALLA - (CargaImagenes.ALTO_PANTALLA / 6) - (CargaImagenes.ALTO_PANTALLA / 4)) - 80));
+		scrollPaneTablaTerceros = new JScrollPane(tablaTerceros);
+		panelTablaTerceros.add(scrollPaneTablaTerceros);
+		scrollPaneTablaTerceros.setSize(panelTablaTerceros.getWidth(), panelTablaTerceros.getHeight());
+		scrollPaneTablaTerceros.setLocation(0, 0);
+
+		tablaTerceros.getTableHeader().setReorderingAllowed(false);
+		tablaTerceros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tablaTerceros.setDefaultRenderer(Object.class, new MiRender());
+		tablaTerceros.setShowHorizontalLines(false);
+		tablaTerceros.setBorder(null);
+		tablaTerceros.setOpaque(false);
+		scrollPaneTablaTerceros.setOpaque(false);
+		scrollPaneTablaTerceros.getViewport().setOpaque(false);
+		scrollPaneTablaTerceros.setBorder(null);
+		
+//      int columna=(ANCHO_PANTALLA/2-20)/2;
+      tablaTerceros.getColumnModel().getColumn(0).setMaxWidth(0);
+      tablaTerceros.getColumnModel().getColumn(0).setMinWidth(0);
+      tablaTerceros.getColumnModel().getColumn(0).setPreferredWidth(0);
+      tablaTerceros.getColumnModel().getColumn(1).setPreferredWidth(150);
+      tablaTerceros.getColumnModel().getColumn(2).setPreferredWidth(100);
+      tablaTerceros.getColumnModel().getColumn(2).setMaxWidth(100);
+      tablaTerceros.getColumnModel().getColumn(2).setMinWidth(100);
+      tablaTerceros.getColumnModel().getColumn(3).setPreferredWidth(85);
+      tablaTerceros.getColumnModel().getColumn(3).setMaxWidth(85);
+      tablaTerceros.getColumnModel().getColumn(3).setMinWidth(85);		
+	}
+        
+        	/**
+	 */
+	public void prepareElementosTablaProducto(){
+
+		panel_producto=new JPanel();
+		panel_producto.setBorder(null);
+		panel_producto.setLayout(null);
+		panel_producto.setOpaque(false);
+		panel_producto.setBounds(CargaImagenes.ANCHO_PANTALLA/40,(CargaImagenes.ALTO_PANTALLA/25)*17, CargaImagenes.ANCHO_PANTALLA/ 2 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
+		this.add(panel_producto);
+		
+		dtmTablaProducto= new TablaNoEditable();
+		tablaProducto = new JTable(dtmTablaProducto);
+		dtmTablaProducto.addColumn("IDPRODUCTO");
+		dtmTablaProducto.addColumn("Codigo");
+		dtmTablaProducto.addColumn("Nombre");
+		dtmTablaProducto.addColumn("Empaque");
+		dtmTablaProducto.addColumn("codigoBarras");
+
+		
+		tablaProducto.setPreferredScrollableViewportSize(new Dimension( CargaImagenes.ANCHO_PANTALLA - 80,(CargaImagenes.ALTO_PANTALLA - (CargaImagenes.ALTO_PANTALLA / 6) - (CargaImagenes.ALTO_PANTALLA / 4)) - 80));
+		scrollpaneProducto = new JScrollPane(tablaProducto);
+		panel_producto.add(scrollpaneProducto);
+		scrollpaneProducto.setSize(panel_producto.getWidth(), panel_producto.getHeight());
+		scrollpaneProducto.setLocation(0, 0);
+
+		tablaProducto.getTableHeader().setReorderingAllowed(false);
+		tablaProducto.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tablaProducto.setDefaultRenderer(Object.class, new MiRender());
+		tablaProducto.setShowHorizontalLines(false);
+		tablaProducto.setBorder(null);
+		tablaProducto.setOpaque(false);
+		scrollpaneProducto.setOpaque(false);
+		scrollpaneProducto.getViewport().setOpaque(false);
+		scrollpaneProducto.setBorder(null);
+		
+        int columna = panel_producto.getWidth()/6;
+        tablaProducto.getColumnModel().getColumn(0).setMaxWidth(0);
+        tablaProducto.getColumnModel().getColumn(0).setMinWidth(0);
+        tablaProducto.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
+        tablaProducto.getColumnModel().getColumn(1).setPreferredWidth(columna*2);
+        tablaProducto.getColumnModel().getColumn(1).setMaxWidth(columna*2);
+        tablaProducto.getColumnModel().getColumn(1).setMinWidth(columna);
+        
+        tablaProducto.getColumnModel().getColumn(2).setPreferredWidth(columna*4);
+        tablaProducto.getColumnModel().getColumn(2).setMaxWidth(columna*4);
+        tablaProducto.getColumnModel().getColumn(2).setMinWidth(columna*3);
+        
+        tablaProducto.getColumnModel().getColumn(3).setPreferredWidth(columna);
+        tablaProducto.getColumnModel().getColumn(3).setMaxWidth(columna);
+        tablaProducto.getColumnModel().getColumn(3).setMinWidth(columna);
+               
+        tablaProducto.getColumnModel().getColumn(4).setPreferredWidth(0);
+        tablaProducto.getColumnModel().getColumn(4).setMaxWidth(0);
+        tablaProducto.getColumnModel().getColumn(4).setMinWidth(0);		
+	}
+        
+        	/**
+	 * metodo que prepara la tabla de Bodega 
+	 */
+	public void preparaElementosTablaBodega() {
+
+		panel_bodega = new JPanel();
+		panel_bodega.setBounds(CargaImagenes.ANCHO_PANTALLA/40,(CargaImagenes.ALTO_PANTALLA/25)*17, CargaImagenes.ANCHO_PANTALLA/ 2 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
+		panel_bodega.setLayout(null);
+		panel_bodega.setBorder(null);
+		panel_bodega.setOpaque(false);
+		this.add(panel_bodega);
+
+		
+
+		dtmTablaBodega = new TablaNoEditable();
+		tablaBodega = new JTable(dtmTablaBodega);
+		dtmTablaBodega.addColumn("Id documento bodega");
+		dtmTablaBodega.addColumn("Codigo");
+		dtmTablaBodega.addColumn("Nombre");
+                dtmTablaBodega.addColumn("Estado");
+                
+		tablaBodega.setPreferredScrollableViewportSize(new Dimension(CargaImagenes.ANCHO_PANTALLA - 80,(CargaImagenes.ALTO_PANTALLA - (CargaImagenes.ALTO_PANTALLA / 6) - (CargaImagenes.ALTO_PANTALLA / 4)) - 80));
+		scrollpaneBodega = new JScrollPane(tablaBodega);
+		panel_bodega.add(scrollpaneBodega);
+		scrollpaneBodega.setSize(panel_bodega.getWidth(), panel_bodega.getHeight());
+		scrollpaneBodega.setLocation(0, 0);
+		tablaBodega.getTableHeader().setReorderingAllowed(false);
+
+		tablaBodega.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tablaBodega.setDefaultRenderer(Object.class,new MiRender());
+		tablaBodega.setShowHorizontalLines(false);
+		tablaBodega.setBorder(null);
+		tablaBodega.setOpaque(false);
+		scrollpaneBodega.setOpaque(false);
+		scrollpaneBodega.getViewport().setOpaque(false);
+		scrollpaneBodega.setBorder(null);
+		
+		
+                        int columna = panel_bodega.getWidth()/3;
+                tablaBodega.getColumnModel().getColumn(0).setMaxWidth(0);
+                tablaBodega.getColumnModel().getColumn(0).setMinWidth(0);
+                tablaBodega.getColumnModel().getColumn(0).setPreferredWidth(0);
+                tablaBodega.getColumnModel().getColumn(1).setPreferredWidth(columna);
+                tablaBodega.getColumnModel().getColumn(1).setMaxWidth(columna);
+                tablaBodega.getColumnModel().getColumn(1).setMinWidth(columna);
+                tablaBodega.getColumnModel().getColumn(2).setPreferredWidth(columna*2);
+                tablaBodega.getColumnModel().getColumn(2).setMaxWidth(columna*2);
+                tablaBodega.getColumnModel().getColumn(2).setMinWidth(columna*2);
+		
+	}
+        
+        /**
+         * metodo que carga las bodegas 
+         */
+        private void cargarBodegas(){
+            deshacerFiltroBodega();
+            Tabla.eliminarFilasTabla(dtmTablaBodega);
+
+            PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
+
+            ArrayList<Bodega> bodegas = persistencia.consultarTodos();
+
+            for (Bodega bodega : bodegas) {
+                String[] datosFila = new String[dtmTablaBodega.getColumnCount()];
+
+                datosFila[0] = String.valueOf(bodega.getId());
+
+                datosFila[1] = bodega.getCodigo();
+                datosFila[2] = bodega.getNombre();
+
+                boolean estado = bodega.getEstado();
+                String est;
+                if (estado) {
+                    est = DatosBaseDatos.estadoActivo;
+                } else {
+                    est = DatosBaseDatos.estadoInactivo;
+                }
+                datosFila[3] = est;
+
+                dtmTablaBodega.addRow(datosFila);
+            }
+        }
+        
+            private void cargarDatosDocFuente() {
+        deshacerFiltroDocFuente();
+        Tabla.eliminarFilasTabla(dtm_documentoFuente);
+
+        PersistenciaDocFuenteInt persistencia = Servicios.documentosController.documentosRepository;
+
+        ArrayList<DocumentoFuente> documentos = persistencia.consultarTodos();
+
+        for (DocumentoFuente doc : documentos) {
+            String[] datosFila = new String[dtm_documentoFuente.getColumnCount()];
+
+            datosFila[0] = String.valueOf(doc.getId());
+
+            datosFila[1] = doc.getCodigo();
+            datosFila[2] = doc.getNombre();
+
+            String accionInv = doc.getAccion();
+            switch (accionInv) {
+                case DatosBaseDatos.varEntradaBD:
+                    datosFila[3] = DatosBaseDatos.varEntrada;
+                    break;
+                case DatosBaseDatos.varSalidaBD:
+                    datosFila[3] = DatosBaseDatos.varSalida;
+                    break;
+                default:
+                    break;
+            }
+
+            String aplica = doc.getAplica();
+            switch (aplica) {
+                case DatosBaseDatos.varAplicaClienteBD:
+                    datosFila[4] = DatosBaseDatos.varAplicaCliente;
+                    break;
+                case DatosBaseDatos.varAplicaProveedorBD:
+                    datosFila[4] = DatosBaseDatos.varAplicaProveedor;
+                    break;
+                default:
+                    break;
+            }
+            dtm_documentoFuente.addRow(datosFila);
+        }
+    }
+            
+    private void cargarTerceros() {
+        deshacerFiltroTercero();
+        Tabla.eliminarFilasTabla(dtmTablaTerceros);
+
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
+
+        ArrayList<Interno> internos = persistencia.getNoEliminados();
+
+        for (Interno interno : internos) {
+            String[] datosFila = new String[dtmTablaTerceros.getColumnCount()];
+
+            datosFila[0] = String.valueOf(interno.getId());
+            datosFila[1] = interno.getPrimerApellido() + interno.getSegundoApellido() + interno.getPrimerNombre() + interno.getSegundoNombre() ;
+            datosFila[2] = interno.getTd();
+            datosFila[3] = interno.getNui();
+            dtmTablaTerceros.addRow(datosFila);
+        }
+    }
     
+        private void cargarDatosProductos() {
+        deshacerFiltroProducto();
+        Tabla.eliminarFilasTabla(dtmTablaProducto);
+
+        PersistenciaProductoInt persistencia = Servicios.productosController.productosRepository;
+
+        ArrayList<Producto> productos = persistencia.consultarTodos();
+
+        for (Producto producto : productos) {
+            String[] datosFila = new String[dtmTablaProducto.getColumnCount()];
+
+            datosFila[0] = String.valueOf(producto.getId());
+
+            datosFila[1] = producto.getCodigo();
+            datosFila[2] = producto.getNombre();
+            datosFila[3] = producto.getPresentacion();
+            datosFila[4] = producto.getCodigoBarras();
+
+            dtmTablaProducto.addRow(datosFila);
+        }
+    }
+        
+        	/**
+	 * metodo que limpia los campos del registro MV
+	 */
+	public void limpiarCamposRegistroMv(boolean limpiarCodigo){
+		txt_descripcionItem.setEnabled(false);
+		if (limpiarCodigo) {
+			txt_codigo.setText("");
+		}
+		txt_idCodigo.setText("");
+		txt_descripcion.setText("");
+		txt_empaque.setText("");
+		txt_bodega.setText("");
+		txt_idBodega.setText("");
+		txt_cantidad.setText("");
+		txt_ValorUnitario.setText("");
+		txt_valorTotal.setText("");
+		txt_descripcionItem.setText("");
+		lbl_costoProductoTotal.setText("");
+		tablaPrincipal.updateUI();
+	}
+        
+        	/**
+	 * metodo que limpia los campos enlazados al doc fuente
+	 */
+	public void limpiarValoresDocumentoFuente(){
+		txt_documento.setText("");
+		txt_documentoCierre.setText("");
+		txt_documentoAntiguo.setText("");
+		txt_idDocumentoFuente.setText("");
+		txt_numeracion.setText("");
+		txt_numero.setText("");
+		txt_numeroFijo.setText("");
+		lbl_nombreDocFuente.setText("");
+		txt_fecha.setEnabled(true);
+		
+	}
+        
+        /**
+         * 
+         */
+        private String validarDocumentoFuente(String parametro){
+            PersistenciaDocFuenteInt persistencia = Servicios.documentosController.documentosRepository;
+            
+            DocumentoFuente documento; 
+            
+            documento = persistencia.consultarPorCodigo(parametro);
+            if(documento == null){
+                documento = persistencia.consultarPorNombre(parametro);
+            }
+            if (documento == null ) {
+                return "NOEXISTE";
+            }else{
+                txt_documento.setText(documento.getCodigo());
+                txt_idDocumentoFuente.setText(documento.getId().toString());
+                lbl_nombreDocFuente.setText(documento.getNombre());
+                return "VALIDO";
+            }
+        }
+        
+        private String validarBodega(String parametro){
+            PersistenciaBodegaInt persistencia = Servicios.bodegasController.bodegasRepository;
+            
+            Bodega bodega; 
+            
+            bodega = persistencia.consultarPorCodigo(parametro);
+            if(bodega == null){
+                bodega = persistencia.consultarPorNombre(parametro);
+            }
+            if (bodega == null ) {
+                return "NOEXISTE";
+            }else{
+                txt_bodega.setText(bodega.getCodigo());
+                txt_idBodega.setText(bodega.getId().toString());
+                return "VALIDO";
+            }
+        }
+        
+        private String validarTercero(String parametro){
+            PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
+            
+            Interno interno; 
+            
+            interno = persistencia.consultarPorTd(parametro);
+            if(interno == null){
+                interno = persistencia.consultarPorNui(parametro);
+            }
+            if (interno == null ) {
+                return "NOEXISTE";
+            }else{
+                txt_nit.setText(interno.getTd());
+                txt_idTercero.setText(interno.getId().toString());
+                lbl_nombreDin.setText(interno.getPrimerApellido() +" "+ interno.getSegundoApellido() +" "+interno.getPrimerNombre() + " " + interno.getSegundoNombre() );
+                lbl_ciudadDin.setText(interno.getNacionalidad());
+                lbl_direccionDin.setText(Formatos.quitarFormatoValorString( interno.getSaldoDiarioActualGastado() +"" ) );
+                lbl_telefonoDin.setText(Formatos.quitarFormatoValorString( interno.getSaldoMensualActualGastado() +"" ) );
+                return "VALIDO";
+            }
+        }
+        
+        private String validarProducto(String parametro){
+            PersistenciaProductoInt persistencia = Servicios.productosController.productosRepository;
+            
+            Producto producto; 
+            
+            producto = persistencia.consultarPorCodigo(parametro);
+            if(producto == null){
+                producto = persistencia.consultarPorNombre(parametro);
+            }
+            if (producto == null ) {
+                return "NOEXISTE";
+            }else{
+                txt_bodega.setText(producto.getCodigo());
+                txt_idBodega.setText(producto.getId().toString());
+                return "VALIDO";
+            }
+        }
+        
         /**
          * metodo que contiene la accion de los botones
          */
@@ -727,6 +1224,444 @@ public class GUITransaccion extends ClaseGeneral {
                     accionBotonSalir();
                 }
             });
+        }
+        
+        /**
+         * 
+         */
+        private void accionCajaTexto(){
+            		txt_documento.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if(tabla_documentoFuente .getRowCount()>=1){
+						tabla_documentoFuente.grabFocus();
+						tabla_documentoFuente.getSelectionModel().setSelectionInterval(0, 0);
+					}
+					else{
+						txt_documento.setText("");
+						txt_idDocumentoFuente.setText("");
+						lbl_nombreDocFuente.setText("");
+						deshacerFiltroDocFuente();
+						JOptionPane.showOptionDialog(frame, "Error, el documento fuente no existe. Inténtelo de nuevo", "Error (3838)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+						txt_documento.grabFocus();
+					}
+				}else{
+					Filtro.filtroDosColumnas(txt_documento.getText().trim().toUpperCase(), trsFiltro_DocumentoFuente, 1, 2, dtm_documentoFuente, tabla_documentoFuente);
+				}
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+
+					lbl_nombreDocFuente.setText("");
+					txt_nit.setText("");
+					/////////pendiente 
+					txt_llevaBodegaDocFuente.setText("");
+					txt_idBodegaDocFuente.setText("");
+					txt_accionSobreInventario.setText("");
+					limpiarCamposRegistroMv( true);
+					txt_nit.setEnabled(false);
+					txt_ValorUnitario.setEnabled(true);
+					txt_listaPrecioDoc.setText("");
+					txt_interfaceDocFuente.setText("");
+					txt_cuentasPorCobrar.setText("");
+					txt_cuentasPorPagar.setText("");
+					txt_esAutoRete.setText("");
+					txt_fecha.setText("");
+					
+				}
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						if (txt_numero.isEnabled()) {
+							txt_fecha.grabFocus();
+						}
+					}
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+                            ValidacionCampos.asignarTeclasDireccion(txt_documento, null, txt_numero, null, null);
+			}
+		});
+                        
+                txt_documento.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(!txt_documento.getText().trim().isEmpty()){
+					if(txt_documento.getText().trim().equalsIgnoreCase(txt_documentoAntiguo.getText().trim())){
+					}else{
+					if(!tabla_documentoFuente.isRowSelected(tabla_documentoFuente.getSelectedRow())){
+                                            String valido = validarDocumentoFuente(txt_documento.getText());
+                                            if(valido.equalsIgnoreCase("NOEXISTE")){
+                                                    JOptionPane.showOptionDialog(frame, "Error, el documento fuente no existe o este usuario no tiene permiso para usarlo. Inténtelo de nuevo", "Error (5818)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                                    txt_documento.setText("");
+                                                    txt_idDocumentoFuente.setText("");
+                                                    lbl_nombreDocFuente.setText("");
+                                                    deshacerFiltroDocFuente();
+                                                    txt_documento.grabFocus();
+                                            }else if (valido.equalsIgnoreCase("VALIDO")){				
+//                                                        asignarNumeroConsecutivo();
+                                                        if(txt_numero.isEnabled()){
+                                                                txt_numero.grabFocus();
+                                                        }else{
+                                                                txt_fecha.grabFocus();
+
+                                                        }
+                                                        if (txt_llevaClienteFijo.getText().equals("S")) {
+//                                                                accionLblTotalYSubtotal();
+                                                        }
+                                                    }
+                                                }
+                                            }
+				}else{
+					limpiarValoresDocumentoFuente();
+					txt_numero.setEnabled(true);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				ocultarPaneles();
+				panel_documentofuente.setVisible(true);
+				if(!txt_documento.getText().trim().isEmpty()){
+					Filtro.filtroDosColumnas(txt_documento.getText().trim().toUpperCase(), trsFiltro_DocumentoFuente, 1, 2, dtm_documentoFuente, tabla_documentoFuente);
+				}
+				
+			}
+		});
+                
+                
+            	txt_nit.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					txt_condiciones.grabFocus();
+				}else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if(tablaTerceros.getRowCount()>=1){
+						tablaTerceros.grabFocus();
+						tablaTerceros.getSelectionModel().setSelectionInterval(0, 0);
+					}
+					else{
+						txt_nit.setText("");
+						txt_idTercero.setText("");
+						lbl_nombreDin.setText("");
+						lbl_direccionDin.setText("");
+						lbl_ciudadDin.setText("");
+						lbl_telefonoDin.setText("");
+						JOptionPane.showOptionDialog(frame, "Error, el Tercero no existe. Inténtelo de nuevo", "Error (5840)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+						txt_nit.grabFocus(); 
+					}
+				}else{
+					Filtro.filtroDosColumnas(txt_nit.getText().trim().toUpperCase(), trsFiltroTerceros, 1, 2, dtmTablaTerceros, tablaTerceros);
+				}
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					limpiarCamposRegistroMv(true);
+					txt_idTercero.setText("");
+					lbl_nombreDin.setText("");
+					lbl_direccionDin.setText("");
+					lbl_ciudadDin.setText("");
+					lbl_telefonoDin.setText("");
+					txt_idTipoRegimen.setText("");
+					txt_listaPrecioTercero.setText("");
+				}				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				ValidacionCampos.asignarTeclasDireccion(txt_nit, txt_numero, txt_condiciones , null, null);
+			}
+		});
+                
+                txt_nit.addFocusListener(new FocusListener() {
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                        if(!txt_nit.getText().trim().isEmpty()){
+                                if (txt_nit.getText().trim().equalsIgnoreCase(txt_nitAntiguo.getText().trim())) {
+                                }else{
+                                        if(!tablaTerceros.isRowSelected(tablaTerceros.getSelectedRow())){
+                                                String valido = validarTercero(txt_nit.getText().trim());				
+                                            if(valido.equalsIgnoreCase("NOEXISTE")){
+                                                JOptionPane.showOptionDialog(frame, "Error, el Tercero no existe. Inténtelo de nuevo", "Error (5820)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                                txt_nit.setText("");
+                                                txt_idTercero.setText("");
+                                                lbl_nombreDin.setText("");
+                                                lbl_direccionDin.setText("");
+                                                lbl_ciudadDin.setText("");
+                                                lbl_telefonoDin.setText("");
+                                                txt_fecha.grabFocus();
+                                                deshacerFiltroTercero();
+                                            }else if(valido.equalsIgnoreCase("ERROR2")) {
+                                                JOptionPane.showOptionDialog(frame, "Error, ha ocurrido un error . Inténtelo de nuevo", "Error (5821)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                                txt_nit.setText("");
+                                                txt_idTercero.setText("");
+                                                lbl_nombreDin.setText("");
+                                                lbl_direccionDin.setText("");
+                                                lbl_ciudadDin.setText("");
+                                                lbl_telefonoDin.setText("");
+                                                deshacerFiltroTercero();
+                                                        txt_fecha.grabFocus();
+                                            }else{
+                                                deshacerFiltroTercero();
+                                            }
+                                        }
+                                }
+                        }else{
+                            txt_nitAntiguo.setText("");
+                            txt_idTipoRegimen.setText("");
+                        }
+                }
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                        ocultarPaneles();
+                        panelTablaTerceros.setVisible(true);
+                        if(!txt_nit.getText().trim().isEmpty()){
+                                Filtro.filtroDosColumnas(txt_nit.getText().trim().toUpperCase(), trsFiltroTerceros, 1, 2, dtmTablaTerceros, tablaTerceros);
+                        }
+                }
+        });
+                
+            txt_bodega.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+                    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+
+                            if(!btn_cancelar.isVisible()){
+                                    if(tablaBodega.getRowCount()>=1){
+                                            tablaBodega.grabFocus();
+                                            tablaBodega.getSelectionModel().setSelectionInterval(0, 0);
+                                    }
+                                    else{
+                                            txt_idBodega.setText("");
+                                            txt_bodega.setText("");
+                                            deshacerFiltroProducto();
+                                            JOptionPane.showOptionDialog(frame, "Error, La bodega no existe. Inténtelo de nuevo", "Error (5844)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                            txt_fecha.grabFocus(); 
+                                    }
+                            }else{
+                                    if(tablaPrincipal.getRowCount()>=1){
+                                            tablaPrincipal.grabFocus();
+                                            tablaPrincipal.getSelectionModel().setSelectionInterval(0, 0);
+                                    }
+                            }
+
+
+                    }else{
+
+                            if(!btn_cancelar.isVisible()){
+                                    Filtro.filtroDosColumnas(txt_bodega.getText().trim().toUpperCase(), trsFiltroBodega, 1, 2, dtmTablaBodega, tablaBodega);					
+                            }else{					
+                                    Filtro.filtroUnaColumna(txt_bodega.getText().trim().toUpperCase(), trsFiltrotablaPrincipal, 4, dtmTablaPrincipal, tablaPrincipal);			
+                            }
+
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                            txt_idBodega.setText("");
+
+
+                    }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                    ValidacionCampos.asignarTeclasDireccion(txt_bodega, null, null, txt_cantidad, txt_codigo);
+
+            }
+        });
+            
+            txt_bodega.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                    if(!btn_cancelar.isVisible()){	
+                            if(!txt_bodega.getText().trim().isEmpty()){
+                                    String valido = validarBodega(txt_bodega.getText().trim());	
+                                    if(!tablaBodega.isRowSelected(tablaBodega.getSelectedRow())){
+                                        if(valido.equalsIgnoreCase("NOEXISTE")){
+                                                JOptionPane.showOptionDialog(frame, "Error, La bodega no existe. Inténtelo de nuevo", "Error (5835)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                                txt_idBodega.setText("");
+                                                txt_bodega.setText("");
+                                                deshacerFiltroBodega();
+                                                txt_codigo.grabFocus();
+                                        }else{	
+                                        }
+                                    }
+                            }else{
+                                    deshacerFiltroBodega();
+                                    txt_idBodega.setText("");
+                            }
+                    }else{	
+
+                    }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+              if(!btn_cancelar.isVisible()){
+                        ocultarPaneles();	
+                        panel_bodega.setVisible(true);
+                        if(!txt_bodega.getText().trim().isEmpty()){
+                                Filtro.filtroDosColumnas(txt_bodega.getText().trim().toUpperCase(), trsFiltroBodega, 1, 2, dtmTablaBodega, tablaBodega);					
+                        }
+                }else{
+                        if(!txt_bodega.getText().trim().isEmpty()){
+                                Filtro.filtroUnaColumna(txt_bodega.getText().trim().toUpperCase(), trsFiltrotablaPrincipal, 4, dtmTablaPrincipal, tablaPrincipal);
+                        }
+                    }
+                }
+            });
+            
+            txt_codigo.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                            if(!btn_cancelar.isVisible()){
+                                    if(tablaProducto.getRowCount()>=1){
+                                        tablaProducto.grabFocus();
+                                        tablaProducto.getSelectionModel().setSelectionInterval(0, 0);
+                                    }
+                                    else{
+                                        txt_idCodigo.setText("");
+                                        txt_codigo.setText("");
+                                        txt_descripcion.setText("");
+                                        txt_empaque.setText("");
+                                        deshacerFiltroProducto();
+                                        JOptionPane.showOptionDialog(frame, "Error, el Producto no existe. Inténtelo de nuevo", "Error (5843)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                        txt_fecha.grabFocus(); 
+                                    }
+                            }else{
+                                    if(tablaPrincipal.getRowCount()>=1){
+                                            tablaPrincipal.grabFocus();
+                                            tablaPrincipal.getSelectionModel().setSelectionInterval(0, 0);
+                                    }
+                            }
+                    }else{
+                            if(!btn_cancelar.isVisible()){
+                                    Filtro.filtroTresColumnasQueContenga(txt_codigo.getText().trim().toUpperCase(), trsFiltroProducto, 1, 2 , 5 ,  dtmTablaProducto, tablaProducto);
+//						Filtro.filtroDosColumnas(txt_codigo.getText().trim().toUpperCase(), trsFiltroProducto, 1, 2, dtmTablaProducto, tablaProducto);
+                            }else{
+                                    Filtro.filtroUnaColumna(txt_codigo.getText().trim().toUpperCase(), trsFiltrotablaPrincipal, 1, dtmTablaPrincipal, tablaPrincipal);
+                            }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                            txt_idCodigo.setText("");
+                            txt_descripcion.setText("");
+                            txt_empaque.setText("");
+                            txt_ValorUnitario.setText("");
+                            limpiarCamposRegistroMv(false);
+                    }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                    ValidacionCampos.asignarTeclasDireccion(txt_codigo, null, null, txt_bodega, txt_condiciones);
+            }
+    }); 
+        
+        
+        		txt_codigo.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+                            if(!btn_cancelar.isVisible()){
+                                    if(!txt_codigo.getText().trim().isEmpty()){
+                                            String valido = validarProducto(txt_codigo.getText().trim());	
+                                            if(!tablaProducto.isRowSelected(tablaProducto.getSelectedRow())){
+                                                    if(valido.equalsIgnoreCase("NOEXISTE")){
+                                                        JOptionPane.showOptionDialog(frame, "Error, el Producto	 no existe. Inténtelo de nuevo", "Error (5833)",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,null,"aceptar");
+                                                        txt_idCodigo.setText("");
+                                                        txt_codigo.setText("");
+                                                        txt_descripcion.setText("");
+                                                        txt_empaque.setText("");
+                                                        txt_descripcionItem.setEnabled(false);
+                                                        deshacerFiltroProducto();
+                                                        txt_fecha.grabFocus();								
+                                            }else if(valido.equalsIgnoreCase("VALIDO")){
+                                                            txt_descripcionItem.setEnabled(true);
+                                            }else{
+
+                                                    }
+                                            }
+                                    }else{
+                                            limpiarCamposRegistroMv(true);
+                                    }
+                            }else{	
+
+                            }
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (!btn_cancelar.isVisible()) {
+					ocultarPaneles();
+					panel_producto.setVisible(true);
+					if(!txt_codigo.getText().trim().isEmpty()){
+						Filtro.filtroDosColumnas(txt_codigo.getText().trim().toUpperCase(), trsFiltroProducto, 1, 2, dtmTablaProducto, tablaProducto);
+					}else{				
+					}
+				}else{
+					if(!txt_codigo.getText().trim().isEmpty()){
+						Filtro.filtroUnaColumna(txt_codigo.getText().trim().toUpperCase(), trsFiltrotablaPrincipal, 1, dtmTablaPrincipal, tablaPrincipal);
+					}
+				}
+			}
+		});        
+                
+        }
+    
+        
+        private void accionTablas(){
+            
+        }   
+        
+        private void deshacerFiltroBodega() {
+            Filtro.deshacerFiltro(trsFiltroBodega, dtmTablaBodega, tablaBodega);
+        }    
+        
+        private void deshacerFiltroProducto() {
+            Filtro.deshacerFiltro(trsFiltroProducto, dtmTablaProducto, tablaProducto);
+        }
+        
+        private void deshacerFiltroDocFuente() {
+            Filtro.deshacerFiltro(trsFiltro_DocumentoFuente, dtm_documentoFuente, tabla_documentoFuente);
+        }
+        
+        private void deshacerFiltroTercero() {
+            Filtro.deshacerFiltro(trsFiltroTerceros, dtmTablaTerceros, tablaTerceros);
+        }
+        
+        /**
+         * 
+         */
+        private void ocultarPaneles(){
+           panelTablaTerceros.setVisible(false);
+           panel_bodega.setVisible(false);
+           panel_documentofuente.setVisible(false);
+           panel_producto.setVisible(false);
         }
         
     @Override

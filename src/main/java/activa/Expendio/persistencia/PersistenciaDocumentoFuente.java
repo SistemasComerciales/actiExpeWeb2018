@@ -178,4 +178,16 @@ public class PersistenciaDocumentoFuente implements PersistenciaDocFuenteInt {
         return false;
     }
 
+    @Override
+    public DocumentoFuente consultarPorNombre(String nombre) {
+        for (int i = 0; i < listaDocumentoFuente.size(); i++) {
+            if (!listaDocumentoFuente.get(i).isEliminado()) {
+                if (nombre.equals(listaDocumentoFuente.get(i).getNombre())) {
+                    return listaDocumentoFuente.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
 }

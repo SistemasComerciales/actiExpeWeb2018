@@ -28,6 +28,8 @@ public interface PersistenciaBodegaInt {
     public Bodega consultarPorId(String id);
 
     public Bodega consultarPorCodigo(String codigo);
+    
+    public Bodega consultarPorNombre(String nombre);
 
     public boolean existeID(Bodega bodega);
 }

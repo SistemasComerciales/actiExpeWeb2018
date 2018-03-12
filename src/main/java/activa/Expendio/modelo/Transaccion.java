@@ -5,15 +5,18 @@
  */
 package activa.Expendio.modelo;
 
+import activa.Expendio.persistencia.Interface.PersistenciaTransaccionInt;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrador
  */
-public class Transaccion {
+@Service
+public class Transaccion implements PersistenciaTransaccionInt{
     private long id;
     private DocumentoFuente documento;
     private String numero;
@@ -166,6 +169,56 @@ public class Transaccion {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public ArrayList<Transaccion> getListaTransacciones() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setListaTransacciones(ArrayList<Transaccion> listaTransacciones) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Transaccion adicionar(Transaccion transaccion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Transaccion modificar(Transaccion transaccion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean validarExiste(Transaccion transaccion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Transaccion colsultarPorId(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Transaccion colsultarPorCodigo(String codigo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Transaccion adicionar(TransaccionItem transaccionItem, Transaccion transaccion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Transaccion modificar(TransaccionItem transaccionItem, Transaccion transaccion) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean validarExisteItem(Transaccion transaccion, TransaccionItem transaccionItem) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

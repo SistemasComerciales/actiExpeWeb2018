@@ -28,6 +28,8 @@ public interface PersistenciaDocFuenteInt {
     public DocumentoFuente consultarPorId(String id);
 
     public DocumentoFuente consultarPorCodigo(String codigo);
+    
+    public DocumentoFuente consultarPorNombre(String Nombre);
 
     public boolean existeID(DocumentoFuente documentoFuente);
 }
