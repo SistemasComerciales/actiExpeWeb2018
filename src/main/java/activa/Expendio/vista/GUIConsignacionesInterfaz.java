@@ -2,17 +2,13 @@ package activa.Expendio.vista;
 
 import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
-import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
-import static activa.Expendio.vista.ClaseGeneral.option;
+import static activa.Expendio.vista.ClaseGeneral.*;
+import activa.Expendio.vista.tablas.*;
 import activa.Expendio.vista.utils.*;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import utils.*;
 
 /**
@@ -50,11 +46,7 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
     public static final int limiteCaracteresTD = String.valueOf(Configuracion.codigoEstablecimiento).length() + 6;
 
     //Tabla Internos
-    protected JPanel panelTablaInternos;
-    private DefaultTableModel dtmTablaInternos;
-    private JTable tablaInternos;
-    private JScrollPane scrollPaneTablaInternos;
-    private TableRowSorter<DefaultTableModel> trsFiltroInternos;
+    protected GUITablaInternos tablaInternos;
 
     public GUIConsignacionesInterfaz(Usuario usuario) {
         super(usuario);
@@ -275,11 +267,12 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
 //        ValidacionCampos.asignarTeclasDireccion(txt_td, txt_fecha, combo_concepto, null, null);
         txt_td.addKeyListener(new KeyAdapter() {
             int fila = 0;
+
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_ENTER:
-                        fila = tablaInternos.getSelectedRow();
+                        fila = tablaInternos.tabla.getSelectedRow();
                 }
             }
 
@@ -287,32 +280,32 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
             public void keyReleased(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_DOWN:
-                        if (tablaInternos.getRowCount() > tablaInternos.getSelectedRow() + 1) {
-                            tablaInternos.setRowSelectionInterval(tablaInternos.getSelectedRow() + 1, tablaInternos.getSelectedRow() + 1);
-                            tablaInternos.scrollRectToVisible(new Rectangle(tablaInternos.getCellRect(tablaInternos.getSelectedRow(), 0, true)));
+                        if (tablaInternos.tabla.getRowCount() > tablaInternos.tabla.getSelectedRow() + 1) {
+                            tablaInternos.tabla.setRowSelectionInterval(tablaInternos.tabla.getSelectedRow() + 1, tablaInternos.tabla.getSelectedRow() + 1);
+                            tablaInternos.tabla.scrollRectToVisible(new Rectangle(tablaInternos.tabla.getCellRect(tablaInternos.tabla.getSelectedRow(), 0, true)));
                         }
                         break;
                     case KeyEvent.VK_UP:
-                        if (0 <= tablaInternos.getSelectedRow() - 1) {
-                            tablaInternos.setRowSelectionInterval(tablaInternos.getSelectedRow() - 1, tablaInternos.getSelectedRow() - 1);
-                            tablaInternos.scrollRectToVisible(new Rectangle(tablaInternos.getCellRect(tablaInternos.getSelectedRow(), 0, true)));
+                        if (0 <= tablaInternos.tabla.getSelectedRow() - 1) {
+                            tablaInternos.tabla.setRowSelectionInterval(tablaInternos.tabla.getSelectedRow() - 1, tablaInternos.tabla.getSelectedRow() - 1);
+                            tablaInternos.tabla.scrollRectToVisible(new Rectangle(tablaInternos.tabla.getCellRect(tablaInternos.tabla.getSelectedRow(), 0, true)));
                         }
                         break;
                     case KeyEvent.VK_ENTER:
-                        if (tablaInternos.getRowCount() >= 1) {
-                            tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
-                            seleccionarInterno((Interno) tablaInternos.getValueAt(fila, 3));
+                        if (tablaInternos.tabla.getRowCount() >= 1) {
+                            tablaInternos.tabla.getSelectionModel().setSelectionInterval(0, 0);
+                            seleccionarInterno((Interno) tablaInternos.tabla.getValueAt(fila, GUITablaInternos.columnaId));
                             combo_concepto.grabFocus();
                         } else {
-                            Filtro.deshacerFiltro(trsFiltroInternos, dtmTablaInternos, tablaInternos);
+                            tablaInternos.deshacerFiltro();
                             inicializarInterno();
                             combo_concepto.grabFocus();
                         }
                         break;
                     default:
-                        Filtro.filtroTresColumnasQueContenga(txt_td.getText().trim(), trsFiltroInternos, 0, 1, 2, dtmTablaInternos, tablaInternos);
-                        if (tablaInternos.getRowCount() >= 1) {
-                            tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
+                        tablaInternos.aplicarFiltro(txt_td);
+                        if (tablaInternos.tabla.getRowCount() >= 1) {
+                            tablaInternos.tabla.getSelectionModel().setSelectionInterval(0, 0);
                         }
                         break;
                 }
@@ -377,16 +370,13 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
         asignarPresentacionAAplicacion();
         if (!consignacion.validarDatosObligatorios()) {
             option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", consignacion.getMensajeCampoObligatorio(), "");
+        } else if (Servicios.consignacionesController.consignacionesRepository.adicionar(consignacion) != null) {
+            option.tipoMensaje(GUIJOption.mensajeInformacion, "", "Se ha insertado correctamente!", "");
+            consignacion.getInterno().registrarIngreso(consignacion.getValor());
+            actualizarFrame();
+            asignarFoco();
         } else {
-            if (Servicios.consignacionesController.consignacionesRepository.adicionar(consignacion) != null) {
-                option.tipoMensaje(GUIJOption.mensajeInformacion, "", "Se ha insertado correctamente!", "");
-                consignacion.getInterno().registrarIngreso(consignacion.getValor());
-                actualizarFrame();
-                asignarFoco();
-            } else {
-                option.tipoMensaje(GUIJOption.mensajeError, "", "Ha ocurrido un error y no se ha podido registrar la consignacion", "");
-            }
-
+            option.tipoMensaje(GUIJOption.mensajeError, "", "Ha ocurrido un error y no se ha podido registrar la consignacion", "");
         }
 
     }
@@ -404,7 +394,7 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
     }
 
     @Override
-    public abstract void actualizarFrame(); 
+    public abstract void actualizarFrame();
 
     @Override
     public void eliminarReferencia() {
@@ -439,7 +429,7 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
         txt_numeroTransaccion.setText(consignacion.getNumeroTransaccion());
         txt_fecha.setText(consignacion.getFechaString());
         this.interno = consignacion.getInterno();
-        if(interno!=null){
+        if (interno != null) {
             seleccionarInterno(consignacion.getInterno());
         }
         combo_concepto.setSelectedItem(consignacion.getConcepto());
@@ -447,7 +437,7 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
         txt_valor.setText(Formatos.formatearValorDecimalesString(String.valueOf(consignacion.getValor()), DatosGeneralesPrograma.cantidadDecimalesMoneda));
         txt_cajasEspeciales.setText(Formatos.formatearValorDecimalesString(String.valueOf(consignacion.getCajasEspeciales()), DatosGeneralesPrograma.cantidadDecimalesMoneda));
         txt_observaciones.setText(consignacion.getObservaciones());
-        
+
     }
 
     /**
@@ -468,73 +458,12 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
     }
 
     private void prepareElementosTablaInternos() {
-
-        panelTablaInternos = new JPanel();
-        panelTablaInternos.setOpaque(false);
-        panelTablaInternos.setBounds(CargaImagenes.ANCHO_PANTALLA / 40, (CargaImagenes.ALTO_PANTALLA / 25) * 12, 9 * CargaImagenes.ANCHO_PANTALLA / 20 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
-        this.add(panelTablaInternos);
-
-        dtmTablaInternos = new TablaNoEditable();
-        tablaInternos = new JTable(dtmTablaInternos);
-        dtmTablaInternos.addColumn("Nombre");
-        dtmTablaInternos.addColumn("TD");
-        dtmTablaInternos.addColumn("NUI");
-        dtmTablaInternos.addColumn("Interno");
-
-        tablaInternos.setPreferredScrollableViewportSize(new Dimension(panelTablaInternos.getWidth() - 25, panelTablaInternos.getHeight() - 50));
-        scrollPaneTablaInternos = new JScrollPane(tablaInternos);
-        panelTablaInternos.add(scrollPaneTablaInternos);
-        scrollPaneTablaInternos.setSize(panelTablaInternos.getWidth(), panelTablaInternos.getHeight());
-        scrollPaneTablaInternos.setLocation(0, 0);
-
-        tablaInternos.getTableHeader().setReorderingAllowed(false);
-        tablaInternos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tablaInternos.setDefaultRenderer(Object.class, new Tabla.MiRender());
-        tablaInternos.setShowHorizontalLines(false);
-        tablaInternos.setBorder(null);
-        tablaInternos.setOpaque(false);
-        scrollPaneTablaInternos.setOpaque(false);
-        scrollPaneTablaInternos.getViewport().setOpaque(false);
-        scrollPaneTablaInternos.setBorder(null);
-
-        int columna = (panelTablaInternos.getWidth()) / 6;
-
-        tablaInternos.getColumnModel().getColumn(0).setPreferredWidth(columna * 4);
-        tablaInternos.getColumnModel().getColumn(1).setPreferredWidth(columna * 1);
-        tablaInternos.getColumnModel().getColumn(2).setPreferredWidth(columna * 1);
-
-        tablaInternos.getColumnModel().getColumn(3).setMinWidth(0);
-        tablaInternos.getColumnModel().getColumn(3).setPreferredWidth(0);
-        tablaInternos.getColumnModel().getColumn(3).setMaxWidth(0);
-
+        tablaInternos = new GUITablaInternos(CargaImagenes.ANCHO_PANTALLA / 40, (CargaImagenes.ALTO_PANTALLA / 25) * 12, 9 * CargaImagenes.ANCHO_PANTALLA / 20 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
+        this.add(tablaInternos);
     }
 
     protected void cargarTerceros() {
-//        System.err.println("Date: "+new Date().getTime());
-        deshacerFiltroTercero();
-        Tabla.eliminarFilasTabla(dtmTablaInternos);
-
-        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
-
-        ArrayList<Interno> internos = persistencia.getNoEliminados();
-
-        for (Interno interno : internos) {
-            Object[] datosFila = new Object[dtmTablaInternos.getColumnCount()];
-
-            datosFila[0] = interno.getNombresCompletos();
-            datosFila[1] = interno.getTd();
-            datosFila[2] = interno.getNui();
-            datosFila[3] = interno;
-            dtmTablaInternos.addRow(datosFila);
-        }
-
-        if (tablaInternos.getRowCount() >= 1) {
-            tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
-        }
-    }
-
-    private void deshacerFiltroTercero() {
-        Filtro.deshacerFiltro(trsFiltroInternos, dtmTablaInternos, tablaInternos);
+        tablaInternos.cargarDatosBasicos2(usuario);
     }
 
     private void inicializarInterno() {
@@ -546,7 +475,7 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
     }
 
     private void accionTablaInterno() {
-        tablaInternos.addKeyListener(new KeyListener() {
+        tablaInternos.tabla.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent arg0) {
             }
@@ -558,22 +487,39 @@ public abstract class GUIConsignacionesInterfaz extends ClaseGeneral {
             @Override
             public void keyPressed(KeyEvent arg0) {
                 if (arg0.getKeyCode() == (KeyEvent.VK_F1) || arg0.getKeyCode() == (KeyEvent.VK_ENTER)) {
-                    if (tablaInternos.getRowCount() >= 1) {
-                        tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
-                        seleccionarInterno((Interno) tablaInternos.getValueAt(tablaInternos.getSelectedRow(), 3));
+                    if (tablaInternos.tabla.getRowCount() >= 1) {
+                        seleccionarInterno((Interno) tablaInternos.tabla.getValueAt(tablaInternos.tabla.getSelectedRow(), GUITablaInternos.columnaId));
                         combo_concepto.grabFocus();
                     } else {
-                        Filtro.deshacerFiltro(trsFiltroInternos, dtmTablaInternos, tablaInternos);
+                        tablaInternos.deshacerFiltro();
                         inicializarInterno();
                         combo_concepto.grabFocus();
                     }
                 }
             }
         });
+        tablaInternos.tabla.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+
+                if (e.isMetaDown()) {
+                    int fila = tablaInternos.tabla.getSelectedRow();
+
+                    if (fila != -1) {
+                        seleccionarInterno((Interno) tablaInternos.tabla.getValueAt(tablaInternos.tabla.getSelectedRow(), GUITablaInternos.columnaId));
+                        combo_concepto.grabFocus();
+                    } else {
+                        tablaInternos.deshacerFiltro();
+                        inicializarInterno();
+                        combo_concepto.grabFocus();
+                    }
+                }
+
+            }
+
+        });
     }
-    
-    
-    protected void deshabilitarCamposConsultar(){
+
+    protected void deshabilitarCamposConsultar() {
         txt_numeroTransaccion.setEnabled(false);
         txt_fecha.setEnabled(false);
         txt_td.setEnabled(false);

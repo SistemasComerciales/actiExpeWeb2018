@@ -16,7 +16,8 @@ public class GUITablaBodegas extends GUITabla {
 
     public static final int columnaCodigo = 0;
     public static final int columnaNombre = columnaCodigo + 1;
-    public static final int columnaId = columnaNombre + 1;
+    public static final int columnaEstado = columnaNombre + 1;
+    public static final int columnaId = columnaEstado + 1;
 
     public GUITablaBodegas(int posX, int posY, int anchoPanel, int altoPanel) {
         super(posX, posY, anchoPanel, altoPanel);
@@ -26,14 +27,16 @@ public class GUITablaBodegas extends GUITabla {
     public void adicionarColumnas() {
         dtm.addColumn("Código");
         dtm.addColumn("Nombre");
+        dtm.addColumn("Estado");
         dtm.addColumn("ID");
     }
 
     @Override
     public void cambiarTamanoColumnas() {
         int columna = (this.getWidth() - 25) / 3;
-        tabla.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna);
+        tabla.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna / 2);
         tabla.getColumnModel().getColumn(columnaNombre).setPreferredWidth(columna * 2);
+        tabla.getColumnModel().getColumn(columnaEstado).setPreferredWidth(columna / 2);
         tabla.getColumnModel().getColumn(columnaId).setMinWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setPreferredWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setMaxWidth(0);
@@ -47,6 +50,8 @@ public class GUITablaBodegas extends GUITabla {
     @Override
     public boolean cargarDatosBasicos(Usuario usuario) {
         boolean cargo = false;
+        deshacerFiltro();
+        Tabla.eliminarFilasTabla(dtm);
         ArrayList<Bodega> bodegas = Servicios.bodegasController.bodegasRepository.consultarActivosNoEliminados();
         if (bodegas != null && bodegas.size() > 0) {
             for (Bodega bodega : bodegas) {
@@ -54,6 +59,16 @@ public class GUITablaBodegas extends GUITabla {
 
                 datos[columnaCodigo] = bodega.getCodigo();
                 datos[columnaNombre] = bodega.getNombre();
+
+                boolean estado = bodega.getEstado();
+                String est;
+                if (estado) {
+                    est = DatosBaseDatos.estadoActivo;
+                } else {
+                    est = DatosBaseDatos.estadoInactivo;
+                }
+                datos[columnaEstado] = est;
+
                 datos[columnaId] = String.valueOf(bodega.getId());
 
                 dtm.addRow(datos);

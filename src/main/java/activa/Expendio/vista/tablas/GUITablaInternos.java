@@ -34,8 +34,8 @@ public class GUITablaInternos extends GUITabla {
     @Override
     public void cambiarTamanoColumnas() {
         int columna = (this.getWidth() - 25) / 3;
-        tabla.getColumnModel().getColumn(columnaTD).setPreferredWidth(columna);
-        tabla.getColumnModel().getColumn(columnaNUI).setPreferredWidth(columna);
+        tabla.getColumnModel().getColumn(columnaTD).setPreferredWidth(columna / 2);
+        tabla.getColumnModel().getColumn(columnaNUI).setPreferredWidth(columna / 2);
         tabla.getColumnModel().getColumn(columnaNombre).setPreferredWidth(columna * 2);
         tabla.getColumnModel().getColumn(columnaId).setMinWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setPreferredWidth(0);
@@ -50,6 +50,8 @@ public class GUITablaInternos extends GUITabla {
     @Override
     public boolean cargarDatosBasicos(Usuario usuario) {
         boolean cargo = false;
+        deshacerFiltro();
+        Tabla.eliminarFilasTabla(dtm);
         ArrayList<Interno> internos = Servicios.internosController.internosRepository.getNoEliminadosYActivos();
         if (internos != null && internos.size() > 0) {
             for (Interno interno : internos) {
@@ -69,6 +71,40 @@ public class GUITablaInternos extends GUITabla {
                 datos[columnaNombre] = nombre;
 
                 datos[columnaId] = String.valueOf(interno.getId());
+
+                dtm.addRow(datos);
+            }
+            cargo = true;
+        } else {
+//            ClaseGeneral.option.tipoMensaje(GUIJOption.mensajeAdvertencia, "(55)", "", ExpendioException.getMensajeErrorBaseDatos());
+            cargo = false;
+        }
+        return cargo;
+    }
+
+    public boolean cargarDatosBasicos2(Usuario usuario) {
+        boolean cargo = false;
+        deshacerFiltro();
+        Tabla.eliminarFilasTabla(dtm);
+        ArrayList<Interno> internos = Servicios.internosController.internosRepository.getNoEliminadosYActivos();
+        if (internos != null && internos.size() > 0) {
+            for (Interno interno : internos) {
+                Object[] datos = new Object[dtm.getColumnCount()];
+
+                datos[columnaTD] = interno.getTd();
+                datos[columnaNUI] = interno.getNui();
+
+                String primerApellido = interno.getPrimerApellido();
+                String segundoApellido = interno.getSegundoApellido();
+                String primerNombre = interno.getPrimerNombre();
+                String segundoNombre = interno.getSegundoNombre();
+                String nombre = primerApellido + " " + segundoApellido + " " + primerNombre;
+                if (segundoNombre != null && !segundoNombre.trim().isEmpty()) {
+                    nombre += " " + segundoNombre;
+                }
+                datos[columnaNombre] = nombre;
+
+                datos[columnaId] = interno;
 
                 dtm.addRow(datos);
             }

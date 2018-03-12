@@ -20,7 +20,9 @@ public class GUITablaProductos extends GUITabla {
 
     public static final int columnaCodigo = 0;
     public static final int columnaNombre = columnaCodigo + 1;
-    public static final int columnaId = columnaNombre + 1;
+    public static final int columnaEmpaque = columnaNombre + 1;
+    public static final int columnaCodigoBarras = columnaEmpaque + 1;
+    public static final int columnaId = columnaCodigoBarras + 1;
 
     public GUITablaProductos(int posX, int posY, int anchoPanel, int altoPanel) {
         super(posX, posY, anchoPanel, altoPanel);
@@ -30,14 +32,18 @@ public class GUITablaProductos extends GUITabla {
     public void adicionarColumnas() {
         dtm.addColumn("Código");
         dtm.addColumn("Nombre");
+        dtm.addColumn("Empaque");
+        dtm.addColumn("Cód. Barras");
         dtm.addColumn("ID");
     }
 
     @Override
     public void cambiarTamanoColumnas() {
         int columna = (this.getWidth() - 25) / 3;
-        tabla.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna);
-        tabla.getColumnModel().getColumn(columnaNombre).setPreferredWidth(columna * 2);
+        tabla.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna / 2);
+        tabla.getColumnModel().getColumn(columnaNombre).setPreferredWidth(columna);
+        tabla.getColumnModel().getColumn(columnaEmpaque).setPreferredWidth(columna / 2);
+        tabla.getColumnModel().getColumn(columnaCodigoBarras).setPreferredWidth(columna);
         tabla.getColumnModel().getColumn(columnaId).setMinWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setPreferredWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setMaxWidth(0);
@@ -51,6 +57,8 @@ public class GUITablaProductos extends GUITabla {
     @Override
     public boolean cargarDatosBasicos(Usuario usuario) {
         boolean cargo = false;
+        deshacerFiltro();
+        Tabla.eliminarFilasTabla(dtm);
         ArrayList<Producto> productos = Servicios.productosController.productosRepository.consultarActivosNoEliminados();
         if (productos != null && productos.size() > 0) {
             for (Producto producto : productos) {
@@ -58,6 +66,8 @@ public class GUITablaProductos extends GUITabla {
 
                 datos[columnaCodigo] = producto.getCodigo();
                 datos[columnaNombre] = producto.getNombre();
+                datos[columnaEmpaque] = producto.getPresentacion();
+                datos[columnaCodigoBarras] = producto.getCodigoBarras();
                 datos[columnaId] = String.valueOf(producto.getId());
 
                 dtm.addRow(datos);

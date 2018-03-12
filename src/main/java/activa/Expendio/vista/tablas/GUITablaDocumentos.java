@@ -16,7 +16,9 @@ public class GUITablaDocumentos extends GUITabla {
 
     public static final int columnaCodigo = 0;
     public static final int columnaNombre = columnaCodigo + 1;
-    public static final int columnaId = columnaNombre + 1;
+    public static final int columnaAccion = columnaNombre + 1;
+    public static final int columnaAplica = columnaAccion + 1;
+    public static final int columnaId = columnaAplica + 1;
 
     public GUITablaDocumentos(int posX, int posY, int anchoPanel, int altoPanel) {
         super(posX, posY, anchoPanel, altoPanel);
@@ -26,14 +28,18 @@ public class GUITablaDocumentos extends GUITabla {
     public void adicionarColumnas() {
         dtm.addColumn("Código");
         dtm.addColumn("Nombre");
+        dtm.addColumn("Acción");
+        dtm.addColumn("Aplica");
         dtm.addColumn("ID");
     }
 
     @Override
     public void cambiarTamanoColumnas() {
         int columna = (this.getWidth() - 25) / 3;
-        tabla.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna);
-        tabla.getColumnModel().getColumn(columnaNombre).setPreferredWidth(columna * 2);
+        tabla.getColumnModel().getColumn(columnaCodigo).setPreferredWidth(columna / 2);
+        tabla.getColumnModel().getColumn(columnaNombre).setPreferredWidth(columna * 3 / 2);
+        tabla.getColumnModel().getColumn(columnaAccion).setPreferredWidth(columna / 2);
+        tabla.getColumnModel().getColumn(columnaAplica).setPreferredWidth(columna / 2);
         tabla.getColumnModel().getColumn(columnaId).setMinWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setPreferredWidth(0);
         tabla.getColumnModel().getColumn(columnaId).setMaxWidth(0);
@@ -47,6 +53,8 @@ public class GUITablaDocumentos extends GUITabla {
     @Override
     public boolean cargarDatosBasicos(Usuario usuario) {
         boolean cargo = false;
+        deshacerFiltro();
+        Tabla.eliminarFilasTabla(dtm);
         ArrayList<DocumentoFuente> documentos = Servicios.documentosController.documentosRepository.consultarActivosNoEliminados();
         if (documentos != null && documentos.size() > 0) {
             for (DocumentoFuente documento : documentos) {
@@ -54,6 +62,31 @@ public class GUITablaDocumentos extends GUITabla {
 
                 datos[columnaCodigo] = documento.getCodigo();
                 datos[columnaNombre] = documento.getNombre();
+
+                String accionInv = documento.getAccion();
+                switch (accionInv) {
+                    case DatosBaseDatos.varEntradaBD:
+                        datos[columnaAccion] = DatosBaseDatos.varEntrada;
+                        break;
+                    case DatosBaseDatos.varSalidaBD:
+                        datos[columnaAccion] = DatosBaseDatos.varSalida;
+                        break;
+                    default:
+                        break;
+                }
+
+                String aplica = documento.getAplica();
+                switch (aplica) {
+                    case DatosBaseDatos.varAplicaClienteBD:
+                        datos[columnaAplica] = DatosBaseDatos.varAplicaCliente;
+                        break;
+                    case DatosBaseDatos.varAplicaProveedorBD:
+                        datos[columnaAplica] = DatosBaseDatos.varAplicaProveedor;
+                        break;
+                    default:
+                        break;
+                }
+
                 datos[columnaId] = String.valueOf(documento.getId());
 
                 dtm.addRow(datos);
