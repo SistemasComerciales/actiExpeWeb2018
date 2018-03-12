@@ -295,8 +295,8 @@ public class GUITransaccionConsultarSeleccionar extends ClaseGeneral {
      * @param consignacion
      */
     private void seleccionarTransaccion(Transaccion transaccion) {
-//        new TransaccionConsultar(usuario, transaccion);
-//        frame.setVisible(false);
+        new GUITransaccionConsultar(usuario, transaccion);
+        frame.setVisible(false);
     }
 
     private void accionBotonAceptar() {
