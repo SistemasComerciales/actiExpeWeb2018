@@ -7,16 +7,18 @@ package activa.Expendio.vista;
 
 import activa.Expendio.controllers.Servicios;
 import activa.Expendio.modelo.Bodega;
+import activa.Expendio.modelo.Configuracion;
 import activa.Expendio.modelo.DatosBaseDatos;
 import activa.Expendio.modelo.DocumentoFuente;
 import activa.Expendio.modelo.Interno;
 import activa.Expendio.modelo.Producto;
+import activa.Expendio.modelo.Transaccion;
 import activa.Expendio.modelo.Usuario;
 import activa.Expendio.persistencia.Interface.PersistenciaBodegaInt;
 import activa.Expendio.persistencia.Interface.PersistenciaDocFuenteInt;
 import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
 import activa.Expendio.persistencia.Interface.PersistenciaProductoInt;
-import activa.Expendio.persistencia.PersistenciaInterno;
+import static activa.Expendio.vista.ClaseGeneral.option;
 import activa.Expendio.vista.utils.Boton;
 import activa.Expendio.vista.utils.CajaDeTexto;
 import activa.Expendio.vista.utils.CajaDeTextoConFormato;
@@ -44,6 +46,7 @@ import utils.Filtro;
 import utils.Formatos;
 import utils.Imagenes;
 import utils.NombreImagenes;
+import utils.NumeroConsecutivo;
 import utils.ValidacionCampos;
 
 /**
@@ -55,7 +58,7 @@ public class GUITransaccion extends ClaseGeneral {
     public CampoLabel lbl_nombreDocFuente;
     
     private CampoLabel lbl_documento , lbl_numero, lbl_fecha , lbl_nit, lbl_condiciones , lbl_nombre , lbl_nombreDin, lbl_direccion, lbl_direccionDin, lbl_ciudad , lbl_ciudadDin , lbl_telefono , lbl_telefonoDin ;
-    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo, txt_idTipoRegimen ,txt_nombreTipoRegimen , txt_codigoTipoRegimen , txt_asumeReteIvaTipoRegimen,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete, txt_ControlExistenciaProducto;
+    private CajaDeTexto txt_fechaAntigua, txt_idDocumentoFuente, txt_documento, txt_documentoAntiguo, txt_numeracion, txt_numeroFijo ,txt_documentoCierre, txt_numero, txt_estado ,  txt_idTercero, txt_nit ,txt_nitAntiguo,  txt_condiciones, txt_TipoClienteDocFuente, txt_llevaBodegaDocFuente, txt_idBodegaDocFuente, txt_accionSobreInventario, txt_costeKardex, txt_interfaceDocFuente, txt_llevaClienteFijo, txt_listaPrecioDoc, txt_listaPrecioTercero , txt_ControlExistenciaDocFuente, txt_preCostoDocFuente,txt_cuentasPorCobrar, txt_cuentasPorPagar, txt_idTransaccionOriginal, txt_esAutoRete, txt_ControlExistenciaProducto;
     private CajaDeTextoConFormato txt_fecha;
     
         ////////////panel REGISTRO2 MVTRANSACCION///////////
@@ -1305,16 +1308,14 @@ public class GUITransaccion extends ClaseGeneral {
                                                     deshacerFiltroDocFuente();
                                                     txt_documento.grabFocus();
                                             }else if (valido.equalsIgnoreCase("VALIDO")){				
-//                                                        asignarNumeroConsecutivo();
+                                                        asignarNumeroConsecutivo();
                                                         if(txt_numero.isEnabled()){
                                                                 txt_numero.grabFocus();
                                                         }else{
                                                                 txt_fecha.grabFocus();
 
                                                         }
-                                                        if (txt_llevaClienteFijo.getText().equals("S")) {
 //                                                                accionLblTotalYSubtotal();
-                                                        }
                                                     }
                                                 }
                                             }
@@ -1372,7 +1373,6 @@ public class GUITransaccion extends ClaseGeneral {
 					lbl_direccionDin.setText("");
 					lbl_ciudadDin.setText("");
 					lbl_telefonoDin.setText("");
-					txt_idTipoRegimen.setText("");
 					txt_listaPrecioTercero.setText("");
 				}				
 			}
@@ -1419,7 +1419,6 @@ public class GUITransaccion extends ClaseGeneral {
                                 }
                         }else{
                             txt_nitAntiguo.setText("");
-                            txt_idTipoRegimen.setText("");
                         }
                 }
 
@@ -1662,6 +1661,27 @@ public class GUITransaccion extends ClaseGeneral {
            panel_bodega.setVisible(false);
            panel_documentofuente.setVisible(false);
            panel_producto.setVisible(false);
+        }
+        
+        private final void asignarNumeroConsecutivo() {
+            String ultimoNumero = Transaccion.traerUltimoNumerotransaccion(usuario);
+            if (ultimoNumero.equals("ERROR")) {
+                option.tipoMensaje(GUIJOption.mensajeAdvertencia, "141", "No se ha podido traer el último número de la base de datos.", "Inténtelo de nuevo.");
+            } else {
+                ultimoNumero = NumeroConsecutivo.numeroConsecutivoPrefijo(String.valueOf(Configuracion.codigoEstablecimiento - 1).length(), ultimoNumero, usuario);
+                if (ultimoNumero.equalsIgnoreCase("")) {
+                    option.tipoMensaje(GUIJOption.mensajeAdvertencia, "142", "No se ha podido convertir la numeración.", "Inténtelo de nuevo.");
+                } else if (ultimoNumero.equalsIgnoreCase("NOHAYCUPO")) {
+                    option.tipoMensaje(GUIJOption.mensajeAdvertencia, "143", "No hay cupo en la numeración actual.", "Inténtelo de nuevo.");
+                } else {
+                    txt_numero.setText(ultimoNumero);
+//                    if (ultimoNumero.endsWith("000001")) {
+//                        txt_numero.setEnabled(true);
+//                    } else {
+//                        txt_numero.setEnabled(false);
+//                    }
+                }
+            }
         }
         
     @Override

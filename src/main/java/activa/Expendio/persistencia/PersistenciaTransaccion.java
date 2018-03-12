@@ -9,11 +9,13 @@ import activa.Expendio.modelo.Producto;
 import activa.Expendio.modelo.Transaccion;
 import activa.Expendio.modelo.TransaccionItem;
 import java.util.ArrayList;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Usuario
  */
+@Service
 public class PersistenciaTransaccion {
     private ArrayList<Transaccion> listaTransacciones;
     

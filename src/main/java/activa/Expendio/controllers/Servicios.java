@@ -18,6 +18,7 @@ public class Servicios {
     public static ProductosController productosController;
     public static DocumentosController documentosController;
     public static ConsignacionesController consignacionesController;
+    public static TransaccionController transaccionController;
 
     /**
      * Inicia todos los servicios REST.
@@ -34,7 +35,7 @@ public class Servicios {
         productosController = ac.getBean(ProductosController.class);
         documentosController = ac.getBean(DocumentosController.class);
         consignacionesController = ac.getBean(ConsignacionesController.class);
-        
+        transaccionController = ac.getBean(TransaccionController.class);
         consignacionesController.consignacionesRepository.crearMock();
     }
 }
