@@ -7,7 +7,9 @@ package activa.Expendio.persistencia.Interface;
 
 import activa.Expendio.modelo.Transaccion;
 import activa.Expendio.modelo.TransaccionItem;
+import activa.Expendio.modelo.Usuario;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -36,5 +38,7 @@ public interface PersistenciaTransaccionInt {
     public boolean validarExisteItem(Transaccion transaccion, TransaccionItem transaccionItem);
     
     public ArrayList<TransaccionItem> consultarTodoItems(Transaccion transaccion);
+    
+    public String insertarTransaccion(String td,  Date fecha, double valorUni, String condicion, Usuario usuario);
     
 }
