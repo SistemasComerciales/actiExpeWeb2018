@@ -11,13 +11,13 @@ package activa.Expendio.modelo;
  */
 public class EstadoInterno {
     
-    private int saldoDiarioDisponible;
-    private int saldoMensualDisponible;
+    private long saldoDiarioDisponible;
+    private long saldoMensualDisponible;
     private String td;
     private boolean estadoInterno;
 
     
-    public EstadoInterno(int saldoDiarioDisponible, int saldoMensualDisponible, String td, boolean estadoInterno){
+    public EstadoInterno(long saldoDiarioDisponible, long saldoMensualDisponible, String td, boolean estadoInterno){
         this.saldoDiarioDisponible = saldoDiarioDisponible;
         this.saldoMensualDisponible = saldoMensualDisponible;
         this.td = td;
@@ -27,7 +27,7 @@ public class EstadoInterno {
     /**
      * @return the saldoDiarioDisponible
      */
-    public int getSaldoDiarioDisponible() {
+    public long getSaldoDiarioDisponible() {
         return saldoDiarioDisponible;
     }
 
@@ -41,7 +41,7 @@ public class EstadoInterno {
     /**
      * @return the saldoMensualDisponible
      */
-    public int getSaldoMensualDisponible() {
+    public long getSaldoMensualDisponible() {
         return saldoMensualDisponible;
     }
 

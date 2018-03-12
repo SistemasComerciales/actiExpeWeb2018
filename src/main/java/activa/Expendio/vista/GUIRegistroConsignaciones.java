@@ -2,10 +2,16 @@ package activa.Expendio.vista;
 
 import activa.Expendio.controllers.*;
 import activa.Expendio.modelo.*;
+import activa.Expendio.persistencia.Interface.PersistenciaInternoInt;
 import activa.Expendio.vista.utils.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import utils.*;
 
 /**
@@ -34,8 +40,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     // Botones
     private JPanel panel_botones;
     private Boton btn_registrar, btn_reporte, btn_otro, btn_borrar, btn_salir;
-    
-    
+
     private Consignacion consignacion;
     private Interno interno;
 
@@ -43,6 +48,13 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     private static final String nombreClase = "Registro de Consignaciones y Traslados";
     public static final int limiteCaracteresNumero = 15;
     public static final int limiteCaracteresTD = String.valueOf(Configuracion.codigoEstablecimiento).length() + 6;
+
+    //Tabla Internos
+    private JPanel panelTablaInternos;
+    private DefaultTableModel dtmTablaInternos;
+    private JTable tablaInternos;
+    private JScrollPane scrollPaneTablaInternos;
+    private TableRowSorter<DefaultTableModel> trsFiltroInternos;
 
     public GUIRegistroConsignaciones(Usuario usuario) {
         super(usuario);
@@ -56,6 +68,8 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         definaAccionesMovimiento();
         definaAccionesBotones();
 
+        prepareElementosTablaInternos();
+        accionTablaInterno();
         inicializar();
         super.tituloFrame(0, CargaImagenes.ALTO_PANTALLA / 100 * 2, nombreClase.toUpperCase(), CargaImagenes.ANCHO_PANTALLA, 50);
     }
@@ -156,7 +170,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         int var = 10;
 
         lbl_concepto = new CampoLabel("Concepto:", CampoLabel.labelEstatico);
-        lbl_concepto.setLocation(txt_saldoActual.getX() + txt_saldoActual.getWidth() / 2, lbl_saldoActual.getY() + lbl_saldoActual.getHeight() + var * 6);
+        lbl_concepto.setLocation(txt_estado.getX() + txt_estado.getWidth() / 2, lbl_saldoActual.getY() + lbl_saldoActual.getHeight() + var * 6);
         lbl_concepto.setSize(lbl_td.getWidth() / 2, lbl_td.getHeight());
         lbl_concepto.alinearIzquierda();
         this.add(lbl_concepto);
@@ -221,7 +235,7 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
         int var = 10;
 
         btn_registrar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Grabar");
-        btn_registrar.setLocation(lbl_cajasEspeciales.getX() + lbl_cajasEspeciales.getWidth() / 2, txt_observaciones.getY() + txt_observaciones.getHeight() + var * 9);
+        btn_registrar.setLocation(lbl_observaciones.getX() + lbl_cajasEspeciales.getWidth() / 2, txt_observaciones.getY() + txt_observaciones.getHeight() + var * 9);
         btn_registrar.setSize(CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral);
         this.add(btn_registrar);
         btn_registrar.setToolTipText("Grabar");
@@ -234,8 +248,8 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
 
         btn_borrar = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Borrar");
         btn_borrar.setLocation(btn_otro.getX() + btn_otro.getWidth() + 5, btn_otro.getY());
-        btn_borrar.setSize(CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral);
-        this.add(btn_borrar);
+//        btn_borrar.setSize(CargaImagenes.anchoBotonGeneral, CargaImagenes.altoBotonGeneral);
+//        this.add(btn_borrar);
         btn_borrar.setToolTipText("Borrar");
 
         btn_reporte = new Boton(NombreImagenes.imBGeneral1, NombreImagenes.imBGeneral2, "Reporte");
@@ -254,15 +268,67 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     private void definaAccionesInformacion() {// Definiendo acciones
         ValidacionCampos.asignarTeclasDireccion(txt_numeroTransaccion, null, txt_fecha, null, null);
         ValidacionCampos.asignarTeclasDireccion(txt_fecha, txt_numeroTransaccion, txt_td, null, null);
-        ValidacionCampos.asignarTeclasDireccion(txt_td, txt_fecha, combo_concepto, null, null);
+//        ValidacionCampos.asignarTeclasDireccion(txt_td, txt_fecha, combo_concepto, null, null);
+        txt_td.addKeyListener(new KeyAdapter() {
+            int fila = 0;
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ENTER:
+                        fila = tablaInternos.getSelectedRow();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_DOWN:
+                        if (tablaInternos.getRowCount() > tablaInternos.getSelectedRow() + 1) {
+                            tablaInternos.setRowSelectionInterval(tablaInternos.getSelectedRow() + 1, tablaInternos.getSelectedRow() + 1);
+                            tablaInternos.scrollRectToVisible(new Rectangle(tablaInternos.getCellRect(tablaInternos.getSelectedRow(), 0, true)));
+                        }
+                        break;
+                    case KeyEvent.VK_UP:
+                        if (0 <= tablaInternos.getSelectedRow() - 1) {
+                            tablaInternos.setRowSelectionInterval(tablaInternos.getSelectedRow() - 1, tablaInternos.getSelectedRow() - 1);
+                            tablaInternos.scrollRectToVisible(new Rectangle(tablaInternos.getCellRect(tablaInternos.getSelectedRow(), 0, true)));
+                        }
+                        break;
+                    case KeyEvent.VK_ENTER:
+                        if (tablaInternos.getRowCount() >= 1) {
+                            tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
+                            seleccionarInterno((Interno) tablaInternos.getValueAt(fila, 3));
+                            combo_concepto.grabFocus();
+                        } else {
+                            Filtro.deshacerFiltro(trsFiltroInternos, dtmTablaInternos, tablaInternos);
+                            inicializarInterno();
+                            combo_concepto.grabFocus();
+                        }
+                        break;
+                    default:
+                        Filtro.filtroTresColumnasQueContenga(txt_td.getText().trim(), trsFiltroInternos, 0, 1, 2, dtmTablaInternos, tablaInternos);
+                        if (tablaInternos.getRowCount() >= 1) {
+                            tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     private void definaAccionesMovimiento() {
-        ValidacionCampos.asignarTeclasDireccion(combo_concepto, txt_td, txt_numeroRecibo, null, null);
+//        ValidacionCampos.asignarTeclasDireccion(combo_concepto, txt_td, txt_numeroRecibo, null, null);
         ValidacionCampos.asignarTeclasDireccion(txt_numeroRecibo, combo_concepto, txt_valor, null, null);
         ValidacionCampos.asignarTeclasDireccion(txt_valor, txt_numeroRecibo, txt_cajasEspeciales, null, null);
         ValidacionCampos.asignarTeclasDireccion(txt_cajasEspeciales, txt_valor, txt_observaciones, null, null);
         ValidacionCampos.asignarTeclasDireccion(txt_observaciones, txt_cajasEspeciales, btn_registrar, null, null);
+        ValidacionCampos.asignarTeclaEnter(txt_numeroTransaccion, txt_fecha);
+        ValidacionCampos.asignarTeclaEnter(txt_fecha, txt_td);
+        ValidacionCampos.asignarTeclaEnter(combo_concepto, txt_numeroRecibo);
+        ValidacionCampos.asignarTeclaEnter(txt_numeroRecibo, txt_valor);
+        ValidacionCampos.asignarTeclaEnter(txt_valor, txt_cajasEspeciales);
+        ValidacionCampos.asignarTeclaEnter(txt_cajasEspeciales, txt_observaciones);
+        ValidacionCampos.asignarTeclaEnter(txt_observaciones, btn_registrar);
     }
 
     private void definaAccionesBotones() {
@@ -305,22 +371,20 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     private void accionBotonRegistrar() {
         consignacion.setId(Servicios.consignacionesController.consignacionesRepository.traerSiguienteId());
         asignarPresentacionAAplicacion();
-        if(!consignacion.validarDatosObligatorios()){
-            option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", consignacion.getMensajeCampoObligatorio(), "");                
-        }
-        else{
-            if(Servicios.consignacionesController.consignacionesRepository.adicionar(consignacion)!=null){
+        if (!consignacion.validarDatosObligatorios()) {
+            option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", consignacion.getMensajeCampoObligatorio(), "");
+        } else {
+            if (Servicios.consignacionesController.consignacionesRepository.adicionar(consignacion) != null) {
                 option.tipoMensaje(GUIJOption.mensajeInformacion, "", "Se ha insertado correctamente!", "");
                 consignacion.getInterno().registrarIngreso(consignacion.getValor());
                 actualizarFrame();
+                asignarFoco();
+            } else {
+                option.tipoMensaje(GUIJOption.mensajeError, "", "Ha ocurrido un error y no se ha podido registrar la consignacion", "");
             }
-            else{
-                option.tipoMensaje(GUIJOption.mensajeError, "", "Ha ocurrido un error y no se ha podido registrar la consignacion", "");  
-            }
-            
-            
+
         }
-        
+
     }
 
     private void accionBotonOtro() {
@@ -355,11 +419,11 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
 
         btn_otro.setEnabled(false);
         btn_reporte.setEnabled(false);
-        
+
         consignacion = new Consignacion();
         consignacion.setNumeroTransaccion(Servicios.consignacionesController.consignacionesRepository.traerSiguienteNumeroTransaccion());
         consignacion.setFecha(new Date());
-        
+        cargarTerceros();
 //        System.out.println("Fecha: "+consignacion.getFecha());
         asignarAplicacionesAPresentacion();
 //        seleccionarInterno();
@@ -379,46 +443,146 @@ public class GUIRegistroConsignaciones extends ClaseGeneral {
     public void asignarPermisos() {
         //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * Metodo encargado de asignar a la parte visual el interno
      */
-    private void seleccionarInterno(){
-        Interno interno = Servicios.internosController.internosRepository.getInternos().get(0);
+    private void seleccionarInterno(Interno interno) {
+//        Interno interno = Servicios.internosController.internosRepository.getInternos().get(0);
         consignacion.setInterno(interno);
         txt_td.setText(interno.getTd());
-        txt_nombre.setText(interno.getPrimerApellido() + " "+ interno.getSegundoApellido() + " "+interno.getPrimerNombre() + " "+interno.getSegundoNombre());
-        txt_saldoActual.setText(Formatos.formatearValorDecimalesString(String.valueOf(interno.getSaldoDisponible()),DatosGeneralesPrograma.cantidadDecimalesMoneda));
+        txt_nombre.setText(interno.getPrimerApellido() + " " + interno.getSegundoApellido() + " " + interno.getPrimerNombre() + " " + interno.getSegundoNombre());
+        txt_saldoActual.setText(Formatos.formatearValorDecimalesString(String.valueOf(interno.getSaldoDisponible()), DatosGeneralesPrograma.cantidadDecimalesMoneda));
         txt_estado.setText(interno.getEstadoLetras());
-        
+
         this.interno = interno;
     }
-    
-    
-    private void asignarAplicacionesAPresentacion(){
+
+    private void asignarAplicacionesAPresentacion() {
         txt_numeroTransaccion.setText(consignacion.getNumeroTransaccion());
         txt_fecha.setText(consignacion.getFechaString());
-        seleccionarInterno();
+//        seleccionarInterno();
     }
-    
+
     /**
      * Metodo encargado de asignar la presentacion a la aplicacion
      */
-    private void asignarPresentacionAAplicacion(){
+    private void asignarPresentacionAAplicacion() {
         consignacion.setNumeroTransaccion(txt_numeroTransaccion.getText());
-        consignacion.setFecha(new Date(Fecha.anio(txt_fecha.getText()), Fecha.mes(txt_fecha.getText())-1, Fecha.dia(txt_fecha.getText())-1));
+        consignacion.setFecha(new Date(Fecha.anio(txt_fecha.getText()), Fecha.mes(txt_fecha.getText()) - 1, Fecha.dia(txt_fecha.getText()) - 1));
         consignacion.setInterno(interno);
         consignacion.setConcepto(combo_concepto.getSelectedItem().toString());
         consignacion.setNumeroRecibo(txt_numeroRecibo.getText());
-        System.out.println("Valor Antes: "+txt_valor.getText());
+//        System.out.println("Valor Antes: "+txt_valor.getText());
         consignacion.setValor(Valor.convertirValorStringALong(Formatos.quitarFormatoValorString(txt_valor.getText())));
-        System.out.println("Valor: "+consignacion.getValor());
-        
+//        System.out.println("Valor: "+consignacion.getValor());
+
         consignacion.setCajasEspeciales(Valor.convertirValorStringALong(txt_cajasEspeciales.getText()));
         consignacion.setObservaciones(txt_observaciones.getText());
     }
-    
-    
-    
+
+    private void prepareElementosTablaInternos() {
+
+        panelTablaInternos = new JPanel();
+        panelTablaInternos.setOpaque(false);
+        panelTablaInternos.setBounds(CargaImagenes.ANCHO_PANTALLA / 40, (CargaImagenes.ALTO_PANTALLA / 25) * 12, 9 * CargaImagenes.ANCHO_PANTALLA / 20 - (CargaImagenes.ANCHO_PANTALLA / 17), CargaImagenes.ALTO_PANTALLA / 4);
+        this.add(panelTablaInternos);
+
+        dtmTablaInternos = new TablaNoEditable();
+        tablaInternos = new JTable(dtmTablaInternos);
+        dtmTablaInternos.addColumn("Nombre");
+        dtmTablaInternos.addColumn("TD");
+        dtmTablaInternos.addColumn("NUI");
+        dtmTablaInternos.addColumn("Interno");
+
+        tablaInternos.setPreferredScrollableViewportSize(new Dimension(panelTablaInternos.getWidth() - 25, panelTablaInternos.getHeight() - 50));
+        scrollPaneTablaInternos = new JScrollPane(tablaInternos);
+        panelTablaInternos.add(scrollPaneTablaInternos);
+        scrollPaneTablaInternos.setSize(panelTablaInternos.getWidth(), panelTablaInternos.getHeight());
+        scrollPaneTablaInternos.setLocation(0, 0);
+
+        tablaInternos.getTableHeader().setReorderingAllowed(false);
+        tablaInternos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaInternos.setDefaultRenderer(Object.class, new Tabla.MiRender());
+        tablaInternos.setShowHorizontalLines(false);
+        tablaInternos.setBorder(null);
+        tablaInternos.setOpaque(false);
+        scrollPaneTablaInternos.setOpaque(false);
+        scrollPaneTablaInternos.getViewport().setOpaque(false);
+        scrollPaneTablaInternos.setBorder(null);
+
+        int columna = (panelTablaInternos.getWidth()) / 6;
+
+        tablaInternos.getColumnModel().getColumn(0).setPreferredWidth(columna * 4);
+        tablaInternos.getColumnModel().getColumn(1).setPreferredWidth(columna * 1);
+        tablaInternos.getColumnModel().getColumn(2).setPreferredWidth(columna * 1);
+
+        tablaInternos.getColumnModel().getColumn(3).setMinWidth(0);
+        tablaInternos.getColumnModel().getColumn(3).setPreferredWidth(0);
+        tablaInternos.getColumnModel().getColumn(3).setMaxWidth(0);
+
+    }
+
+    private void cargarTerceros() {
+        deshacerFiltroTercero();
+        Tabla.eliminarFilasTabla(dtmTablaInternos);
+
+        PersistenciaInternoInt persistencia = Servicios.internosController.internosRepository;
+
+        ArrayList<Interno> internos = persistencia.getNoEliminados();
+
+        for (Interno interno : internos) {
+            Object[] datosFila = new Object[dtmTablaInternos.getColumnCount()];
+
+            datosFila[0] = interno.getNombresCompletos();
+            datosFila[1] = interno.getTd();
+            datosFila[2] = interno.getNui();
+            datosFila[3] = interno;
+            dtmTablaInternos.addRow(datosFila);
+        }
+
+        if (tablaInternos.getRowCount() >= 1) {
+            tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
+        }
+    }
+
+    private void deshacerFiltroTercero() {
+        Filtro.deshacerFiltro(trsFiltroInternos, dtmTablaInternos, tablaInternos);
+    }
+
+    private void inicializarInterno() {
+        interno = null;
+        txt_td.setText("");
+        txt_nombre.setText("");
+        txt_saldoActual.setText("");
+        txt_estado.setText("");
+    }
+
+    private void accionTablaInterno() {
+        tablaInternos.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent arg0) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent arg0) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent arg0) {
+                if (arg0.getKeyCode() == (KeyEvent.VK_F1) || arg0.getKeyCode() == (KeyEvent.VK_ENTER)) {
+                    if (tablaInternos.getRowCount() >= 1) {
+                        tablaInternos.getSelectionModel().setSelectionInterval(0, 0);
+                        seleccionarInterno((Interno) tablaInternos.getValueAt(tablaInternos.getSelectedRow(), 3));
+                        combo_concepto.grabFocus();
+                    } else {
+                        Filtro.deshacerFiltro(trsFiltroInternos, dtmTablaInternos, tablaInternos);
+                        inicializarInterno();
+                        combo_concepto.grabFocus();
+                    }
+                }
+            }
+        });
+    }
 
 }

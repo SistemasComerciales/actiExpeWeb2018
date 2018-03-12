@@ -360,5 +360,16 @@ public class ValidacionCampos {
             }
         });
     }
+    
+        public static void asignarTeclaEnter(JComponent principal, JComponent siguiente) {
+        principal.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode()==(KeyEvent.VK_ENTER)){
+                    siguiente.grabFocus();
+                }
+            }
+        });
+    }
 
 }

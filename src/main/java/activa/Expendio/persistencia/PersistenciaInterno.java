@@ -43,6 +43,29 @@ public class PersistenciaInterno implements PersistenciaInternoInt {
         interno.setSituacionJuridica("IMPUTADO");
         interno.setTd("302131");
         internos.add(interno);
+        
+        Interno interno2 = new Interno();
+        interno2.setAccionUsuario(DatosBaseDatos.accionUsuarioInsertar);
+        interno2.setDelito("HOMICIDIO");
+        interno2.setEliminado(false);
+        interno2.setEstado(true);
+        interno2.setFechaIngreso(new Date(1181500200));
+        interno2.setId(2L);
+        interno2.setNacionalidad("COLOMBIA");
+        interno2.setNui("45871239");
+        interno2.setPrimerApellido("HERNANDEZ");
+        interno2.setPrimerNombre("JOSE");
+        interno2.setSaldoDiarioActualGastado(0);
+        interno2.setSaldoDisponible(0);
+        interno2.setSaldoMensualActualGastado(0);
+        interno2.setSegundoApellido("ORTEGA");
+        interno2.setSegundoNombre("MIGUEL");
+        interno2.setSituacionJuridica("IMPUTADO");
+        interno2.setTd("40963");
+        internos.add(interno2);
+        
+        
+        
     }
 
     /**

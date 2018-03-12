@@ -36,5 +36,6 @@ public interface PersistenciaInternoInt {
     public Interno consultarPorTd(String TD);
     
     public Interno consultarPorNui(String Nui);
+    
 
 }

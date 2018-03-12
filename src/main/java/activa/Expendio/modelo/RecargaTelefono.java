@@ -12,7 +12,7 @@ package activa.Expendio.modelo;
  * @author JuanArevaloMerchan
  */
 public class RecargaTelefono {
-    private int valor;
+    private long valor;
     private String td;
     private String fecha;
     private String extension;
@@ -20,7 +20,7 @@ public class RecargaTelefono {
     /**
      * @return the valor
      */
-    public int getValor() {
+    public long getValor() {
         return valor;
     }
 

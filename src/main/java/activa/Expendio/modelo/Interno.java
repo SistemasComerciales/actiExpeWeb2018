@@ -423,4 +423,36 @@ public class Interno {
         }
     }
     
+    public String getNombresCompletos(){
+        return primerApellido + " " + segundoApellido + " " + primerNombre + " "+segundoNombre;
+    }
+    
+    
+    /**
+     * Metodo encargado de traer el saldo disponible, validando que no exceda el saldo disponible del interno
+     * @return 
+     */
+    public long traerSaldoDiarioDisponibleValidado(){
+        long saldoDiarioDisponible = Saldos.saldoDiarioMaximo - saldoDiarioActualGastado;
+        if(saldoDisponible<saldoDiarioDisponible){
+            return saldoDisponible;
+        }
+        else{
+            return saldoDiarioDisponible;
+        }
+    }
+    
+    /**
+     * Metodo encargado de traer el saldo disponible, validando que no exceda el saldo disponible del interno
+     * @return 
+     */
+    public long traerSaldoMensualDisponibleValidado(){
+        long saldoMensualDisponible = Saldos.saldoMensualMaximo - saldoMensualActualGastado;
+        if(saldoDisponible<saldoMensualDisponible){
+            return saldoDisponible;
+        }
+        else{
+            return saldoMensualDisponible;
+        }
+    }
 }
