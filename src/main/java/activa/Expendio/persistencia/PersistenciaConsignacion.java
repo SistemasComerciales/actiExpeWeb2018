@@ -36,7 +36,7 @@ public class PersistenciaConsignacion implements PersistenciaConsignacionInt{
         consignacion.setCajasEspeciales(0);
         consignacion.setConcepto(Concepto.CONCEPTOS[1]);
         consignacion.setEliminado(false);
-        consignacion.setFecha(new Date(2018, 4, 11));
+        consignacion.setFecha(new Date(1520852565865L));
         consignacion.setId(1);
         consignacion.setNumeroRecibo("0000000001");
         consignacion.setNumeroTransaccion("0000000001");
