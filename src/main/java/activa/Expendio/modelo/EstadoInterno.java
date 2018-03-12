@@ -11,46 +11,44 @@ package activa.Expendio.modelo;
  */
 public class EstadoInterno {
     
-    private double saldoDiarioDisponible;
-    private double saldoMensualDisponible;
+    private int saldoDiarioDisponible;
+    private int saldoMensualDisponible;
     private String td;
-    private String nui;
     private boolean estadoInterno;
 
     
-    public EstadoInterno(double saldoDiarioDisponible, double saldoMensualDisponible, String td, String nui, boolean estadoInterno){
+    public EstadoInterno(int saldoDiarioDisponible, int saldoMensualDisponible, String td, boolean estadoInterno){
         this.saldoDiarioDisponible = saldoDiarioDisponible;
         this.saldoMensualDisponible = saldoMensualDisponible;
         this.td = td;
-        this.nui = nui;
         this.estadoInterno = estadoInterno;
     }
     
     /**
      * @return the saldoDiarioDisponible
      */
-    public double getSaldoDiarioDisponible() {
+    public int getSaldoDiarioDisponible() {
         return saldoDiarioDisponible;
     }
 
     /**
      * @param saldoDiarioDisponible the saldoDiarioDisponible to set
      */
-    public void setSaldoDiarioDisponible(double saldoDiarioDisponible) {
+    public void setSaldoDiarioDisponible(int saldoDiarioDisponible) {
         this.saldoDiarioDisponible = saldoDiarioDisponible;
     }
 
     /**
      * @return the saldoMensualDisponible
      */
-    public double getSaldoMensualDisponible() {
+    public int getSaldoMensualDisponible() {
         return saldoMensualDisponible;
     }
 
     /**
      * @param saldoMensualDisponible the saldoMensualDisponible to set
      */
-    public void setsaldoMensualDisponible(double saldoMensualDisponible) {
+    public void setsaldoMensualDisponible(int saldoMensualDisponible) {
         this.saldoMensualDisponible = saldoMensualDisponible;
     }
 
@@ -66,20 +64,6 @@ public class EstadoInterno {
      */
     public void setTd(String td) {
         this.td = td;
-    }
-
-    /**
-     * @return the nui
-     */
-    public String getNui() {
-        return nui;
-    }
-
-    /**
-     * @param nui the nui to set
-     */
-    public void setNui(String nui) {
-        this.nui = nui;
     }
 
     /**

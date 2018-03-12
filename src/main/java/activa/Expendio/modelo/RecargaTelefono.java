@@ -5,36 +5,29 @@
  */
 package activa.Expendio.modelo;
 
-import java.util.Date;
+
 
 /**
  *
  * @author JuanArevaloMerchan
  */
 public class RecargaTelefono {
-    private double valor;
+    private int valor;
     private String td;
-    private Date fecha;
+    private String fecha;
     private String extension;
 
-    public RecargaTelefono(double valor, String td, Date fecha, String extension){
-        this.valor = valor;
-        this.td = td;
-        this.fecha = fecha;
-        this.extension = extension;
-    }
-    
     /**
      * @return the valor
      */
-    public double getValor() {
+    public int getValor() {
         return valor;
     }
 
     /**
      * @param valor the valor to set
      */
-    public void setValor(double valor) {
+    public void setValor(int valor) {
         this.valor = valor;
     }
 
@@ -55,14 +48,14 @@ public class RecargaTelefono {
     /**
      * @return the fecha
      */
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
     /**
      * @param fecha the fecha to set
      */
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -79,6 +72,7 @@ public class RecargaTelefono {
     public void setExtension(String extension) {
         this.extension = extension;
     }
+
     
     
     

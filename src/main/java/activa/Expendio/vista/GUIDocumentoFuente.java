@@ -9,16 +9,17 @@ import activa.Expendio.modelo.DatosBaseDatos;
 import activa.Expendio.modelo.Establecimiento;
 import activa.Expendio.modelo.Usuario;
 import activa.Expendio.vista.utils.CajaDeTexto;
+import activa.Expendio.vista.utils.CampoCombo;
 import activa.Expendio.vista.utils.CampoLabel;
+import activa.Expendio.vista.utils.Tabla;
+import activa.Expendio.vista.utils.TablaNoEditable;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import utils.CampoCombo;
+
 import utils.CargaImagenes;
-import utils.Tabla;
-import utils.TablaNoEditable;
 
 /**
  *

@@ -14,16 +14,16 @@ import static activa.Expendio.vista.GUIDocumentoFuente.columnaId;
 import static activa.Expendio.vista.GUIDocumentoFuente.columnaIdBodega;
 import static activa.Expendio.vista.GUIDocumentoFuente.columnaNombre;
 import activa.Expendio.vista.utils.CajaDeTexto;
+import activa.Expendio.vista.utils.CampoCombo;
 import activa.Expendio.vista.utils.CampoLabel;
+import activa.Expendio.vista.utils.Tabla;
+import activa.Expendio.vista.utils.TablaNoEditable;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import utils.CampoCombo;
 import utils.CargaImagenes;
-import utils.Tabla;
-import utils.TablaNoEditable;
 /**
  *
  * @author Administrador
