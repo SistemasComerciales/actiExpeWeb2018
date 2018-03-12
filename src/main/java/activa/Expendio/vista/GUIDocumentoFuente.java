@@ -8,6 +8,7 @@ import javax.swing.*;
 import utils.*;
 import activa.Expendio.controllers.*;
 import activa.Expendio.persistencia.Interface.*;
+import activa.Expendio.vista.tablas.*;
 import java.awt.event.*;
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
     private CajaDeTexto txt_codigo, txt_nombre, txt_numero, txt_bodega;
     private CasillaVerificacion chk_numera, chk_controlExistencia, chk_docBase, chk_precioFijo, chk_listaPrecio, chk_costeoInv;
     private CampoCombo<String> combo_accionInv, combo_aplica, combo_estado;
+    private GUITablaBodegas tablaBodegas;
 
     // Utilitarios
     private static String nombreClase = "Documentos Fuente";
@@ -75,7 +77,7 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         panel_informacion.setOpaque(false);
         this.add(panel_informacion);
 
-        int posicionX = panel_informacion.getWidth() / 9;
+        int posicionX = panel_informacion.getWidth() / 30;
         int posicionY = panel_informacion.getHeight() / 10;
         int var = 5;
         int labelWidth = CargaImagenes.ANCHO_PANTALLA / 18, labelHeight = CargaImagenes.ALTO_PANTALLA / 30;
@@ -180,6 +182,13 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         combo_estado.setLocation(lbl_estado.getX() + lbl_estado.getWidth() + var * 2, lbl_estado.getY());
         combo_estado.setSize(lbl_estado.getWidth(), lbl_estado.getHeight());
         panel_informacion.add(combo_estado);
+
+        int posX = chk_precioFijo.getX() + chk_precioFijo.getWidth() + var * 2;
+        int posY = chk_precioFijo.getY();
+        int anchoPanel = this.getWidth() / 100 * 37;
+        int altoPanel = this.getHeight() / 100 * 25;
+        tablaBodegas = new GUITablaBodegas(posX, posY, anchoPanel, altoPanel);
+        panel_informacion.add(tablaBodegas);
     }
 
     @Override
@@ -427,8 +436,83 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         ValidacionCampos.asignarTeclasDireccion(chk_precioFijo, chk_docBase, chk_listaPrecio, null, null);
         ValidacionCampos.asignarTeclasDireccion(chk_listaPrecio, chk_precioFijo, chk_costeoInv, null, null);
         ValidacionCampos.asignarTeclasDireccion(chk_costeoInv, chk_listaPrecio, txt_bodega, null, null);
-        ValidacionCampos.asignarTeclasDireccion(txt_bodega, chk_costeoInv, combo_estado, null, null);
+
+        txt_bodega.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                String dato = txt_bodega.getText().trim();
+                if (dato.isEmpty()) {
+                    inicializarBodega();
+                } else if (!tablaBodegas.tabla.isRowSelected(tablaBodegas.tabla.getSelectedRow())) {
+                    Bodega bodega = Servicios.bodegasController.bodegasRepository.consultarPorCodigo(dato);
+                    if (bodega == null) {
+                        option.tipoMensaje(GUIJOption.mensajeAdvertencia, "", "La bodega no existe.", "Por favor inténtelo de nuevo.");
+                        inicializarBodega();
+                        txt_bodega.grabFocus();
+                    } else {
+                        seleccionarBodega(bodega);
+                    }
+                }
+            }
+        });
+        txt_bodega.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN) {
+                    ValidacionCampos.teclasDireccion(e, chk_costeoInv, combo_estado, null, null, txt_bodega);
+                } else {
+                    tablaBodegas.aplicarFiltro(txt_bodega);
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    tablaBodegas.grabFocus();
+                }
+            }
+        });
+        realizarAccionesTablaBodegas();
+
         ValidacionCampos.asignarTeclasDireccion(combo_estado, txt_bodega, btn_agregar, null, null);
+    }
+
+    private void realizarAccionesTablaBodegas() {
+        tablaBodegas.tabla.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.isMetaDown()) {
+                    seleccionarDatosBodega();
+                    combo_estado.grabFocus();
+                }
+            }
+        });
+        tablaBodegas.tabla.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == (KeyEvent.VK_ENTER)) {
+                    seleccionarDatosBodega();
+                    combo_estado.grabFocus();
+                }
+            }
+        });
+    }
+
+    private void seleccionarDatosBodega() {
+        int fila = tablaBodegas.tabla.getSelectedRow();
+        if (fila != -1) {
+            txt_bodega.setText(tablaBodegas.tabla.getValueAt(fila, GUITablaBodegas.columnaCodigo).toString());
+            idBodega = Long.parseLong(tablaBodegas.tabla.getValueAt(fila, GUITablaBodegas.columnaId).toString());
+        }
+    }
+
+    private void seleccionarBodega(Bodega bodega) {
+        txt_bodega.setText(bodega.getCodigo());
+        idBodega = bodega.getId();
     }
 
     @Override
@@ -867,10 +951,16 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         chk_listaPrecio.setSelected(false);
         chk_costeoInv.setSelected(false);
 
-        idBodega = null;
-        txt_bodega.setText("");
+        inicializarBodega();
 
         combo_estado.setSelectedIndex(0);// Estado activo por defecto
+
+        tablaBodegas.deshacerFiltro();
+    }
+
+    private void inicializarBodega() {
+        idBodega = null;
+        txt_bodega.setText("");
     }
 
     @Override
@@ -886,6 +976,8 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         if (tablaGeneral.getRowCount() >= 1) {
             tablaGeneral.getSelectionModel().setSelectionInterval(0, 0);
         }
+
+        tablaBodegas.cargarDatosBasicos(usuario);
     }
 
     @Override
