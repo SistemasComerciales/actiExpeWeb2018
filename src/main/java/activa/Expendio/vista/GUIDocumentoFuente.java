@@ -38,8 +38,8 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
     public static final int columnaAplica = columnaAccionInv + 1;
     public static final int columnaNumera = columnaAplica + 1;
     public static final int columnaNumero = columnaNumera + 1;
-    public static final int columnaControlExitencia = columnaNumero + 1;
-    public static final int columnaDocBase = columnaControlExitencia + 1;
+    public static final int columnaControlExistencia = columnaNumero + 1;
+    public static final int columnaDocBase = columnaControlExistencia + 1;
     public static final int columnaPrecioFijo = columnaDocBase + 1;
     public static final int columnaListaPrecio = columnaPrecioFijo + 1;
     public static final int columnaCosteoInv = columnaListaPrecio + 1;
@@ -177,8 +177,8 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         panel_informacion.add(lbl_estado);
 
         combo_estado = new CampoCombo<String>(DatosBaseDatos.estadoActivo, DatosBaseDatos.estadoInactivo);
-        combo_estado.setLocation(lbl_estado.getX() + lbl_estado.getWidth() * 5 / 4, lbl_estado.getY());
-        combo_estado.setSize(lbl_estado.getWidth() * 8 / 9, lbl_estado.getHeight());
+        combo_estado.setLocation(lbl_estado.getX() + lbl_estado.getWidth() + var * 2, lbl_estado.getY());
+        combo_estado.setSize(lbl_estado.getWidth(), lbl_estado.getHeight());
         panel_informacion.add(combo_estado);
     }
 
@@ -264,9 +264,9 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
         tablaGeneral.getColumnModel().getColumn(columnaNumero).setMinWidth(anchoTotal / 2);
         tablaGeneral.getColumnModel().getColumn(columnaNumero).setPreferredWidth(anchoTotal / 2);
 
-        tablaGeneral.getColumnModel().getColumn(columnaControlExitencia).setMaxWidth(anchoTotal / 3);
-        tablaGeneral.getColumnModel().getColumn(columnaControlExitencia).setMinWidth(anchoTotal / 3);
-        tablaGeneral.getColumnModel().getColumn(columnaControlExitencia).setPreferredWidth(anchoTotal / 3);
+        tablaGeneral.getColumnModel().getColumn(columnaControlExistencia).setMaxWidth(anchoTotal / 3);
+        tablaGeneral.getColumnModel().getColumn(columnaControlExistencia).setMinWidth(anchoTotal / 3);
+        tablaGeneral.getColumnModel().getColumn(columnaControlExistencia).setPreferredWidth(anchoTotal / 3);
 
         tablaGeneral.getColumnModel().getColumn(columnaDocBase).setMaxWidth(anchoTotal / 3);
         tablaGeneral.getColumnModel().getColumn(columnaDocBase).setMinWidth(anchoTotal / 3);
@@ -344,9 +344,9 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
 
             boolean controlExistencias = doc.isControlExistencia();
             if (controlExistencias) {
-                datosFila[columnaControlExitencia] = DatosBaseDatos.varSi;
+                datosFila[columnaControlExistencia] = DatosBaseDatos.varSi;
             } else {
-                datosFila[columnaControlExitencia] = DatosBaseDatos.varNo;
+                datosFila[columnaControlExistencia] = DatosBaseDatos.varNo;
             }
 
             boolean docBase = doc.isDocBase();
@@ -649,7 +649,7 @@ public class GUIDocumentoFuente extends GUIInterfazCatalogos {
                 txt_numero.setEnabled(true);
             }
 
-            chk_controlExistencia.setSelected(DatosBaseDatos.varSi.equals((String) dtmTablaGeneral.getValueAt(model, columnaControlExitencia)));
+            chk_controlExistencia.setSelected(DatosBaseDatos.varSi.equals((String) dtmTablaGeneral.getValueAt(model, columnaControlExistencia)));
             chk_docBase.setSelected(DatosBaseDatos.varSi.equals((String) dtmTablaGeneral.getValueAt(model, columnaDocBase)));
             chk_precioFijo.setSelected(DatosBaseDatos.varSi.equals((String) dtmTablaGeneral.getValueAt(model, columnaPrecioFijo)));
             chk_listaPrecio.setSelected(DatosBaseDatos.varSi.equals((String) dtmTablaGeneral.getValueAt(model, columnaListaPrecio)));
