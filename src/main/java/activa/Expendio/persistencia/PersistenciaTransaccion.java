@@ -198,7 +198,7 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
          * @param codProduco
          * @param valorUni 
          */
-        public void insertarTransaccion(String td,  Date fecha, double valorUni, String condicion, Usuario usuario){
+        public String insertarTransaccion(String td,  Date fecha, double valorUni, String condicion, Usuario usuario){
             String numero = GUITransaccion.asignarNumeroConsecutivo(usuario);
             Transaccion transaccion = new Transaccion();
             transaccion.setDocumento(Servicios.documentosController.documentosRepository.consultarPorId("RI"));
@@ -214,6 +214,7 @@ public class PersistenciaTransaccion implements  PersistenciaTransaccionInt{
             item.setValorUnitario(valorUni);
             transaccion.setListItem(items);
             listaTransacciones.add(transaccion);
+            return numero;
         }    
         
 }
