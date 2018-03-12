@@ -95,7 +95,17 @@ public class SaldosController {
                         int anio = Integer.valueOf(fecha.substring(0, 4));
                         int mes = Integer.valueOf(fecha.substring(5, 7));
                         int dia = Integer.valueOf(fecha.substring(8, 10));
-                        fechaF = new Date(anio, --mes, dia);
+                        int hora = Integer.valueOf(fecha.substring(11, 13));
+                        int minutos = Integer.valueOf(fecha.substring(14, 16));
+                        int segundos = Integer.valueOf(fecha.substring(17, 19));
+                        
+                        System.out.println("Año: "+anio);
+                        System.out.println("Mes: "+mes);
+                        System.out.println("Dia: "+dia);
+                        System.out.println("Hora: "+hora);
+                        System.out.println("Minutos: "+minutos);
+                        System.out.println("Segundos: "+segundos);
+                        fechaF = new Date(anio, --mes, dia,hora, minutos, segundos);
                     }catch(Exception e){
                         fechaF = new Date();
                     }
