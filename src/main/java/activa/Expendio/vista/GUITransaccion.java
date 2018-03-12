@@ -1333,6 +1333,12 @@ public class GUITransaccion extends ClaseGeneral {
                     accionAdicionarItem();
                 }
             });
+            btn_grabar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    accionGrabar();
+                }
+            });
         }
         
         /**
@@ -2445,8 +2451,6 @@ public class GUITransaccion extends ClaseGeneral {
 		btn_plantilla.setEnabled(false);
 		btn_repetir.setEnabled(false);
 		
-		txt_accionSobreInventario.setEnabled(false);
-
 		txt_bodega.setEnabled(false);
 		txt_cantidad.setEnabled(false);
 		txt_codigo.setEnabled(false);
@@ -2460,12 +2464,10 @@ public class GUITransaccion extends ClaseGeneral {
 		txt_empaque.setEnabled(false);
 		txt_fecha.setEnabled(false);
 		txt_idBodega.setEnabled(false);
-		txt_idBodegaDocFuente.setEnabled(false);
 		txt_idCodigo.setEnabled(false);
 		txt_idDocumentoFuente.setEnabled(false);
 		txt_idTercero.setEnabled(false);
 		txt_idTransaccion.setEnabled(false);
-		txt_llevaBodegaDocFuente.setEnabled(false);
 		txt_nit.setEnabled(false);
 		txt_nitAntiguo.setEnabled(false);
 		txt_numeracion.setEnabled(false);
